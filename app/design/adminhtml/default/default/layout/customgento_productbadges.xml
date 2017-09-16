@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<layout>
+    <adminhtml_customgentoproductbadges_badgeconfig_index>
+        <reference name="content">
+            <block type="customgento_productbadges/adminhtml_customGentoProductBadges_badgeConfig" name="badge_config" />
+        </reference>
+    </adminhtml_customgentoproductbadges_badgeconfig_index>
+    <adminhtml_customgentoproductbadges_badgeconfig_edit>
+        <reference name="head">
+            <action method="setCanLoadExtJs"><flag>1</flag></action>
+            <action method="setCanLoadRulesJs"><flag>1</flag></action>
+        </reference>
+        <reference name="left">
+            <block type="customgento_productbadges/adminhtml_customGentoProductBadges_badgeConfig_edit_tabs" name="restriction_rule_edit_tabs">
+                <block type="customgento_productbadges/adminhtml_customGentoProductBadges_badgeConfig_edit_tab_main" name="restriction_rule_edit_tab_main" />
+                <block type="customgento_productbadges/adminhtml_customGentoProductBadges_badgeConfig_edit_tab_conditions" name="restriction_rule_edit_tab_conditions"/>
+                <action method="addTab"><name>main_section</name><block>restriction_rule_edit_tab_main</block></action>
+                <action method="addTab"><name>conditions_section</name><block>restriction_rule_edit_tab_conditions</block></action>
+            </block>
+        </reference>
+        <reference name="content">
+            <block type="customgento_productbadges/adminhtml_customGentoProductBadges_badgeConfig_edit" name="badge_config_edit" />
+        </reference>
+    </adminhtml_customgentoproductbadges_badgeconfig_edit>
+</layout>

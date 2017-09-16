@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <catalog>
+            <children>
+                <customgento_productbadges_config translate="title" module="customgento_productbadges">
+                    <title>Product Badges</title>
+                    <sort_order>700</sort_order>
+                    <action>adminhtml/customGentoProductBadges_badgeConfig</action>
+                </customgento_productbadges_config>
+            </children>
+        </catalog>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <sales>
+                        <children>
+                            <customgento_productbadges_config translate="title" module="customgento_productbadges">
+                                <title>Product Badges</title>
+                                <sort_order>700</sort_order>
+                            </customgento_productbadges_config>
+                        </children>
+                    </sales>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>
