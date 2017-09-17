@@ -108,6 +108,15 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'format'       => $dateFormatIso
         ));
 
+        $fieldset->addField('render_type', 'select', array(
+            'label'     => Mage::helper('customgento_productbadges')->__('Render Type'),
+            'title'     => Mage::helper('customgento_productbadges')->__('Render Type'),
+            'name'      => 'render_type',
+            'required'  => true,
+            //@todo: probably move the options logic to a model
+            'options'   => Mage::helper('customgento_productbadges/renderTypeConfig')->getRenderTypesForAdminForm()
+        ));
+
         $form->setValues($model->getData());
 
         $this->setForm($form);

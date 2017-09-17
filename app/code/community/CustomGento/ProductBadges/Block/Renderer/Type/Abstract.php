@@ -3,7 +3,7 @@ class CustomGento_ProductBadges_Block_Renderer_Type_Abstract
     extends Mage_Core_Block_Abstract
 {
 
-    /** @var CustomGento_ProductBadges_Helper_Badge_Config */
+    /** @var CustomGento_ProductBadges_Helper_RenderTypeConfig */
     private $_badgeConfigHelper;
 
     /** @var CustomGento_ProductBadges_Helper_Data_ProductAttribute */
@@ -11,7 +11,7 @@ class CustomGento_ProductBadges_Block_Renderer_Type_Abstract
 
     public function __construct()
     {
-        $this->_badgeConfigHelper = Mage::helper('customgento_productbadges/badge_config');
+        $this->_badgeConfigHelper = Mage::helper('customgento_productbadges/renderTypeConfig');
         $this->_productAttributeHelper = Mage::helper('customgento_productbadges/data_productAttribute');
     }
 
@@ -26,46 +26,50 @@ class CustomGento_ProductBadges_Block_Renderer_Type_Abstract
      */
     protected function _getContent($badgeInternalId, $productId)
     {
+        return $badgeInternalId;
+
         $badgeSourceAttributeCode = $this->_badgeConfigHelper->getBadgeSourceAttributeCode($badgeInternalId);
 
         /**
          * Case when we read the badge content from badges table
          */
-        if ($this->_badgeConfigHelper->usesDirectSource($badgeInternalId)) {
-            /** @var CustomGento_ProductBadges_Model_ProductBadge $productBadgesModel */
-            $productBadgesModel = Mage::getSingleton('customgento_productbadges/productBadge');
-            $value = $productBadgesModel->fetchReadProductBadgeFieldValue($productId, $badgeInternalId);
-
-            if (false !== $value && 0 < $value) {
-                $template = $this->_badgeConfigHelper->getTemplateBadgeSourceAttribute($badgeInternalId);
-
-                if (false !== $template) {
-                    return str_replace('###PLACEHOLDER###', $value, $template);
-                }
-
-                return '';
-            }
-
-            return '';
-        }
+        // @todo: Rework this logic later
+//        if ($this->_badgeConfigHelper->usesDirectSource($badgeInternalId)) {
+//            /** @var CustomGento_ProductBadges_Model_ProductBadge $productBadgesModel */
+//            $productBadgesModel = Mage::getSingleton('customgento_productbadges/productBadge');
+//            $value = $productBadgesModel->fetchReadProductBadgeFieldValue($productId, $badgeInternalId);
+//
+//            if (false !== $value && 0 < $value) {
+//                $template = $this->_badgeConfigHelper->getTemplateBadgeSourceAttribute($badgeInternalId);
+//
+//                if (false !== $template) {
+//                    return str_replace('###PLACEHOLDER###', $value, $template);
+//                }
+//
+//                return '';
+//            }
+//
+//            return '';
+//        }
 
         /**
          * Case when we read the badge content from product attribute
          */
-        if (false !== $badgeSourceAttributeCode) {
-            $template = $this->_badgeConfigHelper->getTemplateBadgeSourceAttribute($badgeInternalId);
-            $badgeSourceAttributeValue = $this->_productAttributeHelper->fetchProductAttributeBy_ProductId_AttributeCode_StoreId($productId, $badgeSourceAttributeCode);
-
-            $badgeSourceAttributeValue = $this->_transformValue($badgeInternalId, $badgeSourceAttributeValue);
-
-            if (false === $template || false === $badgeSourceAttributeValue) {
-                return '';
-            }
-
-            return str_replace('###PLACEHOLDER###', $badgeSourceAttributeValue, $template);
-        }
-
-        return $this->_badgeConfigHelper->getBadgeDefaultValue($badgeInternalId);
+        // @todo: Rework this logic later
+//        if (false !== $badgeSourceAttributeCode) {
+//            $template = $this->_badgeConfigHelper->getTemplateBadgeSourceAttribute($badgeInternalId);
+//            $badgeSourceAttributeValue = $this->_productAttributeHelper->fetchProductAttributeBy_ProductId_AttributeCode_StoreId($productId, $badgeSourceAttributeCode);
+//
+//            $badgeSourceAttributeValue = $this->_transformValue($badgeInternalId, $badgeSourceAttributeValue);
+//
+//            if (false === $template || false === $badgeSourceAttributeValue) {
+//                return '';
+//            }
+//
+//            return str_replace('###PLACEHOLDER###', $badgeSourceAttributeValue, $template);
+//        }
+//
+//        return $this->_badgeConfigHelper->getBadgeDefaultValue($badgeInternalId);
     }
 
     /**

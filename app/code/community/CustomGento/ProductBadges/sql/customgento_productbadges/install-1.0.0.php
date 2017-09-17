@@ -30,6 +30,9 @@ $table = $installer->getConnection()
         'nullable'  => false,
         'default'   => '0',
         ), 'Is Active')
+    ->addColumn('render_type', Varien_Db_Ddl_Table::TYPE_TEXT, 255, array(
+        'nullable'  => false
+    ), 'Render Type')
     ->addColumn('conditions_serialized', Varien_Db_Ddl_Table::TYPE_TEXT, '2M', array(
         ), 'Conditions Serialized')
     ->addIndex($installer->getIdxName('customgento_productbadges/badge_config', array('is_active', 'to_date', 'from_date')),

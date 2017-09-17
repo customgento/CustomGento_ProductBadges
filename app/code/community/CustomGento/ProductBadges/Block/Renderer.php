@@ -6,7 +6,7 @@ class CustomGento_ProductBadges_Block_Renderer
     /** @var CustomGento_ProductBadges_Block_Renderer_Container */
     private $_containerRendererBlock;
 
-    /** @var CustomGento_ProductBadges_Helper_Badge_Config */
+    /** @var CustomGento_ProductBadges_Helper_RenderTypeConfig */
     private $_badgeConfigHelper;
 
     /** @var array */
@@ -17,8 +17,8 @@ class CustomGento_ProductBadges_Block_Renderer
 
     public function __construct()
     {
-        $this->_containerRendererBlock = Mage::getBlockSingleton('epetworld_product_badges/renderer_container');
-        $this->_badgeConfigHelper = Mage::helper('epetworld_product_badges/badge_config');
+        $this->_containerRendererBlock = Mage::getBlockSingleton('customgento_productbadges/renderer_container');
+        $this->_badgeConfigHelper = Mage::helper('customgento_productbadges/renderTypeConfig');
     }
 
     /**
@@ -63,15 +63,15 @@ class CustomGento_ProductBadges_Block_Renderer
             return '';
         }
 
-        foreach ($badges as $badgeName => $value) {
-            $containerInternalName = $this->_badgeConfigHelper->getBadgeContainerName($badgeName);
-            $badgeType = $this->_badgeConfigHelper->getBadgeRenderType($badgeName);
+        foreach ($badges as $badgeCode => $value) {
+            $containerInternalName = $this->_badgeConfigHelper->getBadgeContainerName($badgeCode);
+            $badgeType = $this->_badgeConfigHelper->getBadgeRenderType($badgeCode);
 
             /** @var CustomGento_ProductBadges_Block_Renderer_Type_Interface $badge */
             try {
-                $badge = Mage::getBlockSingleton('epetworld_product_badges/renderer_type_' . $badgeType);
+                $badge = Mage::getBlockSingleton('customgento_productbadges/renderer_type_' . $badgeType);
 
-                $this->_containerRendererBlock->attachBadgeToContainer($containerInternalName, $badgeName, $badge);
+                $this->_containerRendererBlock->attachBadgeToContainer($containerInternalName, $badgeCode, $badge);
             } catch(Exception $e) {
                 Mage::logException($e);
             }

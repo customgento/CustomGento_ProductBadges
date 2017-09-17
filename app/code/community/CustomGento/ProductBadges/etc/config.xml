@@ -51,6 +51,20 @@
                     <label>Stock Status</label>
                 </stock_status>
             </rules>
+            <renderer_types>
+                <circle>
+                    <block>customgento_productbadges/render_type_circle</block>
+                    <admin_label>Circle</admin_label>
+                </circle>
+                <rectangle>
+                    <block>customgento_productbadges/render_type_rectangle</block>
+                    <admin_label>Rectangle</admin_label>
+                </rectangle>
+                <!--<image>-->
+                    <!--<block>customgento_productbadges/render_type_image</block>-->
+                    <!--<admin_label>Image</admin_label>-->
+                <!--</image>-->
+            </renderer_types>
         </customgento_productbadges>
     </global>
     <admin>
