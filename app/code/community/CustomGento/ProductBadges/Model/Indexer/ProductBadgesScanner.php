@@ -38,7 +38,7 @@ class CustomGento_ProductBadges_Model_Indexer_ProductBadgesScanner
 
         /** @var CustomGento_ProductBadges_Model_BadgeConfig $badgeConfig */
         foreach ($this->_badgeConfigsCollection as $badgeConfig) {
-            $badgeCode = trim($badgeConfig->getName());
+            $badgeCode = trim($badgeConfig->getInternalCode());
 
             $productMappingBadges['found_badges'][$badgeCode] = $badgeConfig
                 ->getMatchingProductIds($productIdRanges['from'], $productIdRanges['to']);
@@ -61,7 +61,7 @@ class CustomGento_ProductBadges_Model_Indexer_ProductBadgesScanner
             /** @var CustomGento_ProductBadges_Model_BadgeConfig $badgeConfig */
             foreach ($this->_badgeConfigsCollection as $badgeConfig) {
                 //@todo get real badge code, it should be unique
-                $this->_badgeCodes[] = trim($badgeConfig->getName());
+                $this->_badgeCodes[] = trim($badgeConfig->getInternalCode());
             }
         }
 

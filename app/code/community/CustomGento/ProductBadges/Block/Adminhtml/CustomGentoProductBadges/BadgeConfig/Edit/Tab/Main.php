@@ -68,6 +68,13 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'required' => true,
         ));
 
+        $fieldset->addField('internal_code', 'text', array(
+            'name' => 'internal_code',
+            'label' => Mage::helper('customgento_productbadges')->__('Internal Code'),
+            'title' => Mage::helper('customgento_productbadges')->__('Internal Code'),
+            'required' => true,
+        ));
+
         $fieldset->addField('description', 'textarea', array(
             'name' => 'description',
             'label' => Mage::helper('customgento_productbadges')->__('Description'),
@@ -115,6 +122,15 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'required'  => true,
             //@todo: probably move the options logic to a model
             'options'   => Mage::helper('customgento_productbadges/renderTypeConfig')->getRenderTypesForAdminForm()
+        ));
+
+        $fieldset->addField('render_container', 'select', array(
+            'label'     => Mage::helper('customgento_productbadges')->__('Render Container'),
+            'title'     => Mage::helper('customgento_productbadges')->__('Render Container'),
+            'name'      => 'render_container',
+            'required'  => true,
+            //@todo: probably move the options logic to a model
+            'options'   => Mage::getModel('customgento_productbadges/config_renderContainer')->getRenderContainersForAdminForms()
         ));
 
         $form->setValues($model->getData());

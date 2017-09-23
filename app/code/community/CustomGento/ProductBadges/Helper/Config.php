@@ -47,8 +47,6 @@ class CustomGento_ProductBadges_Helper_Config
      */
     public function getRulesConfigurations()
     {
-
-
         return $this->_rulesConfigurations;
     }
 

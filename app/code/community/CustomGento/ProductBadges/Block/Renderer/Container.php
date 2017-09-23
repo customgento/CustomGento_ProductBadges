@@ -3,24 +3,25 @@ class CustomGento_ProductBadges_Block_Renderer_Container
     extends Mage_Core_Block_Abstract
 {
 
-    private $_containersConfig = array(
-        'top-left'     => array('class' => 'product-badge-container--top-left'),
-        'top-right'    => array('class' => 'product-badge-container--top-right'),
-        'bottom-left'  => array('class' => 'product-badge-container--bottom-left'),
-        'bottom-right' => array('class' => 'product-badge-container--bottom-right')
-    );
-
     /** @var array */
     private $_containers = array();
 
+    /** @var CustomGento_ProductBadges_Model_Config_RenderContainer $_containerConfigModel */
+    private $_containerConfigModel;
+
+    public function __construct()
+    {
+        $this->_containerConfigModel = Mage::getModel('customgento_productbadges/config_renderContainer');
+    }
+
     /**
-     * @param $containerName
-     * @param $badgeInternalId
+     * @param string $badgeInternalCode
      * @param CustomGento_ProductBadges_Block_Renderer_Type_Interface $badge
      */
-    public function attachBadgeToContainer($containerName, $badgeInternalId, CustomGento_ProductBadges_Block_Renderer_Type_Interface $badge)
+    public function attachBadgeToContainer($badgeInternalCode, CustomGento_ProductBadges_Block_Renderer_Type_Interface $badge)
     {
-        $this->_containers[$containerName][$badgeInternalId] = $badge;
+        $containerName = $this->_containerConfigModel->getContainerOfProductBadge($badgeInternalCode);
+        $this->_containers[$containerName][$badgeInternalCode] = $badge;
     }
 
     /**
@@ -32,7 +33,11 @@ class CustomGento_ProductBadges_Block_Renderer_Container
         $containersHtml = '';
 
         foreach ($this->_containers as $containerName => $badges) {
-            $containerHtml = '<div class="product-badge-container ' . $this->_containersConfig[$containerName]['class'] . '">###BADGES_HTML_PLACEHOLDER###</div>';
+            $containerCssClass = $this->_containerConfigModel
+                ->getRenderContainersConfigByContainerName($containerName)
+                ->getCssClass();
+
+            $containerHtml = '<div class="product-badge-container ' . $containerCssClass . '">###BADGES_HTML_PLACEHOLDER###</div>';
             $badgesHtml = '';
 
             /** @var $badge CustomGento_ProductBadges_Block_Renderer_Type_Interface */

@@ -2,7 +2,7 @@
 <config>
     <modules>
         <CustomGento_ProductBadges>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </CustomGento_ProductBadges>
     </modules>
     <global>
@@ -65,6 +65,24 @@
                     <!--<admin_label>Image</admin_label>-->
                 <!--</image>-->
             </renderer_types>
+            <render_containers>
+                <top-left>
+                    <internal_code>top-left</internal_code>
+                    <css_class>product-badge-container--top-left</css_class>
+                </top-left>
+                <top-right>
+                    <internal_code>top-right</internal_code>
+                    <css_class>product-badge-container--top-right</css_class>
+                </top-right>
+                <bottom-left>
+                    <internal_code>bottom-left</internal_code>
+                    <css_class>product-badge-container--bottom-left</css_class>
+                </bottom-left>
+                <bottom-right>
+                    <internal_code>bottom-right</internal_code>
+                    <css_class>product-badge-container--bottom-right</css_class>
+                </bottom-right>
+            </render_containers>
         </customgento_productbadges>
     </global>
     <admin>

@@ -60,14 +60,4 @@ class CustomGento_ProductBadges_Helper_RenderTypeConfig
         return 'circle';
     }
 
-    /**
-     * @param string $badgeCode
-     *
-     * @return string
-     */
-    public function getBadgeContainerName($badgeCode)
-    {
-        return 'product-badge-container--top-left';
-    }
-
 }

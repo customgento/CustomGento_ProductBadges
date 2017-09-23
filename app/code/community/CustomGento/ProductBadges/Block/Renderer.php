@@ -64,14 +64,13 @@ class CustomGento_ProductBadges_Block_Renderer
         }
 
         foreach ($badges as $badgeCode => $value) {
-            $containerInternalName = $this->_badgeConfigHelper->getBadgeContainerName($badgeCode);
             $badgeType = $this->_badgeConfigHelper->getBadgeRenderType($badgeCode);
 
             /** @var CustomGento_ProductBadges_Block_Renderer_Type_Interface $badge */
             try {
                 $badge = Mage::getBlockSingleton('customgento_productbadges/renderer_type_' . $badgeType);
 
-                $this->_containerRendererBlock->attachBadgeToContainer($containerInternalName, $badgeCode, $badge);
+                $this->_containerRendererBlock->attachBadgeToContainer($badgeCode, $badge);
             } catch(Exception $e) {
                 Mage::logException($e);
             }

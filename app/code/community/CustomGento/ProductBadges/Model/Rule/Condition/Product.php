@@ -202,8 +202,6 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product
     {
         $attribute = $this->getAttribute();
 
-        var_dump($attribute);
-
         if ('category_ids' != $attribute) {
             if ($this->getAttributeObject()->isScopeGlobal()) {
                 $attributes = $this->getRule()->getCollectedAttributes();
