@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <customgento_productbadges_global_config translate="label" module="customgento_productbadges">
+            <label>Product Badges</label>
+            <tab>catalog</tab>
+            <sort_order>50</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+
+            <groups>
+                <general translate="label" module="customgento_productbadges">
+                    <label>General Settings</label>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enabled translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                    </fields>
+                </general>
+            </groups>
+        </customgento_productbadges_global_config>
+    </sections>
+</config>

@@ -3,7 +3,7 @@ class CustomGento_ProductBadges_Helper_Data
     extends Mage_Core_Helper_Abstract
 {
 
-    CONST EPETWORLD_PRODUCT_BADGES_ENABLED_XML_CONFIG_PATH = 'epetworld_product_badges/general/enabled';
+    CONST CUSTOMGENTO_PRODUCT_BADGES_ENABLED_XML_CONFIG_PATH = 'customgento_productbadges_global_config/general/enabled';
 
     /** @var array */
     private $_productBadgesData;
@@ -24,8 +24,6 @@ class CustomGento_ProductBadges_Helper_Data
         $productBadgeMatcher = Mage::getModel('customgento_productbadges/productBadgeMatcher');
 
         $this->_productBadgesData = $productBadgeMatcher->getDataWithProductIdAsKey($productIds);
-
-        var_dump($this->_productBadgesData);
 
         return $this;
     }
@@ -75,8 +73,7 @@ class CustomGento_ProductBadges_Helper_Data
      */
     public function isEnabled()
     {
-        return true;
-        return Mage::getStoreConfigFlag(self::EPETWORLD_PRODUCT_BADGES_ENABLED_XML_CONFIG_PATH);
+        return Mage::getStoreConfigFlag(self::CUSTOMGENTO_PRODUCT_BADGES_ENABLED_XML_CONFIG_PATH);
     }
 
     /**
@@ -85,7 +82,6 @@ class CustomGento_ProductBadges_Helper_Data
      */
     private function _filerBadgesData(array $badges)
     {
-        unset($badges['entity_id']);
         unset($badges['product_id']);
         $badges = array_filter($badges);
 
@@ -100,8 +96,8 @@ class CustomGento_ProductBadges_Helper_Data
      */
     private function _createBadgesRendererBlock(array $badges, $productId)
     {
-        /** @var Epetworld_ProductBadges_Block_Renderer $badgesBlock */
-        $badgesBlock = Mage::app()->getLayout()->createBlock('epetworld_product_badges/renderer', 'product_badges');
+        /** @var CustomGento_ProductBadges_Block_Renderer $badgesBlock */
+        $badgesBlock = Mage::app()->getLayout()->createBlock('customgento_productbadges/renderer', 'product_badges');
         $badgesBlock->init($badges, $productId);
 
         return $badgesBlock;

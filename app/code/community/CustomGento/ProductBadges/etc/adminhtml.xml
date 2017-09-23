@@ -23,6 +23,17 @@
                             </customgento_productbadges_config>
                         </children>
                     </sales>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <customgento_productbadges_global_config translate="title" module="customgento_productbadges">
+                                        <title>Product Badges</title>
+                                    </customgento_productbadges_global_config>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
                 </children>
             </admin>
         </resources>
