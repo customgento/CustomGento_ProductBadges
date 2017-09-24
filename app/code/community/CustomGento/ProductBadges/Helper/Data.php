@@ -92,7 +92,7 @@ class CustomGento_ProductBadges_Helper_Data
      * @param array $badges
      * @param int $productId
      *
-     * @return Epetworld_ProductBadges_Block_Renderer
+     * @return CustomGento_ProductBadges_Block_Renderer
      */
     private function _createBadgesRendererBlock(array $badges, $productId)
     {
@@ -102,6 +102,5 @@ class CustomGento_ProductBadges_Helper_Data
 
         return $badgesBlock;
     }
-
 
 }
