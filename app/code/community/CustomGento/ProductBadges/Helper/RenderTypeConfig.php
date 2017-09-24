@@ -8,6 +8,9 @@ class CustomGento_ProductBadges_Helper_RenderTypeConfig
     /** @var array|bool */
     protected $_renderTypesConfigurations = false;
 
+    /** @var array|bool */
+    protected $_renderTypesMapping = false;
+
     public function __construct()
     {
         $config = Mage::getConfig()
@@ -52,12 +55,26 @@ class CustomGento_ProductBadges_Helper_RenderTypeConfig
 
     /**
      * @param string $badgeCode
-     *
      * @return string
      */
     public function getBadgeRenderType($badgeCode)
     {
-        return 'circle';
+        $badgeConfigCollection = Mage::getModel('customgento_productbadges/badgeConfig')
+            ->getCollection()
+            ->addFieldToSelect(array('render_type', 'internal_code'));
+
+        if (false === $this->_renderTypesMapping) {
+            /** @var CustomGento_ProductBadges_Model_BadgeConfig $badgeConfig */
+            foreach ($badgeConfigCollection as $badgeConfig) {
+                $this->_renderTypesMapping[$badgeConfig->getInternalCode()] = $badgeConfig->getRenderType();
+            }
+        }
+
+        return isset($this->_renderTypesMapping[$badgeCode])
+            // We fetch the configured badge render type
+            ? $this->_renderTypesMapping[$badgeCode]
+            // In case there is not render type configured we give the first know render type
+            : reset($this->_renderTypesConfigurations);
     }
 
 }
