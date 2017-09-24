@@ -41,7 +41,7 @@ class CustomGento_ProductBadges_Model_Config_RenderContainer
     }
 
     /**
-     * Gets array of rule configuration objects
+     * Gets array of render container configuration objects
      *
      * @return array
      */

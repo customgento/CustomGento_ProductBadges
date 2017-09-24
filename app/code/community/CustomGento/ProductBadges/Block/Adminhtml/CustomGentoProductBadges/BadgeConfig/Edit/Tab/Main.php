@@ -51,38 +51,38 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
         $form = new Varien_Data_Form();
         $form->setHtmlIdPrefix('current_badge_');
 
-        $fieldset = $form->addFieldset('base_fieldset',
+        $generalFieldset = $form->addFieldset('base_fieldset',
             array('legend' => Mage::helper('customgento_productbadges')->__('General Information'))
         );
 
         if ($model->getId()) {
-            $fieldset->addField('badge_config_id', 'hidden', array(
+            $generalFieldset->addField('badge_config_id', 'hidden', array(
                 'name' => 'badge_config_id',
             ));
         }
 
-        $fieldset->addField('name', 'text', array(
+        $generalFieldset->addField('name', 'text', array(
             'name' => 'name',
             'label' => Mage::helper('customgento_productbadges')->__('Badge Name'),
             'title' => Mage::helper('customgento_productbadges')->__('Badge Name'),
             'required' => true,
         ));
 
-        $fieldset->addField('internal_code', 'text', array(
+        $generalFieldset->addField('internal_code', 'text', array(
             'name' => 'internal_code',
             'label' => Mage::helper('customgento_productbadges')->__('Internal Code'),
             'title' => Mage::helper('customgento_productbadges')->__('Internal Code'),
             'required' => true,
         ));
 
-        $fieldset->addField('description', 'textarea', array(
+        $generalFieldset->addField('description', 'textarea', array(
             'name' => 'description',
             'label' => Mage::helper('customgento_productbadges')->__('Description'),
             'title' => Mage::helper('customgento_productbadges')->__('Description'),
             'style' => 'height: 100px;',
         ));
 
-        $fieldset->addField('is_active', 'select', array(
+        $generalFieldset->addField('is_active', 'select', array(
             'label'     => Mage::helper('customgento_productbadges')->__('Status'),
             'title'     => Mage::helper('customgento_productbadges')->__('Status'),
             'name'      => 'is_active',
@@ -98,7 +98,7 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
         }
 
         $dateFormatIso = Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
-        $fieldset->addField('from_date', 'date', array(
+        $generalFieldset->addField('from_date', 'date', array(
             'name'   => 'from_date',
             'label'  => Mage::helper('customgento_productbadges')->__('From Date'),
             'title'  => Mage::helper('customgento_productbadges')->__('From Date'),
@@ -106,7 +106,7 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'input_format' => Varien_Date::DATE_INTERNAL_FORMAT,
             'format'       => $dateFormatIso
         ));
-        $fieldset->addField('to_date', 'date', array(
+        $generalFieldset->addField('to_date', 'date', array(
             'name'   => 'to_date',
             'label'  => Mage::helper('customgento_productbadges')->__('To Date'),
             'title'  => Mage::helper('customgento_productbadges')->__('To Date'),
@@ -115,7 +115,11 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'format'       => $dateFormatIso
         ));
 
-        $fieldset->addField('render_type', 'select', array(
+        $visualisationFieldset = $form->addFieldset('visualisation_fieldset',
+            array('legend' => Mage::helper('customgento_productbadges')->__('Visualisation Settings'))
+        );
+
+        $visualisationFieldset->addField('render_type', 'select', array(
             'label'     => Mage::helper('customgento_productbadges')->__('Render Type'),
             'title'     => Mage::helper('customgento_productbadges')->__('Render Type'),
             'name'      => 'render_type',
@@ -124,7 +128,7 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'options'   => Mage::helper('customgento_productbadges/renderTypeConfig')->getRenderTypesForAdminForm()
         ));
 
-        $fieldset->addField('render_container', 'select', array(
+        $visualisationFieldset->addField('render_container', 'select', array(
             'label'     => Mage::helper('customgento_productbadges')->__('Render Container'),
             'title'     => Mage::helper('customgento_productbadges')->__('Render Container'),
             'name'      => 'render_container',
