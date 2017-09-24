@@ -14,8 +14,11 @@ class CustomGento_ProductBadges_Model_ProductBadgeMatcher
 
         $readConnection = $resource->getConnection('read');
 
-        // @todo add current store in table name, currently it's hardcoded
-        $badgesIndexTable = $resource->getTableName('customgento_productbadges_badges_index_' . 1);
+        $badgesIndexTable = $this->_getBadgeIndexTableName();
+
+        if (false === $badgesIndexTable) {
+            return array();
+        }
 
         $select = $readConnection
             ->select()
@@ -31,6 +34,25 @@ class CustomGento_ProductBadges_Model_ProductBadgeMatcher
         }
 
         return $transformedData;
+    }
+
+    /**
+     * @return string|false
+     */
+    private function _getBadgeIndexTableName()
+    {
+        /** @var Mage_Core_Model_Resource $resource */
+        $resource = Mage::getSingleton('core/resource');
+
+        $storeId = Mage::app()->getStore()->getStoreId();
+
+        $badgesIndexTable = $resource->getTableName('customgento_productbadges_badges_index_' . $storeId);
+
+        if (!$resource->getConnection('read')->isTableExists($badgesIndexTable)) {
+            return false;
+        }
+
+        return $badgesIndexTable;
     }
 
 }
