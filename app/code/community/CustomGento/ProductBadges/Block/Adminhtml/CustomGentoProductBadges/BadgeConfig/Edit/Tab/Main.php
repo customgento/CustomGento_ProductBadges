@@ -137,6 +137,13 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'options'   => Mage::getModel('customgento_productbadges/config_renderContainer')->getRenderContainersForAdminForms()
         ));
 
+        $visualisationFieldset->addField('badge_text', 'text', array(
+            'label'     => Mage::helper('customgento_productbadges')->__('Badge Text'),
+            'title'     => Mage::helper('customgento_productbadges')->__('Badge Text'),
+            'name'      => 'badge_text',
+            'required'  => false,
+        ));
+
         $form->setValues($model->getData());
 
         $this->setForm($form);

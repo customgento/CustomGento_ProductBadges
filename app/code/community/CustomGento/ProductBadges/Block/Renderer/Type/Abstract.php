@@ -26,7 +26,7 @@ class CustomGento_ProductBadges_Block_Renderer_Type_Abstract
      */
     protected function _getContent($badgeInternalId, $productId)
     {
-        return $badgeInternalId;
+        return Mage::getSingleton('customgento_productbadges/config_badgeText')->getBadgeText($badgeInternalId);
 
         $badgeSourceAttributeCode = $this->_badgeConfigHelper->getBadgeSourceAttributeCode($badgeInternalId);
 
