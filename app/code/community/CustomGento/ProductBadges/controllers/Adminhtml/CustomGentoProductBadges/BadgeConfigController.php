@@ -99,8 +99,6 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
                     $data['conditions'] = $data['rule']['conditions'];
                 }
 
-                Mage::log($data);
-
                 unset($data['rule']);
                 $model->loadPost($data);
 

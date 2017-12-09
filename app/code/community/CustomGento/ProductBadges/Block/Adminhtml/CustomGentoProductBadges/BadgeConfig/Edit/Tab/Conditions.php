@@ -59,9 +59,6 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'legend'=>Mage::helper('customgento_productbadges')->__('Apply the badge only if the following conditions are met (leave blank for all products)')
         ));
 
-        Mage::log(get_class($fieldset));
-        Mage::log($fieldset->getHtmlId());
-
         $renderer = Mage::getBlockSingleton('adminhtml/widget_form_renderer_fieldset')
             ->setTemplate('promo/fieldset.phtml')
             ->setNewChildUrl($this->getUrl('*/*/newConditionHtml/form/' . $fieldset->getHtmlId()));
