@@ -24,10 +24,11 @@ class CustomGento_ProductBadges_Model_Indexer_ProductBadgesScanner
         $this->_chunks = $this->_getProductIdChunks($this->_chunkSize);
         $this->_chunksCount = count($this->_chunks);
 
-        $this->_badgeConfigsCollection = Mage::getModel('customgento_productbadges/badgeConfig')
-            ->getCollection()
-            ->addFieldToFilter('is_active', 1)
-            ->filterByStoreId($storeId);
+        /** @var CustomGento_ProductBadges_Model_Resource_BadgeConfig_Collection $badgeConfigsCollection */
+        $badgeConfigsCollection = Mage::getModel('customgento_productbadges/badgeConfig')->getCollection();
+
+        $this->_badgeConfigsCollection = $badgeConfigsCollection
+            ->addFiltersNeededForIndexer();
     }
 
     public function fetchBadges()

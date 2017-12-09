@@ -12,7 +12,8 @@ abstract class CustomGento_ProductBadges_Model_Condition_Transformer_Abstract
      */
     public function isScalarOperator($operator)
     {
-        return !in_array($operator, ['!{}', '{}', '()', '!()']);
+        /** @todo: Check all operators if we didn't miss any. */
+        return !in_array($operator, ['!{}', '{}', '()', '!()', '[]']);
     }
 
     /**
@@ -24,6 +25,7 @@ abstract class CustomGento_ProductBadges_Model_Condition_Transformer_Abstract
      */
     public function getOperatorPrefix($operator)
     {
+        /** @todo: Check all operators if we didn't miss any. */
         return in_array($operator, ['!=', '!{}', '!()']) ? 'NOT' : '';
     }
 
