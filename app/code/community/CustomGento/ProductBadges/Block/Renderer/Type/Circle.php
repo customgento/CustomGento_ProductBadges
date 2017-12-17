@@ -11,12 +11,17 @@ class CustomGento_ProductBadges_Block_Renderer_Type_Circle
      */
     public function getBadgeHtml($badgeInternalId, $productId)
     {
-        $badgeContent = $this->_getContent($badgeInternalId, $productId);
-        if (empty($badgeContent)) {
+        $badgeConfig = $this->_badgeConfigHelper->getBadgeConfig($badgeInternalId);
+
+        if ($badgeConfig === false) {
             return '';
         }
 
-        return '<span class="product-badge product-badge--circle product-badge--' . $badgeInternalId . '"><span>' . $badgeContent . '</span></span>';
+        $badgeText = $badgeConfig->getBadgeText();
+
+        $badgeText = $this->escapeHtml($badgeText);
+
+        return '<span class="product-badge product-badge--circle product-badge--' . $badgeInternalId . '"><span>' . $badgeText . '</span></span>';
     }
 
 }

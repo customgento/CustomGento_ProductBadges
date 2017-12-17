@@ -1,5 +1,5 @@
 <?php
-class CustomGento_ProductBadges_Block_Renderer_Type_Rectangle
+class CustomGento_ProductBadges_Block_Renderer_Type_Image
     extends CustomGento_ProductBadges_Block_Renderer_Type_Abstract
         implements CustomGento_ProductBadges_Block_Renderer_Type_Interface
 {
@@ -17,11 +17,11 @@ class CustomGento_ProductBadges_Block_Renderer_Type_Rectangle
             return '';
         }
 
-        $badgeText = $badgeConfig->getBadgeText();
+        $imageUrl = Mage::getBaseUrl('media') . $badgeConfig->getBadgeImage();
 
-        $badgeText = $this->escapeHtml($badgeText);
+        $imageUrl = $this->escapeHtml($imageUrl);
 
-        return '<span class="product-badge product-badge--rectangle product-badge--' . $badgeInternalId . '">' . $badgeText . '</span>';
+        return '<span class="product-badge product-badge--image product-badge--' . $badgeInternalId . '"><img src=" ' . $imageUrl . '" /></span>';
     }
 
 }
