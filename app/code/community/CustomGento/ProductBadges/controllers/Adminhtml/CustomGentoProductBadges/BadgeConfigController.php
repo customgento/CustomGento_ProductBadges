@@ -100,6 +100,9 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
                 }
 
                 unset($data['rule']);
+
+                $data = $this->_handleBadgeImageUpload($model, $data);
+
                 $model->loadPost($data);
 
                 $session->setPageData($model->getData());
@@ -164,6 +167,62 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
             $html = '';
         }
         $this->getResponse()->setBody($html);
+    }
+
+    /**
+     * @param CustomGento_ProductBadges_Model_BadgeConfig $model
+     * @param array $postData
+     *
+     * @return array
+     */
+    protected function _handleBadgeImageUpload(CustomGento_ProductBadges_Model_BadgeConfig $model, $postData)
+    {
+        $badgeImageFieldName = 'badge_image';
+        $badgesUploadSubFolder = 'customgento_product_badges';
+
+        try {
+            if ((bool) $postData[$badgeImageFieldName]['delete'] == 1) {
+                // Delete old image
+                if ($model->getId()) {
+                    if ($model->getData($badgeImageFieldName)) {
+                        $io = new Varien_Io_File();
+                        $io->rm(Mage::getBaseDir('media') . DS . implode(DS, explode('/', $model->getData($badgeImageFieldName))));
+                    }
+                }
+
+                $postData[$badgeImageFieldName] = '';
+            } else {
+                unset($postData[$badgeImageFieldName]);
+                if (isset($_FILES)) {
+                    if ($_FILES[$badgeImageFieldName]['name']) {
+                        $path = Mage::getBaseDir('media') . DS . $badgesUploadSubFolder . DS;
+                        $uploader = new Varien_File_Uploader($badgeImageFieldName);
+                        $uploader->setAllowedExtensions(array('jpg', 'png', 'gif'));
+                        $uploader->setAllowRenameFiles(true);
+                        $uploader->setFilesDispersion(false);
+                        $destFile = $path . $_FILES[$badgeImageFieldName]['name'];
+                        $filename = $uploader->getNewFileName($destFile);
+                        $uploader->save($path, $filename);
+
+                        // Delete old image
+                        if ($model->getId()) {
+                            if ($model->getData($badgeImageFieldName)) {
+                                $io = new Varien_Io_File();
+                                $io->rm(Mage::getBaseDir('media') . DS . implode(DS, explode('/', $model->getData($badgeImageFieldName))));
+                            }
+                        }
+
+                        // Assigning the uploaded image relative path in order to save it in DB
+                        $postData[$badgeImageFieldName] =  $badgesUploadSubFolder . '/' . $filename;
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            unset($postData[$badgeImageFieldName]);
+            Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+        }
+
+        return $postData;
     }
 
     /**

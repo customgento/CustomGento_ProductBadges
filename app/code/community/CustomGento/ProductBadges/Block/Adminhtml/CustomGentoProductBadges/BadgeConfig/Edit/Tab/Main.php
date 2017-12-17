@@ -119,13 +119,28 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             array('legend' => Mage::helper('customgento_productbadges')->__('Visualisation Settings'))
         );
 
-        $visualisationFieldset->addField('render_type', 'select', array(
+        // We are having dependency between render_type and (badge_image and badge_text)
+        $renderType = $visualisationFieldset->addField('render_type', 'select', array(
             'label'     => Mage::helper('customgento_productbadges')->__('Render Type'),
             'title'     => Mage::helper('customgento_productbadges')->__('Render Type'),
             'name'      => 'render_type',
             'required'  => true,
             //@todo: probably move the options logic to a model
             'options'   => Mage::helper('customgento_productbadges/renderTypeConfig')->getRenderTypesForAdminForm()
+        ));
+
+        $badgeImage = $visualisationFieldset->addField('badge_image', 'image', array(
+            'label' => Mage::helper('customgento_productbadges')->__('Badge Image'),
+            'name' => 'badge_image',
+            'note' => '(*.jpg, *.png, *.gif)',
+            'required'  => true
+        ));
+
+        $badgeText = $visualisationFieldset->addField('badge_text', 'text', array(
+            'label'     => Mage::helper('customgento_productbadges')->__('Badge Text'),
+            'title'     => Mage::helper('customgento_productbadges')->__('Badge Text'),
+            'name'      => 'badge_text',
+            'required'  => true
         ));
 
         $visualisationFieldset->addField('render_container', 'select', array(
@@ -137,16 +152,25 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'options'   => Mage::getModel('customgento_productbadges/config_renderContainer')->getRenderContainersForAdminForms()
         ));
 
-        $visualisationFieldset->addField('badge_text', 'text', array(
-            'label'     => Mage::helper('customgento_productbadges')->__('Badge Text'),
-            'title'     => Mage::helper('customgento_productbadges')->__('Badge Text'),
-            'name'      => 'badge_text',
-            'required'  => false,
-        ));
-
         $form->setValues($model->getData());
 
         $this->setForm($form);
+
+        $this->setChild('form_after', $this->getLayout()->createBlock('adminhtml/widget_form_element_dependence')
+                ->addFieldMap($renderType->getHtmlId(), $renderType->getName())
+                ->addFieldMap($badgeImage->getHtmlId(), $badgeImage->getName())
+                ->addFieldMap($badgeText->getHtmlId(), $badgeText->getName())
+                ->addFieldDependence(
+                    $badgeText->getName(),
+                    $renderType->getName(),
+                    array('circle', 'rectangle')
+                )
+                ->addFieldDependence(
+                    $badgeImage->getName(),
+                    $renderType->getName(),
+                    'image'
+                )
+        );
 
         Mage::dispatchEvent('customgento_productbadges_badge_config_edit_tab_main_prepare_form', array('form' => $form));
 

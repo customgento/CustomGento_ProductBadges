@@ -2,7 +2,7 @@
 <config>
     <modules>
         <CustomGento_ProductBadges>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </CustomGento_ProductBadges>
     </modules>
     <global>
@@ -60,10 +60,10 @@
                     <block>customgento_productbadges/render_type_rectangle</block>
                     <admin_label>Rectangle</admin_label>
                 </rectangle>
-                <!--<image>-->
-                    <!--<block>customgento_productbadges/render_type_image</block>-->
-                    <!--<admin_label>Image</admin_label>-->
-                <!--</image>-->
+                <image>
+                    <block>customgento_productbadges/render_type_image</block>
+                    <admin_label>Image</admin_label>
+                </image>
             </renderer_types>
             <render_containers>
                 <top-left>
