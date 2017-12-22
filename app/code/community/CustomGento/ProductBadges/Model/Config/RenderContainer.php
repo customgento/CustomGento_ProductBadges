@@ -61,26 +61,6 @@ class CustomGento_ProductBadges_Model_Config_RenderContainer
     }
 
     /**
-     * Temporary method for testing admin forms
-     *
-     * @return array
-     */
-    public function getRenderContainersForAdminForms()
-    {
-        $data = array(
-            '' => '---'
-        );
-
-        /** @var CustomGento_ProductBadges_Model_Config_RenderContainer_Config $renderContainerConfigModel */
-        foreach ($this->_renderContainersConfigurations as $renderContainerConfigModel)
-        {
-            $data[$renderContainerConfigModel->getInternalCode()] = $renderContainerConfigModel->getInternalCode();
-        }
-
-        return $data;
-    }
-
-    /**
      * @param string $badgeCode
      * @return string
      */
