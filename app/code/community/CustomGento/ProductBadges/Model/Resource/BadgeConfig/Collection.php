@@ -17,11 +17,14 @@ class CustomGento_ProductBadges_Model_Resource_BadgeConfig_Collection
     public function addFiltersNeededForIndexer()
     {
         $now = Mage::getModel('core/date')->date('Y-m-d');
-
-        $this->getSelect()
-            ->where('from_date is null or from_date <= ?', $now)
-            ->where('to_date is null or to_date >= ?', $now);
-
+        $this->addFieldToFilter('from_date', array(
+            array('null' => true),
+            array('lteq' => $now)
+        ));
+        $this->addFieldToFilter('to_date', array(
+            array('null' => true),
+            array('gteq' => $now)
+        ));
         $this->addFieldToFilter('is_active', 1);
 
         return $this;
