@@ -73,6 +73,7 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'label' => Mage::helper('customgento_productbadges')->__('Internal Code'),
             'title' => Mage::helper('customgento_productbadges')->__('Internal Code'),
             'required' => true,
+            'class' => 'validate-xml-identifier',
         ));
 
         $generalFieldset->addField('description', 'textarea', array(
