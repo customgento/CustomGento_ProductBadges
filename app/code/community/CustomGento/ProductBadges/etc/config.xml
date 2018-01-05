@@ -18,9 +18,6 @@
                     <badge_config>
                         <table>customgento_productbadges_badges_config</table>
                     </badge_config>
-                    <badge_storage>
-                        <table>customgento_productbadges_badges_storage</table>
-                    </badge_storage>
                 </entities>
             </customgento_productbadges_resource>
         </models>
