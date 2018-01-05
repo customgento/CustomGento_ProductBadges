@@ -26,7 +26,7 @@ class CustomGento_ProductBadges_Helper_RenderTypeConfig
      */
     public function hasRenderTypes()
     {
-        return (false !== $this->_renderTypesConfigurations) ? true : false;
+        return (false !== $this->_renderTypesConfigurations);
     }
 
     /**

@@ -37,7 +37,7 @@ class CustomGento_ProductBadges_Helper_Config
      */
     public function hasRulesConfigurations()
     {
-        return (false !== $this->_rulesConfigurations) ? true : false;
+        return (false !== $this->_rulesConfigurations);
     }
 
     /**

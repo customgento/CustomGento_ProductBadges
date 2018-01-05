@@ -37,7 +37,7 @@ class CustomGento_ProductBadges_Model_Config_RenderContainer
      */
     public function hasRenderContainersConfigurations()
     {
-        return (false !== $this->_renderContainersConfigurations) ? true : false;
+        return (false !== $this->_renderContainersConfigurations);
     }
 
     /**

@@ -185,7 +185,7 @@ class CustomGento_ProductBadges_Model_Resource_Indexer
             $tableName     = $this->getFlatTableName($storeId);
             $isTableExists = $this->_getWriteAdapter()->isTableExists($tableName);
 
-            $this->_existsFlatTables[$storeId] = $isTableExists ? true : false;
+            $this->_existsFlatTables[$storeId] = $isTableExists;
         }
 
         return $this->_existsFlatTables[$storeId];
