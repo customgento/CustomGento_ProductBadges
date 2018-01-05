@@ -38,14 +38,4 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
         }
     }
 
-    /**
-     * Retrieve products JSON
-     *
-     * @return string
-     */
-    public function getProductsJson()
-    {
-        return '{}';
-    }
-
 }
