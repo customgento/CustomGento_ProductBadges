@@ -181,7 +181,8 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
         $badgesUploadSubFolder = 'customgento_product_badges';
 
         try {
-            if ((bool) $postData[$badgeImageFieldName]['delete'] == 1) {
+            if (!empty($postData[$badgeImageFieldName]['delete'])
+                && (bool)$postData[$badgeImageFieldName]['delete'] == 1) {
                 // Delete old image
                 if ($model->getId() && $model->getData($badgeImageFieldName)) {
                     $io = new Varien_Io_File();
@@ -191,7 +192,7 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
                 $postData[$badgeImageFieldName] = '';
             } else {
                 unset($postData[$badgeImageFieldName]);
-                if (isset($_FILES) && $_FILES[$badgeImageFieldName]['name']) {
+                if (isset($_FILES[$badgeImageFieldName]) && $_FILES[$badgeImageFieldName]['name']) {
                     $path = Mage::getBaseDir('media') . DS . $badgesUploadSubFolder . DS;
                     $uploader = new Varien_File_Uploader($badgeImageFieldName);
                     $uploader->setAllowedExtensions(array('jpg', 'png', 'gif'));
