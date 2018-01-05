@@ -3,9 +3,9 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
     extends Mage_Adminhtml_Block_Widget_Tabs
 {
 
-    public function __construct()
+    protected function _construct()
     {
-        parent::__construct();
+        parent::_construct();
         $this->setId('product_badges_badge_config_edit_tabs');
         $this->setDestElementId('edit_form');
         $this->setTitle(Mage::helper('customgento_productbadges')->__('Product Badge Config'));

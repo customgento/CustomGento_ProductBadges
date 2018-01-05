@@ -9,7 +9,7 @@ class CustomGento_ProductBadges_Block_Renderer_Container
     /** @var CustomGento_ProductBadges_Model_Config_RenderContainer $_containerConfigModel */
     private $_containerConfigModel;
 
-    public function __construct()
+    protected function _construct()
     {
         $this->_containerConfigModel = Mage::getModel('customgento_productbadges/config_renderContainer');
     }

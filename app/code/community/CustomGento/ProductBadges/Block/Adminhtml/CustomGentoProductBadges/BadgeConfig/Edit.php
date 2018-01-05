@@ -8,13 +8,13 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
      * Add standard buttons
      * Add "Save and Continue" button
      */
-    public function __construct()
+    protected function _construct()
     {
         $this->_objectId   = 'badge_config_id';
         $this->_blockGroup = 'customgento_productbadges';
         $this->_controller = 'adminhtml_customGentoProductBadges_badgeConfig';
 
-        parent::__construct();
+        parent::_construct();
 
         $this->_addButton('save_and_continue_edit', array(
             'class'   => 'save',

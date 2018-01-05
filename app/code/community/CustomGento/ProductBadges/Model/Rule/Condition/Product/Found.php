@@ -5,9 +5,9 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product_Found
     /**
      * Init the product found conditions and set the custom type
      */
-    public function __construct()
+    public function _construct()
     {
-        parent::__construct();
+        parent::_construct();
         $this->setType('customgento_productbadges/rule_condition_product_found');
     }
 

@@ -7,9 +7,9 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
      * Initialize grid
      * Set sort settings
      */
-    public function __construct()
+    protected function _construct()
     {
-        parent::__construct();
+        parent::_construct();
         $this->setId('product_badges_badge_config_grid');
         $this->setDefaultSort('sort_order');
         $this->setDefaultDir('ASC');
