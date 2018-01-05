@@ -5,8 +5,8 @@ class CustomGento_ProductBadges_Helper_RenderTypeConfig
 
     const CUSTOMGENTO_PRODUCTBADGES_RENDER_TYPE_CONFIG_XML_PATH = 'global/customgento_productbadges/renderer_types';
 
-    /** @var array|bool */
-    protected $_renderTypesConfigurations = false;
+    /** @var array */
+    protected $_renderTypesConfigurations = array();
 
     /** @var array|bool */
     protected $_renderTypesMapping = false;
@@ -17,7 +17,7 @@ class CustomGento_ProductBadges_Helper_RenderTypeConfig
             ->getNode(self::CUSTOMGENTO_PRODUCTBADGES_RENDER_TYPE_CONFIG_XML_PATH);
 
         if(!empty($config)) {
-            $this->_renderTypesConfigurations = $config->asCanonicalArray();
+            $this->_renderTypesConfigurations = (array) $config->asCanonicalArray();
         }
     }
 
@@ -26,7 +26,7 @@ class CustomGento_ProductBadges_Helper_RenderTypeConfig
      */
     public function hasRenderTypes()
     {
-        return (false !== $this->_renderTypesConfigurations);
+        return !empty($this->_renderTypesConfigurations);
     }
 
     /**
