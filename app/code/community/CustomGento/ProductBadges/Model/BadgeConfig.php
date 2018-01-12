@@ -84,9 +84,12 @@ class CustomGento_ProductBadges_Model_BadgeConfig
                 $select = $productCollection->getSelect();
                 $select
                     ->where('`e`.`entity_id` >= ?', $fromId)
-                    ->where('`e`.`entity_id` <= ?', $toId)
-                    ->where($this->transformConditionToSql($this->getConditions())
-                );
+                    ->where('`e`.`entity_id` <= ?', $toId);
+                // only apply the filter if conditions have been defined! otherwise, all products should be matched
+                $conditions = $this->getConditions();
+                if (!empty($conditions->getConditions())) {
+                    $select->where($this->transformConditionToSql($conditions));
+                }
 
                 $this->log('SQL: ' . $select);
                 $productIds = $productCollection->getAllIds();
