@@ -21,7 +21,7 @@ class CustomGento_ProductBadges_Block_Renderer_Type_Circle
 
         $badgeText = $this->escapeHtml($badgeText);
 
-        return '<span class="product-badge product-badge--circle product-badge--' . $badgeInternalId . '"><span>' . $badgeText . '</span></span>';
+        return '<span ' . $this->_customStyling($badgeConfig) . ' class="product-badge product-badge--circle product-badge--' . $badgeInternalId . '"><span>' . $badgeText . '</span></span>';
     }
 
 }

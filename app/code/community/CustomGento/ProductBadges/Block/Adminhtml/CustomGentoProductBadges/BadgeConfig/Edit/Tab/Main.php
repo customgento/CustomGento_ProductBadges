@@ -144,6 +144,20 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'required'  => true
         ));
 
+        $badgeTextColor = $visualisationFieldset->addField('badge_text_color', 'text', array(
+            'label'     => Mage::helper('customgento_productbadges')->__('Text Color'),
+            'title'     => Mage::helper('customgento_productbadges')->__('Text Color'),
+            'name'      => 'badge_text_color',
+            'class'     => 'color {required:false}'
+        ));
+
+        $badgeBackgroundColor = $visualisationFieldset->addField('badge_background_color', 'text', array(
+            'label'     => Mage::helper('customgento_productbadges')->__('Background Color'),
+            'title'     => Mage::helper('customgento_productbadges')->__('Background Color'),
+            'name'      => 'badge_background_color',
+            'class'     => 'color {required:false}'
+        ));
+
         // Prepare position chooser
         $positionChooser = Mage::app()
             ->getLayout()
@@ -166,8 +180,20 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
                 ->addFieldMap($renderType->getHtmlId(), $renderType->getName())
                 ->addFieldMap($badgeImage->getHtmlId(), $badgeImage->getName())
                 ->addFieldMap($badgeText->getHtmlId(), $badgeText->getName())
+                ->addFieldMap($badgeTextColor->getHtmlId(), $badgeTextColor->getName())
+                ->addFieldMap($badgeBackgroundColor->getHtmlId(), $badgeBackgroundColor->getName())
                 ->addFieldDependence(
                     $badgeText->getName(),
+                    $renderType->getName(),
+                    array('circle', 'rectangle')
+                )
+                ->addFieldDependence(
+                    $badgeTextColor->getName(),
+                    $renderType->getName(),
+                    array('circle', 'rectangle')
+                )
+                ->addFieldDependence(
+                    $badgeBackgroundColor->getName(),
                     $renderType->getName(),
                     array('circle', 'rectangle')
                 )

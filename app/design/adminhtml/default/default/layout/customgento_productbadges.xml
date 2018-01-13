@@ -9,6 +9,7 @@
         <reference name="head">
             <action method="setCanLoadExtJs"><flag>1</flag></action>
             <action method="setCanLoadRulesJs"><flag>1</flag></action>
+            <action method="addJs"><file>jscolor/jscolor.js</file></action>
         </reference>
         <reference name="left">
             <block type="customgento_productbadges/adminhtml_customGentoProductBadges_badgeConfig_edit_tabs" name="restriction_rule_edit_tabs">

@@ -21,7 +21,7 @@ class CustomGento_ProductBadges_Block_Renderer_Type_Rectangle
 
         $badgeText = $this->escapeHtml($badgeText);
 
-        return '<span class="product-badge product-badge--rectangle product-badge--' . $badgeInternalId . '">' . $badgeText . '</span>';
+        return '<span ' . $this->_customStyling($badgeConfig) . ' class="product-badge product-badge--rectangle product-badge--' . $badgeInternalId . '">' . $badgeText . '</span>';
     }
 
 }

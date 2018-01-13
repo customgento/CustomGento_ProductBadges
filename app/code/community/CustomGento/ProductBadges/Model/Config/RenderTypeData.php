@@ -13,7 +13,15 @@ class CustomGento_ProductBadges_Model_Config_RenderTypeData
     {
         $badgeConfigCollection = Mage::getModel('customgento_productbadges/badgeConfig')
             ->getCollection()
-            ->addFieldToSelect(array('badge_text', 'internal_code', 'badge_image'));
+            ->addFieldToSelect(
+                array(
+                    'badge_text',
+                    'internal_code',
+                    'badge_image',
+                    'badge_background_color',
+                    'badge_text_color'
+                )
+            );
 
         if (false === $this->_badgesMapping) {
             /** @var CustomGento_ProductBadges_Model_BadgeConfig $badgeConfig */
