@@ -10,6 +10,7 @@
             <action method="setCanLoadExtJs"><flag>1</flag></action>
             <action method="setCanLoadRulesJs"><flag>1</flag></action>
             <action method="addJs"><file>jscolor/jscolor.js</file></action>
+            <action method="addJs"><file>customgento/productbadges/main.js</file></action>
             <action method="addCss"><name>css/customgento/productbadges/main.css</name></action>
         </reference>
         <reference name="left">
