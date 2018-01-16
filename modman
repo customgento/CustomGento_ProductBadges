@@ -7,3 +7,4 @@ skin/frontend/base/default/css/customgento/productbadges/ skin/frontend/base/def
 skin/adminhtml/default/default/scss/customgento/productbadges/ skin/adminhtml/default/default/scss/customgento/productbadges/
 skin/adminhtml/default/default/css/customgento/productbadges/ skin/adminhtml/default/default/css/customgento/productbadges/
 js/customgento/productbadges/ js/customgento/productbadges/
+app/design/adminhtml/default/default/template/customgento/productbadges/ app/design/adminhtml/default/default/template/customgento/productbadges/

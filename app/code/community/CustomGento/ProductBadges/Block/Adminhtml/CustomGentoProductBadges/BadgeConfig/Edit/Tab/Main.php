@@ -158,10 +158,6 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'class'     => 'color {required:false}'
         ));
 
-        // Prepare position chooser
-        $positionChooser = Mage::app()
-            ->getLayout()
-            ->createBlock('customgento_productbadges/adminhtml_customGentoProductBadges_badgeConfig_edit_form_positionChooser');
 
         $renderContainer = $visualisationFieldset->addField('render_container', 'note', array(
             'label'     => Mage::helper('customgento_productbadges')->__('Render Container'),
@@ -170,7 +166,14 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'required'  => true
         ));
 
-        $positionChooser->prepareElementHtml($renderContainer, $model->getData('render_container'));
+        /** @var Mage_Adminhtml_Block_Template $positionChooser */
+        $positionChooser = $this->getLayout()
+            ->createBlock('adminhtml/template')
+            ->setData('name', $renderContainer->getName())
+            ->setData('value', $model->getData('render_container'))
+            ->setTemplate('customgento/productbadges/badgeconfig/edit/positionchooser.phtml');
+
+        $renderContainer->setData('after_element_html', $positionChooser->toHtml());
 
         $form->setValues($model->getData());
 
