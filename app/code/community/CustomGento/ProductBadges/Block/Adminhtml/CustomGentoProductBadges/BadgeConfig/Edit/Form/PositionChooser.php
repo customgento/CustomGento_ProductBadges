@@ -22,32 +22,7 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
         $hiddenInput = '<input type="hidden" name="' . $element->getName() . '" id="render_container_position_input" class="required-entry" value=' . $value . ' />';
 
         $scriptAndRender = '
-<style>
-.product-badges-chooser-line {
-    clear: both;
-}
 
-.product-badges-chooser-position-box {
-    float: left;
-    width: 40px;
-    height: 40px;
-    border: 1px #CC0000 solid;
-}
-
-.product-badges-chooser-position-box-allowed {
-    cursor: pointer;
-    background: #fff;
-}
-
-.product-badges-chooser-position-box-active {
-    background: #eb5e00 !important;
-}
-
-.product-badges-chooser-position-box-disabled {
-    background: #ccc;
-    cursor: not-allowed;
-}
-</style>
 <div class="product-badges-chooser-line">
     <div data-position="top-left" class="product-badges-chooser-position-box product-badges-chooser-position-box-allowed"></div>
     <div class="product-badges-chooser-position-box product-badges-chooser-position-box-disabled"></div>

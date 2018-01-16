@@ -2,5 +2,7 @@ app/code/community/CustomGento/ProductBadges app/code/community/CustomGento/Prod
 app/etc/modules/CustomGento_ProductBadges.xml app/etc/modules/CustomGento_ProductBadges.xml
 app/design/adminhtml/default/default/layout/customgento_productbadges.xml app/design/adminhtml/default/default/layout/customgento_productbadges.xml
 app/design/frontend/base/default/layout/customgento_productbadges.xml app/design/frontend/base/default/layout/customgento_productbadges.xml
-skin/frontend/base/default/scss/customgento/productbadges/main.scss skin/frontend/base/default/scss/customgento/productbadges/main.scss
-skin/frontend/base/default/css/customgento/productbadges/main.css skin/frontend/base/default/css/customgento/productbadges/main.css
+skin/frontend/base/default/scss/customgento/productbadges/ skin/frontend/base/default/scss/customgento/productbadges/
+skin/frontend/base/default/css/customgento/productbadges/ skin/frontend/base/default/css/customgento/productbadges/
+skin/adminhtml/default/default/scss/customgento/productbadges/ skin/adminhtml/default/default/scss/customgento/productbadges/
+skin/adminhtml/default/default/css/customgento/productbadges/ skin/adminhtml/default/default/css/customgento/productbadges/
