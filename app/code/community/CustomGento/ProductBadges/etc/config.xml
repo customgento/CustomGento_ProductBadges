@@ -102,4 +102,13 @@
             </updates>
         </layout>
     </adminhtml>
+    <frontend>
+        <layout>
+            <updates>
+                <customgento_productbadges>
+                    <file>customgento_productbadges.xml</file>
+                </customgento_productbadges>
+            </updates>
+        </layout>
+    </frontend>
 </config>

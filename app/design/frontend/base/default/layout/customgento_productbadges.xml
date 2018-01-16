@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <catalog_category_view>
+        <reference name="head">
+            <action method="addCss">
+                <name>css/customgento/productbadges/main.css</name>
+            </action>
+        </reference>
+    </catalog_category_view>
+</layout>
