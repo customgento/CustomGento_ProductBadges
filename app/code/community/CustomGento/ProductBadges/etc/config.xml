@@ -22,12 +22,12 @@
             </customgento_productbadges_resource>
         </models>
         <resources>
-            <customgento_productbadges>
+            <customgento_productbadges_setup>
                 <setup>
                     <module>CustomGento_ProductBadges</module>
                     <class>Mage_Core_Model_Resource_Setup</class>
                 </setup>
-            </customgento_productbadges>
+            </customgento_productbadges_setup>
         </resources>
         <helpers>
             <customgento_productbadges>
