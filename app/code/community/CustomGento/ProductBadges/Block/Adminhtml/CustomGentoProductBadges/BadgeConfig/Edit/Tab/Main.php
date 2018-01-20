@@ -116,6 +116,24 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'format'       => $dateFormatIso
         ));
 
+        if (!Mage::app()->isSingleStoreMode()) {
+            $generalFieldset->addField('store_ids', 'multiselect', array(
+                'label'     => Mage::helper('customgento_productbadges')->__('Visible In'),
+                'required'  => true,
+                'name'      => 'store_ids[]',
+                'values'    => Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm(),
+                'value'     => $model->getData('store_ids'),
+                'after_element_html' => Mage::getBlockSingleton('adminhtml/store_switcher')->getHintHtml()
+            ));
+        }
+        else {
+            $generalFieldset->addField('store_ids', 'hidden', array(
+                'name'      => 'store_ids[]',
+                'value'     => Mage::app()->getStore(true)->getId()
+            ));
+            $model->setData('store_ids', Mage::app()->getStore(true)->getId());
+        }
+
         $visualisationFieldset = $form->addFieldset('visualisation_fieldset',
             array('legend' => Mage::helper('customgento_productbadges')->__('Visualisation Settings'))
         );

@@ -102,6 +102,7 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
                 unset($data['rule']);
 
                 $data = $this->_handleBadgeImageUpload($model, $data);
+                $data = $this->_handleBadgeStoreAssignment($data);
 
                 $model->loadPost($data);
 
@@ -215,6 +216,25 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
         } catch (Exception $e) {
             unset($postData[$badgeImageFieldName]);
             Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+        }
+
+        return $postData;
+    }
+
+    /**
+     * @param $postData
+     *
+     * @return array
+     */
+    protected function _handleBadgeStoreAssignment($postData)
+    {
+        $stores = $postData['store_ids'];
+        if (!is_array($stores) || count($stores) == 0) {
+            Mage::throwException(Mage::helper('customgento_productbadges')->__('Please, select "Visible in Stores" for this badge configuration first.'));
+        }
+
+        if (is_array($stores)) {
+            $postData['store_ids'] = implode(',', $stores);
         }
 
         return $postData;
