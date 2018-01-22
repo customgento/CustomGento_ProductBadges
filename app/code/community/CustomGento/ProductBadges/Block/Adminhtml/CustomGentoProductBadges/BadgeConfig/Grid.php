@@ -103,7 +103,7 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
     /**
      * @param CustomGento_ProductBadges_Model_Resource_BadgeConfig_Collection $collection
      * @param Mage_Adminhtml_Block_Widget_Grid_Column $column
-     * 
+     *
      * @return $this
      */
     protected function _storeFilterCallBack(
