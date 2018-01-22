@@ -81,6 +81,13 @@
                 </bottom-right>
             </render_containers>
         </customgento_productbadges>
+        <index>
+            <indexer>
+                <customgento_productbadges>
+                    <model>customgento_productbadges/indexer_productBadgesScanner</model>
+                </customgento_productbadges>
+            </indexer>
+        </index>
     </global>
     <admin>
         <routers>

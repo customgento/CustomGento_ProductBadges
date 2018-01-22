@@ -1,5 +1,6 @@
 <?php
-class CustomGento_ProductBadges_Model_Indexer_ProductBadgesScanner
+
+class CustomGento_ProductBadges_Model_Indexer_ProductBadgesScanner extends Mage_Index_Model_Indexer_Abstract
 {
 
     protected $_chunkSize = 500;
@@ -29,6 +30,27 @@ class CustomGento_ProductBadges_Model_Indexer_ProductBadgesScanner
 
         $this->_badgeConfigsCollection = $badgeConfigsCollection
             ->addFiltersNeededForIndexer();
+        $this->_init('customgento_productbadges/indexer');
+    }
+
+    protected function _registerEvent(Mage_Index_Model_Event $event)
+    {
+        // TODO implement
+    }
+
+    public function getName()
+    {
+        return 'CustomGento Product Badges';
+    }
+
+    public function getDescription()
+    {
+        return 'Index product badges';
+    }
+
+    protected function _processEvent(Mage_Index_Model_Event $event)
+    {
+        // TODO implement
     }
 
     public function fetchBadges()

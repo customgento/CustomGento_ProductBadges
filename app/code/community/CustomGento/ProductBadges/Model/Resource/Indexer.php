@@ -47,6 +47,11 @@ class CustomGento_ProductBadges_Model_Resource_Indexer
             ->getTableName($this->_badgesIndexTableNamePrefix . $storeId);
     }
 
+    public function reindexAll()
+    {
+        $this->rebuild();
+    }
+
     /**
      * Rebuild Catalog Product Flat Data
      *
