@@ -83,6 +83,18 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             ),
         ));
 
+        if (!Mage::app()->isSingleStoreMode()) {
+            $this->addColumn('store_ids', array(
+                'header'    => Mage::helper('customgento_productbadges')->__('Store'),
+                'align'     => 'left',
+                'index'     => 'store_ids',
+                'type'      => 'options',
+                'sortable'  => false,
+                'options'   => Mage::getSingleton('customgento_productbadges/admin_badgeConfig_grid_filter_store')->getStoreOptionHash(),
+                'width'     => 250,
+            ));
+        }
+
         parent::_prepareColumns();
         return $this;
     }
