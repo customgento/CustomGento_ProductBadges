@@ -92,10 +92,33 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
                 'sortable'  => false,
                 'options'   => Mage::getSingleton('customgento_productbadges/admin_badgeConfig_grid_filter_store')->getStoreOptionHash(),
                 'width'     => 250,
+                'filter_condition_callback' => array($this, '_storeFilterCallBack')
             ));
         }
 
         parent::_prepareColumns();
+        return $this;
+    }
+
+    /**
+     * @param CustomGento_ProductBadges_Model_Resource_BadgeConfig_Collection $collection
+     * @param Mage_Adminhtml_Block_Widget_Grid_Column $column
+     * 
+     * @return $this
+     */
+    protected function _storeFilterCallBack(
+        CustomGento_ProductBadges_Model_Resource_BadgeConfig_Collection $collection,
+        Mage_Adminhtml_Block_Widget_Grid_Column $column
+    )
+    {
+        $value = $column->getFilter()->getValue();
+
+        if ($value == null) {
+            return $this;
+        }
+
+        $collection->getSelect()->where("store_ids REGEXP ?", "(^|,){$value}(,|$)");
+
         return $this;
     }
 
