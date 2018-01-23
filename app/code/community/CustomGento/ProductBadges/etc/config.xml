@@ -113,7 +113,7 @@
                 <observers>
                     <customgento_productbadges>
                         <class>customgento_productbadges/observer</class>
-                        <method>reindex</method>
+                        <method>customgentoProductbadgesBadgeConfigSaveAfter</method>
                     </customgento_productbadges>
                 </observers>
             </customgento_productbadges_badge_config_save_after>
