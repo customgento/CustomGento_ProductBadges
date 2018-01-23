@@ -1,9 +1,11 @@
 <?php
+
 class CustomGento_ProductBadges_Helper_Data
     extends Mage_Core_Helper_Abstract
 {
 
     CONST CUSTOMGENTO_PRODUCT_BADGES_ENABLED_XML_CONFIG_PATH = 'customgento_productbadges_global_config/general/enabled';
+    CONST CUSTOMGENTO_PRODUCT_BADGES_AUTOMATIC_REINDEX_XML_CONFIG_PATH = 'customgento_productbadges_global_config/general/automatic_reindex';
 
     /** @var array */
     private $_productBadgesData;
@@ -39,7 +41,8 @@ class CustomGento_ProductBadges_Helper_Data
             return '';
         }
 
-        $badges = isset($this->_productBadgesData[$product->getId()]) ? $this->_productBadgesData[$product->getId()] : array();
+        $badges = isset($this->_productBadgesData[$product->getId()]) ? $this->_productBadgesData[$product->getId()]
+            : array();
         $badges = $this->_filerBadgesData($badges);
 
         return $this->_createBadgesRendererBlock($badges, $product->getId())->toHtml();
@@ -57,7 +60,8 @@ class CustomGento_ProductBadges_Helper_Data
         }
 
         /** @var Epetworld_ProductBadges_Model_ProductBadge $producBadgeModel */
-        $productBadgeModel = Mage::getModel('epetworld_product_badges/productBadge')->load($product->getId(), 'product_id');
+        $productBadgeModel = Mage::getModel('epetworld_product_badges/productBadge')
+            ->load($product->getId(), 'product_id');
 
         if ($id = $productBadgeModel->getId()) {
             $badges = $productBadgeModel->getData();
@@ -74,6 +78,11 @@ class CustomGento_ProductBadges_Helper_Data
     public function isEnabled()
     {
         return Mage::getStoreConfigFlag(self::CUSTOMGENTO_PRODUCT_BADGES_ENABLED_XML_CONFIG_PATH);
+    }
+
+    public function shouldAutomaticallyReindexAfterBadgeSave()
+    {
+        return Mage::getStoreConfigFlag(self::CUSTOMGENTO_PRODUCT_BADGES_AUTOMATIC_REINDEX_XML_CONFIG_PATH);
     }
 
     /**

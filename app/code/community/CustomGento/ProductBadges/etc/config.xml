@@ -108,6 +108,16 @@
                 </customgento_productbadges>
             </updates>
         </layout>
+        <events>
+            <customgento_productbadges_badge_config_save_after>
+                <observers>
+                    <customgento_productbadges>
+                        <class>customgento_productbadges/observer</class>
+                        <method>reindex</method>
+                    </customgento_productbadges>
+                </observers>
+            </customgento_productbadges_badge_config_save_after>
+        </events>
     </adminhtml>
     <frontend>
         <layout>
@@ -118,4 +128,14 @@
             </updates>
         </layout>
     </frontend>
+    <default>
+        <catalog>
+            <customgento_productbadges_global_config>
+                <general>
+                    <enabled>1</enabled>
+                    <automatic_reindex>1</automatic_reindex>
+                </general>
+            </customgento_productbadges_global_config>
+        </catalog>
+    </default>
 </config>
