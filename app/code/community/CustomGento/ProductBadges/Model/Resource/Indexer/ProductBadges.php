@@ -58,11 +58,11 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
      * @param Mage_Core_Model_Store|int $store
      * @return Mage_Catalog_Model_Resource_Product_Flat_Indexer
      */
-    public function rebuild($store = null)
+    public function rebuild($store = null, $productIds = array())
     {
         if ($store === null) {
             foreach (Mage::app()->getStores() as $store) {
-                $this->rebuild($store->getId());
+                $this->rebuild($store->getId(), $productIds);
             }
             return $this;
         }
@@ -74,7 +74,7 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
         $this->prepareFlatTable($storeId, $productBadges);
 
         while ($productBadges->possibleToFetchMoreBadges()) {
-            $badgesData = $productBadges->fetchBadges();
+            $badgesData = $productBadges->fetchBadges($productIds);
 
             $preparedForInsertData = array();
 
