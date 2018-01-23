@@ -138,4 +138,16 @@
             </customgento_productbadges_global_config>
         </catalog>
     </default>
+    <crontab>
+        <jobs>
+            <customgento_productbadges>
+                <schedule>
+                    <cron_expr>42 0 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>customgento_productbadges/cron::reindexProductBadges</model>
+                </run>
+            </customgento_productbadges>
+        </jobs>
+    </crontab>
 </config>
