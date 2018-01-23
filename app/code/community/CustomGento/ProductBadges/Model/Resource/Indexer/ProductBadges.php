@@ -1,4 +1,5 @@
 <?php
+
 class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
     extends Mage_Index_Model_Resource_Abstract
 {
@@ -29,14 +30,14 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
      *
      * @var array
      */
-    protected $_preparedFlatTables   = array();
+    protected $_preparedFlatTables = array();
 
     /**
      * Exists flat tables cache
      *
      * @var array
      */
-    protected $_existsFlatTables     = array();
+    protected $_existsFlatTables = array();
 
     /**
      * @param int $storeId
@@ -98,7 +99,6 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
                 }
             }
 
-
             //print_r($preparedForInsertData);
 
             if (count($preparedForInsertData) > 0) {
@@ -112,7 +112,13 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
             //Delete badges that should not be presented anymore
             $deletedRows = $this->_deleteOutdatedBadges($storeId, $badgesData, $preparedForInsertData);
         }
-
+        if (!empty($productIds)) {
+            foreach ($productIds as $productId) {
+                Mage::getModel('core/cache')->clean(array('PRODUCT_BADGES_PRODUCT_' . $productId));
+            }
+        } else {
+            Mage::getModel('core/cache')->clean(array('PRODUCT_BADGES_PRODUCT'));
+        }
         return $this;
     }
 
@@ -154,25 +160,25 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
         $columns = array();
 
         $columns['product_id'] = array(
-            'type'      => Varien_Db_Ddl_Table::TYPE_INTEGER,
-            'length'    => null,
-            'unsigned'  => true,
-            'nullable'  => false,
-            'default'   => false,
-            'primary'   => true,
-            'comment'   => 'Product Id'
+            'type'     => Varien_Db_Ddl_Table::TYPE_INTEGER,
+            'length'   => null,
+            'unsigned' => true,
+            'nullable' => false,
+            'default'  => false,
+            'primary'  => true,
+            'comment'  => 'Product Id'
         );
 
         $badgeCodes = $productBadges->getProductBadgeCodes();
 
         foreach ($badgeCodes as $code) {
             $columns[$code] = array(
-                'type'      => Varien_Db_Ddl_Table::TYPE_SMALLINT,
-                'length'    => null,
-                'unsigned'  => true,
-                'nullable'  => false,
-                'default'   => false,
-                'comment'   => $code
+                'type'     => Varien_Db_Ddl_Table::TYPE_SMALLINT,
+                'length'   => null,
+                'unsigned' => true,
+                'nullable' => false,
+                'default'  => false,
+                'comment'  => $code
             );
         }
 
@@ -200,9 +206,9 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
     /**
      * Retrieve UNIQUE HASH for a Table foreign key
      *
-     * @param string $priTableName  the target table name
+     * @param string $priTableName the target table name
      * @param string $priColumnName the target table column name
-     * @param string $refTableName  the reference table name
+     * @param string $refTableName the reference table name
      * @param string $refColumnName the reference table column name
      * @return string
      */
@@ -268,9 +274,9 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
             $adapter->resetDdlCache($tableName);
 
             // Sort columns into added/altered/dropped lists
-            $describe   = $adapter->describeTable($tableName);
-            $addColumns     = array_diff_key($columns, $describe);
-            $dropColumns    = array_diff_key($describe, $columns);
+            $describe    = $adapter->describeTable($tableName);
+            $addColumns  = array_diff_key($columns, $describe);
+            $dropColumns = array_diff_key($describe, $columns);
 
             // Drop columns
             foreach (array_keys($dropColumns) as $columnName) {

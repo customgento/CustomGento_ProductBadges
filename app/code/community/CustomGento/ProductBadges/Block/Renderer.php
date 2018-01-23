@@ -19,6 +19,7 @@ class CustomGento_ProductBadges_Block_Renderer
     {
         $this->_containerRendererBlock = Mage::getBlockSingleton('customgento_productbadges/renderer_container');
         $this->_badgeConfigHelper = Mage::helper('customgento_productbadges/renderTypeConfig');
+        $this->addCacheTag(array('PRODUCT_BADGES_PRODUCT'));
     }
 
     /**
@@ -29,6 +30,7 @@ class CustomGento_ProductBadges_Block_Renderer
     {
         $this->_badges = $badges;
         $this->_productId = $productId;
+        $this->addCacheTag(array('PRODUCT_BADGES_PRODUCT_' . $productId));
     }
 
     /**
