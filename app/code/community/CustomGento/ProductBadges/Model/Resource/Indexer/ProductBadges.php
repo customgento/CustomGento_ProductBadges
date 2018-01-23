@@ -10,6 +10,7 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
     protected function _construct()
     {
         $this->_resources = Mage::getSingleton('core/resource');
+        $this->_init('customgento_productbadges/badge_config', 'badge_config_id');
     }
 
     /**

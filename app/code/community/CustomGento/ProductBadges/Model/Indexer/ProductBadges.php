@@ -6,7 +6,8 @@ class CustomGento_ProductBadges_Model_Indexer_ProductBadges extends Mage_Index_M
     protected $_matchedEntities
         = array(
             Mage_Catalog_Model_Product::ENTITY => array(
-                Mage_Index_Model_Event::TYPE_SAVE
+                Mage_Index_Model_Event::TYPE_SAVE,
+                Mage_Index_Model_Event::TYPE_MASS_ACTION
             ),
         );
 
@@ -59,14 +60,19 @@ class CustomGento_ProductBadges_Model_Indexer_ProductBadges extends Mage_Index_M
         if ($event->getEntity() == Mage_Catalog_Model_Product::ENTITY
             && $event->getType() == Mage_Index_Model_Event::TYPE_SAVE) {
             $productId = $event->getDataObject()->getId();
+            $this->getResource()->rebuild(null, array($productId));
+        } else if ($event->getEntity() == Mage_Catalog_Model_Product::ENTITY
+            && $event->getType() == Mage_Index_Model_Event::TYPE_MASS_ACTION) {
+            $productIds = $event->getDataObject()->getProductIds();
+            $this->getResource()->rebuild(null, $productIds);
         }
-        $this->getResource()->rebuild(null, array($productId));
     }
 
     public function fetchBadges($productIds = array())
     {
         $productMappingBadges = array();
         if (!empty($productIds)) {
+            sort($productIds);
             $productIdRanges['from']   = $productIds[0];
             $productIdRanges['to']     = $productIds[count($productIds) - 1];
             $this->_currentChunkNumber = $this->_chunksCount;
