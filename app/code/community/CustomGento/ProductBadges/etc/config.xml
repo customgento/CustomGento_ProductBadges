@@ -110,6 +110,7 @@
         </layout>
         <events>
             <!-- we use save_commit_after so that the transaction is finished before we start to reindex -->
+            <!-- otherwise, we are not able to create the index table if it has not been created yet -->
             <customgento_productbadges_badge_config_save_commit_after>
                 <observers>
                     <customgento_productbadges>
