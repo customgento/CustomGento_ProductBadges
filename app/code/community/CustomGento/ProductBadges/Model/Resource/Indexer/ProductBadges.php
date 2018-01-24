@@ -1,5 +1,6 @@
 <?php
-class CustomGento_ProductBadges_Model_Resource_Indexer
+
+class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
     extends Mage_Index_Model_Resource_Abstract
 {
 
@@ -10,15 +11,16 @@ class CustomGento_ProductBadges_Model_Resource_Indexer
     protected function _construct()
     {
         $this->_resources = Mage::getSingleton('core/resource');
+        $this->_init('customgento_productbadges/badge_config', 'badge_config_id');
     }
 
     /**
      * @param int $storeId
-     * @return CustomGento_ProductBadges_Model_Indexer_ProductBadgesScanner
+     * @return CustomGento_ProductBadges_Model_Indexer_ProductBadges
      */
-    protected function _spawnProductBadgesScanner($storeId)
+    protected function _spawnProductBadges($storeId)
     {
-        return Mage::getModel('customgento_productbadges/indexer_productBadgesScanner', $storeId);
+        return Mage::getModel('customgento_productbadges/indexer_productBadges', $storeId);
     }
 
     private $_badgesIndexTableNamePrefix = 'customgento_productbadges_badges_index_';
@@ -28,14 +30,14 @@ class CustomGento_ProductBadges_Model_Resource_Indexer
      *
      * @var array
      */
-    protected $_preparedFlatTables   = array();
+    protected $_preparedFlatTables = array();
 
     /**
      * Exists flat tables cache
      *
      * @var array
      */
-    protected $_existsFlatTables     = array();
+    protected $_existsFlatTables = array();
 
     /**
      * @param int $storeId
@@ -47,29 +49,34 @@ class CustomGento_ProductBadges_Model_Resource_Indexer
             ->getTableName($this->_badgesIndexTableNamePrefix . $storeId);
     }
 
+    public function reindexAll()
+    {
+        $this->rebuild();
+    }
+
     /**
      * Rebuild Catalog Product Flat Data
      *
      * @param Mage_Core_Model_Store|int $store
      * @return Mage_Catalog_Model_Resource_Product_Flat_Indexer
      */
-    public function rebuild($store = null)
+    public function rebuild($store = null, $productIds = array())
     {
         if ($store === null) {
             foreach (Mage::app()->getStores() as $store) {
-                $this->rebuild($store->getId());
+                $this->rebuild($store->getId(), $productIds);
             }
             return $this;
         }
 
         $storeId = (int)Mage::app()->getStore($store)->getId();
 
-        $productBadgesScanner = $this->_spawnProductBadgesScanner($storeId);
+        $productBadges = $this->_spawnProductBadges($storeId);
 
-        $this->prepareFlatTable($storeId, $productBadgesScanner);
+        $this->prepareFlatTable($storeId, $productBadges);
 
-        while ($productBadgesScanner->possibleToFetchMoreBadges()) {
-            $badgesData = $productBadgesScanner->fetchBadges();
+        while ($productBadges->possibleToFetchMoreBadges()) {
+            $badgesData = $productBadges->fetchBadges($productIds);
 
             $preparedForInsertData = array();
 
@@ -81,7 +88,7 @@ class CustomGento_ProductBadges_Model_Resource_Indexer
                         $preparedForInsertData[$productId] = array();
 
                         $preparedForInsertData[$productId] = array_fill_keys(
-                            $productBadgesScanner->getProductBadgeCodes(),
+                            $productBadges->getProductBadgeCodes(),
                             0
                         );
 
@@ -91,7 +98,6 @@ class CustomGento_ProductBadges_Model_Resource_Indexer
                     $preparedForInsertData[$productId][$badgeCode] = 1;
                 }
             }
-
 
             //print_r($preparedForInsertData);
 
@@ -106,7 +112,13 @@ class CustomGento_ProductBadges_Model_Resource_Indexer
             //Delete badges that should not be presented anymore
             $deletedRows = $this->_deleteOutdatedBadges($storeId, $badgesData, $preparedForInsertData);
         }
-
+        if (!empty($productIds)) {
+            foreach ($productIds as $productId) {
+                Mage::getModel('core/cache')->clean(array('PRODUCT_BADGES_PRODUCT_' . $productId));
+            }
+        } else {
+            Mage::getModel('core/cache')->clean(array('PRODUCT_BADGES_PRODUCT'));
+        }
         return $this;
     }
 
@@ -139,34 +151,34 @@ class CustomGento_ProductBadges_Model_Resource_Indexer
     /**
      * Retrieve catalog product flat columns array in DDL format
      *
-     * @param CustomGento_ProductBadges_Model_Indexer_ProductBadgesScanner $productBadgesScanner
+     * @param CustomGento_ProductBadges_Model_Indexer_ProductBadges $productBadges
      *
      * @return array
      */
-    protected function getFlatColumns(CustomGento_ProductBadges_Model_Indexer_ProductBadgesScanner $productBadgesScanner)
+    protected function getFlatColumns(CustomGento_ProductBadges_Model_Indexer_ProductBadges $productBadges)
     {
         $columns = array();
 
         $columns['product_id'] = array(
-            'type'      => Varien_Db_Ddl_Table::TYPE_INTEGER,
-            'length'    => null,
-            'unsigned'  => true,
-            'nullable'  => false,
-            'default'   => false,
-            'primary'   => true,
-            'comment'   => 'Product Id'
+            'type'     => Varien_Db_Ddl_Table::TYPE_INTEGER,
+            'length'   => null,
+            'unsigned' => true,
+            'nullable' => false,
+            'default'  => false,
+            'primary'  => true,
+            'comment'  => 'Product Id'
         );
 
-        $badgeCodes = $productBadgesScanner->getProductBadgeCodes();
+        $badgeCodes = $productBadges->getProductBadgeCodes();
 
         foreach ($badgeCodes as $code) {
             $columns[$code] = array(
-                'type'      => Varien_Db_Ddl_Table::TYPE_SMALLINT,
-                'length'    => null,
-                'unsigned'  => true,
-                'nullable'  => false,
-                'default'   => false,
-                'comment'   => $code
+                'type'     => Varien_Db_Ddl_Table::TYPE_SMALLINT,
+                'length'   => null,
+                'unsigned' => true,
+                'nullable' => false,
+                'default'  => false,
+                'comment'  => $code
             );
         }
 
@@ -194,9 +206,9 @@ class CustomGento_ProductBadges_Model_Resource_Indexer
     /**
      * Retrieve UNIQUE HASH for a Table foreign key
      *
-     * @param string $priTableName  the target table name
+     * @param string $priTableName the target table name
      * @param string $priColumnName the target table column name
-     * @param string $refTableName  the reference table name
+     * @param string $refTableName the reference table name
      * @param string $refColumnName the reference table column name
      * @return string
      */
@@ -210,12 +222,12 @@ class CustomGento_ProductBadges_Model_Resource_Indexer
      * Prepare flat table for store
      *
      * @param int $storeId
-     * @param CustomGento_ProductBadges_Model_Indexer_ProductBadgesScanner $productBadgesScanner
+     * @param CustomGento_ProductBadges_Model_Indexer_ProductBadges $productBadges
      *
      * @throws Mage_Core_Exception
      * @return Mage_Catalog_Model_Resource_Product_Flat_Indexer
      */
-    public function prepareFlatTable($storeId, CustomGento_ProductBadges_Model_Indexer_ProductBadgesScanner $productBadgesScanner)
+    public function prepareFlatTable($storeId, CustomGento_ProductBadges_Model_Indexer_ProductBadges $productBadges)
     {
         if (isset($this->_preparedFlatTables[$storeId])) {
             return $this;
@@ -224,7 +236,7 @@ class CustomGento_ProductBadges_Model_Resource_Indexer
         $tableName = $this->getFlatTableName($storeId);
 
         // Extract columns we need to have in flat table
-        $columns = $this->getFlatColumns($productBadgesScanner);
+        $columns = $this->getFlatColumns($productBadges);
 
         // Foreign keys
         $foreignEntityKey = $this->getFkName($tableName, 'product_id', 'catalog/product', 'entity_id');
@@ -262,9 +274,9 @@ class CustomGento_ProductBadges_Model_Resource_Indexer
             $adapter->resetDdlCache($tableName);
 
             // Sort columns into added/altered/dropped lists
-            $describe   = $adapter->describeTable($tableName);
-            $addColumns     = array_diff_key($columns, $describe);
-            $dropColumns    = array_diff_key($describe, $columns);
+            $describe    = $adapter->describeTable($tableName);
+            $addColumns  = array_diff_key($columns, $describe);
+            $dropColumns = array_diff_key($describe, $columns);
 
             // Drop columns
             foreach (array_keys($dropColumns) as $columnName) {

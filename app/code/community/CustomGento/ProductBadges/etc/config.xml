@@ -81,6 +81,13 @@
                 </bottom-right>
             </render_containers>
         </customgento_productbadges>
+        <index>
+            <indexer>
+                <customgento_productbadges>
+                    <model>customgento_productbadges/indexer_productBadges</model>
+                </customgento_productbadges>
+            </indexer>
+        </index>
     </global>
     <admin>
         <routers>
@@ -101,6 +108,16 @@
                 </customgento_productbadges>
             </updates>
         </layout>
+        <events>
+            <customgento_productbadges_badge_config_save_after>
+                <observers>
+                    <customgento_productbadges>
+                        <class>customgento_productbadges/observer</class>
+                        <method>customgentoProductbadgesBadgeConfigSaveAfter</method>
+                    </customgento_productbadges>
+                </observers>
+            </customgento_productbadges_badge_config_save_after>
+        </events>
     </adminhtml>
     <frontend>
         <layout>
@@ -111,4 +128,26 @@
             </updates>
         </layout>
     </frontend>
+    <default>
+        <catalog>
+            <customgento_productbadges_global_config>
+                <general>
+                    <enabled>1</enabled>
+                    <automatic_reindex>1</automatic_reindex>
+                </general>
+            </customgento_productbadges_global_config>
+        </catalog>
+    </default>
+    <crontab>
+        <jobs>
+            <customgento_productbadges>
+                <schedule>
+                    <cron_expr>42 0 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>customgento_productbadges/cron::reindexProductBadges</model>
+                </run>
+            </customgento_productbadges>
+        </jobs>
+    </crontab>
 </config>
