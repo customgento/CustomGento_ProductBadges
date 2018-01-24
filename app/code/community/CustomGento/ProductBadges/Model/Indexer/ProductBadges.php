@@ -75,6 +75,10 @@ class CustomGento_ProductBadges_Model_Indexer_ProductBadges extends Mage_Index_M
             sort($productIds);
             $productIdRanges['from']   = $productIds[0];
             $productIdRanges['to']     = $productIds[count($productIds) - 1];
+
+            //As we just want to update the given product ids we do not want to split the product collection into chunks
+            //anymore. Normally this function is called for every chunk,so we set the current chunk number to the max value
+            //to avoid more function calls.
             $this->_currentChunkNumber = $this->_chunksCount;
         } else {
             $productIdRanges = $this->_getProductIdRanges($this->_currentChunkNumber);
