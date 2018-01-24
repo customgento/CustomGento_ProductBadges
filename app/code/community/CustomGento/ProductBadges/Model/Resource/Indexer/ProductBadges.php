@@ -80,6 +80,10 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
 
             $preparedForInsertData = array();
 
+            if(! isset($badgesData['found_badges']))
+            {
+                continue;
+            }
             //$preparedForInsertData = array_fill_keys($preparedForInsertData, array_keys($badgesData));
             foreach ($badgesData['found_badges'] as $badgeCode => $foundProductIds) {
                 foreach ($foundProductIds as $productId) {

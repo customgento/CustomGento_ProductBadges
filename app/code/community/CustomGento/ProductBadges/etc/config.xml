@@ -109,14 +109,15 @@
             </updates>
         </layout>
         <events>
-            <customgento_productbadges_badge_config_save_after>
+            <!-- we use save_commit_after so that the transaction is finished before we start to reindex -->
+            <customgento_productbadges_badge_config_save_commit_after>
                 <observers>
                     <customgento_productbadges>
                         <class>customgento_productbadges/observer</class>
-                        <method>customgentoProductbadgesBadgeConfigSaveAfter</method>
+                        <method>customgentoProductbadgesBadgeConfigSaveCommitAfter</method>
                     </customgento_productbadges>
                 </observers>
-            </customgento_productbadges_badge_config_save_after>
+            </customgento_productbadges_badge_config_save_commit_after>
         </events>
     </adminhtml>
     <frontend>
