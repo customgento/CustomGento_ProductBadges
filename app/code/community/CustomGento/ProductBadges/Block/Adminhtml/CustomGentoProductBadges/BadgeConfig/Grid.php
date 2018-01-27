@@ -89,6 +89,7 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
                 'align'     => 'left',
                 'index'     => 'store_ids',
                 'type'      => 'options',
+                'renderer'  => 'customgento_productbadges/adminhtml_customGentoProductBadges_badgeConfig_grid_renderer_store',
                 'sortable'  => false,
                 'options'   => Mage::getSingleton('customgento_productbadges/admin_badgeConfig_grid_filter_store')->getStoreOptionHash(),
                 'width'     => 250,
