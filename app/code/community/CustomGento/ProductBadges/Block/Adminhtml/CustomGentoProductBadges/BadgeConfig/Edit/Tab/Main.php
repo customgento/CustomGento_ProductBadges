@@ -117,7 +117,13 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
         ));
 
         if (!Mage::app()->isSingleStoreMode()) {
-            $generalFieldset->addField('store_ids', 'multiselect', array(
+            // Adding new form element type
+            $generalFieldset->addType(
+                'badge_store_chooser',
+                'CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeConfig_Edit_Tab_Main_StoreChooser'
+            );
+
+            $generalFieldset->addField('store_ids', 'badge_store_chooser', array(
                 'label'     => Mage::helper('customgento_productbadges')->__('Visible In'),
                 'required'  => true,
                 'name'      => 'store_ids[]',

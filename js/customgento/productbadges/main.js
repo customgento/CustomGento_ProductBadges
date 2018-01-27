@@ -32,4 +32,30 @@ document.observe('dom:loaded', function(){
             )
         }
     }(document));
+
+    (function (d) {
+        var badgeStoreEnablers = d.getElementsByClassName("badges_store_enabler");
+
+        for (var i = 0; i < badgeStoreEnablers.length; i++) {
+
+            badgeStoreEnablers[i].addEventListener(
+                "click",
+                function () {
+                    var controlledChooserId = this.getAttribute("data-controlled-chooser");
+                    var controlledDefaultId = this.getAttribute("data-controlled-default");
+
+                    var checked = this.checked;
+
+                    if (checked) {
+                        d.getElementById(controlledChooserId).disabled = true;
+                        d.getElementById(controlledDefaultId).disabled = false;
+                    } else {
+                        d.getElementById(controlledChooserId).disabled = false;
+                        d.getElementById(controlledDefaultId).disabled = true;
+                    }
+                },
+                false
+            )
+        }
+    }(document));
 });
