@@ -89,11 +89,19 @@ class CustomGento_ProductBadges_Block_Renderer
      */
     protected function _toHtml()
     {
+        $this->_addCacheTags();
+
         if (!empty($this->_badges) && !empty($this->_productId)) {
             return $this->generateBadgesHtml($this->_badges, $this->_productId);
         }
 
         return '';
+    }
+
+    protected function _addCacheTags()
+    {
+        $this->addCacheTag(array('PRODUCT_BADGES_PRODUCT'));
+        $this->addCacheTag(array('PRODUCT_BADGES_PRODUCT_' . $this->_productId));
     }
 
 }
