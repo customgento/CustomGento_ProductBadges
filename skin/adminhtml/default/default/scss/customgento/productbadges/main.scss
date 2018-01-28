@@ -22,3 +22,29 @@
     background: #ccc;
     cursor: not-allowed;
 }
+
+/* Product Badge Preview */
+.product-badge--rectangle {
+  padding: 4px;
+  line-height: 1;
+  background: #EE7042;
+  color: #fff;
+  display: inline-block;
+}
+
+.product-badge--circle {
+  border-radius: 25px;
+  height: 50px;
+  width: 50px;
+  line-height: 50px;
+  text-align: center;
+  background: #B21816;
+  color: #fff;
+  display: inline-block;
+
+  span {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+  }
+}

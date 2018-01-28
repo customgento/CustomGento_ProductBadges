@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <layout>
     <adminhtml_customgentoproductbadges_badgeconfig_index>
+        <reference name="head">
+            <action method="addCss"><name>css/customgento/productbadges/main.css</name></action>
+        </reference>
         <reference name="content">
             <block type="customgento_productbadges/adminhtml_customGentoProductBadges_badgeConfig" name="badge_config" />
         </reference>

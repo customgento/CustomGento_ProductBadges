@@ -42,7 +42,7 @@ class CustomGento_ProductBadges_Block_Renderer_Container
 
             /** @var $badge CustomGento_ProductBadges_Block_Renderer_Type_Interface */
             foreach ($badges as $badgeInternalId => $badge) {
-                $badgesHtml .= $badge->getBadgeHtml($badgeInternalId, $productId);
+                $badgesHtml .= $badge->getBadgeHtml($badgeInternalId);
             }
 
             $containerHtml = str_replace('###BADGES_HTML_PLACEHOLDER###', $badgesHtml, $containerHtml);

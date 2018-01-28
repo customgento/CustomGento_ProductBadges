@@ -6,10 +6,9 @@ class CustomGento_ProductBadges_Block_Renderer_Type_Circle
 
     /**
      * @param string $badgeInternalId
-     * @param int $productId
      * @return string
      */
-    public function getBadgeHtml($badgeInternalId, $productId)
+    public function getBadgeHtml($badgeInternalId)
     {
         $badgeConfig = $this->_badgeConfigHelper->getBadgeConfig($badgeInternalId);
 

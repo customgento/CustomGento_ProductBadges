@@ -53,6 +53,14 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'index'     => 'name',
         ));
 
+        $this->addColumn('preview', array(
+            'header'    => Mage::helper('customgento_productbadges')->__('Preview'),
+            'index'     => 'preview',
+            'sortable'  => false,
+            'filter'    => false,
+            'renderer'  => 'customgento_productbadges/adminhtml_customGentoProductBadges_badgeConfig_grid_column_preview'
+        ));
+
         $this->addColumn('from_date', array(
             'header'    => Mage::helper('customgento_productbadges')->__('Date Start'),
             'align'     => 'left',
