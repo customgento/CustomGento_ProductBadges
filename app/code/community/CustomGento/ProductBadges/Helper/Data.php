@@ -59,12 +59,13 @@ class CustomGento_ProductBadges_Helper_Data
             return '';
         }
 
-        /** @var Epetworld_ProductBadges_Model_ProductBadge $producBadgeModel */
-        $productBadgeModel = Mage::getModel('epetworld_product_badges/productBadge')
-            ->load($product->getId(), 'product_id');
+        /** @var CustomGento_ProductBadges_Model_ProductBadgeMatcher $productBadgeMatcher */
+        $productBadgeMatcher = Mage::getModel('customgento_productbadges/productBadgeMatcher');
 
-        if ($id = $productBadgeModel->getId()) {
-            $badges = $productBadgeModel->getData();
+        $singleProductBadges = $productBadgeMatcher->getDataWithProductIdAsKey(array($product->getId()));
+
+        if (!empty($singleProductBadges[$product->getId()])) {
+            $badges = $singleProductBadges[$product->getId()];
             $badges = $this->_filerBadgesData($badges);
             return $this->_createBadgesRendererBlock($badges, $product->getId())->toHtml();
         }
