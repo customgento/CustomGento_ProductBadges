@@ -7,4 +7,11 @@
             </action>
         </reference>
     </catalog_category_view>
+    <catalog_product_view>
+        <reference name="head">
+            <action method="addCss">
+                <name>css/customgento/productbadges/main.css</name>
+            </action>
+        </reference>
+    </catalog_product_view>
 </layout>

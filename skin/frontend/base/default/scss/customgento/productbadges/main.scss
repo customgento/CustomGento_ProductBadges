@@ -121,17 +121,6 @@
         font-size: 30px;
     }
 
-    @media (min-width: 770px) {
-        .product-badge-container--top-left {
-            top: -10%;
-        }
-
-        .product-badge-container--top-right {
-            top: -10%;
-            right: 15px;
-        }
-    }
-
     .product-badge__decorator-element {
         position: absolute;
         top: 0;
