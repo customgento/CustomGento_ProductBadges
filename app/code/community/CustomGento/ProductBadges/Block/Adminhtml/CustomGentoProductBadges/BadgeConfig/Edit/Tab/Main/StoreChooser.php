@@ -60,8 +60,7 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
                         $html .= $this->_optionToHtml($groupItem, $value);
                     }
                     $html .= '</optgroup>' . "\n";
-                }
-                else {
+                } else {
                     $html .= $this->_optionToHtml($option, $value);
                 }
             }

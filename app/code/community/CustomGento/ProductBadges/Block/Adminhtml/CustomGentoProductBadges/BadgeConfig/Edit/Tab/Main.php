@@ -130,8 +130,7 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
                 'value'     => $model->getData('store_ids'),
                 'after_element_html' => Mage::getBlockSingleton('adminhtml/store_switcher')->getHintHtml()
             ));
-        }
-        else {
+        } else {
             $generalFieldset->addField('store_ids', 'hidden', array(
                 'name'      => 'store_ids[]',
                 'value'     => Mage::app()->getStore(true)->getId()
