@@ -90,12 +90,6 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
         return false;
     }
 
-
-    public function getHtmlAttributes()
-    {
-        return array('title', 'class', 'style', 'onclick', 'onchange', 'disabled', 'size', 'tabindex');
-    }
-
     protected function _optionToHtml($option, $selected)
     {
         $html = '<option value="'.$this->_escape($option['value']).'"';
