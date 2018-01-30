@@ -117,7 +117,6 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
         ));
 
         if (!Mage::app()->isSingleStoreMode()) {
-            // Adding new form element type
             $generalFieldset->addType(
                 'badge_store_chooser',
                 'CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeConfig_Edit_Tab_Main_StoreChooser'
