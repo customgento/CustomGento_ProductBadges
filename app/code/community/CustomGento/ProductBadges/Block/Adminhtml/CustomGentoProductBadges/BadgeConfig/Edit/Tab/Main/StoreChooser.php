@@ -27,7 +27,7 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
         $checkedStoreChooserEnabler = '';
         $disabledStoreChooser = '';
         $disableAllStoreViews = 'disabled';
-        if ($this->shouldAllStoreViewsBeChoosen()) {
+        if ($this->shouldAllStoreViewsBeChosen()) {
             $checkedStoreChooserEnabler = 'checked';
             $disabledStoreChooser = 'disabled="disabled"';
             $disableAllStoreViews = '';
@@ -75,7 +75,7 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
     /**
      * @return bool
      */
-    protected function shouldAllStoreViewsBeChoosen()
+    protected function shouldAllStoreViewsBeChosen()
     {
         $values = $this->getValue();
         if (!is_array($values)) {
