@@ -37,7 +37,7 @@ class CustomGento_ProductBadges_Model_Indexer_ProductBadges extends Mage_Index_M
         $badgeConfigsCollection = Mage::getModel('customgento_productbadges/badgeConfig')->getCollection();
 
         $this->_badgeConfigsCollection = $badgeConfigsCollection
-            ->addFiltersNeededForIndexer();
+            ->addFiltersNeededForIndexer($storeId);
         $this->_init('customgento_productbadges/indexer_productBadges');
     }
 
