@@ -35,6 +35,18 @@ class CustomGento_ProductBadges_Block_Renderer_Type_Abstract
             $customisations['background'] = '#' . $bgColor;
         }
 
+        $fontFamily = $badgeConfig->getData('badge_font_family');
+
+        if ($fontFamily) {
+            $customisations['font-family'] = $fontFamily;
+        }
+
+        $fontSize = $badgeConfig->getData('badge_font_size');
+
+        if ($fontSize) {
+            $customisations['font-size'] = $fontSize . 'px';
+        }
+
         if (!empty($customisations)) {
             $styleString = '';
             foreach ($customisations as $cssProperty => $value) {

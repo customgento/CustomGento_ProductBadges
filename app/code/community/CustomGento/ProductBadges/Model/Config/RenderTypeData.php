@@ -19,7 +19,9 @@ class CustomGento_ProductBadges_Model_Config_RenderTypeData
                     'internal_code',
                     'badge_image',
                     'badge_background_color',
-                    'badge_text_color'
+                    'badge_text_color',
+                    'badge_font_family',
+                    'badge_font_size'
                 )
             );
 

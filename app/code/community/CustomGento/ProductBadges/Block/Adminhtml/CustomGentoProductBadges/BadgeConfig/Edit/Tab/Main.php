@@ -180,6 +180,17 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'class'     => 'color {required:false}'
         ));
 
+        $badgeFontFamily = $visualisationFieldset->addField('badge_font_family', 'text', array(
+            'label'     => Mage::helper('customgento_productbadges')->__('Font Family'),
+            'title'     => Mage::helper('customgento_productbadges')->__('Font Family'),
+            'name'      => 'badge_font_family'
+        ));
+
+        $badgeFontSize = $visualisationFieldset->addField('badge_font_size', 'text', array(
+            'label'     => Mage::helper('customgento_productbadges')->__('Font Size'),
+            'title'     => Mage::helper('customgento_productbadges')->__('Font Size'),
+            'name'      => 'badge_font_size'
+        ));
 
         $renderContainer = $visualisationFieldset->addField('render_container', 'note', array(
             'label'     => Mage::helper('customgento_productbadges')->__('Render Container'),
@@ -207,6 +218,8 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
                 ->addFieldMap($badgeText->getHtmlId(), $badgeText->getName())
                 ->addFieldMap($badgeTextColor->getHtmlId(), $badgeTextColor->getName())
                 ->addFieldMap($badgeBackgroundColor->getHtmlId(), $badgeBackgroundColor->getName())
+                ->addFieldMap($badgeFontFamily->getHtmlId(), $badgeFontFamily->getName())
+                ->addFieldMap($badgeFontSize->getHtmlId(), $badgeFontSize->getName())
                 ->addFieldDependence(
                     $badgeText->getName(),
                     $renderType->getName(),
@@ -219,6 +232,16 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
                 )
                 ->addFieldDependence(
                     $badgeBackgroundColor->getName(),
+                    $renderType->getName(),
+                    array('circle', 'rectangle')
+                )
+                ->addFieldDependence(
+                    $badgeFontFamily->getName(),
+                    $renderType->getName(),
+                    array('circle', 'rectangle')
+                )
+                ->addFieldDependence(
+                    $badgeFontSize->getName(),
                     $renderType->getName(),
                     array('circle', 'rectangle')
                 )
