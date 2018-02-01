@@ -166,6 +166,9 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'required'  => true
         ));
 
+        $editImg = '<img src="' . $this->getSkinUrl('images/fam_rainbow.gif') . '" class="product-badge-color-picker-hint">';
+
+
         $badgeTextColor = $visualisationFieldset->addField('badge_text_color', 'text', array(
             'label'     => Mage::helper('customgento_productbadges')->__('Text Color'),
             'title'     => Mage::helper('customgento_productbadges')->__('Text Color'),
@@ -173,12 +176,16 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'class'     => 'color {required:false}'
         ));
 
+        $badgeTextColor->setData('after_element_html', $editImg);
+
         $badgeBackgroundColor = $visualisationFieldset->addField('badge_background_color', 'text', array(
             'label'     => Mage::helper('customgento_productbadges')->__('Background Color'),
             'title'     => Mage::helper('customgento_productbadges')->__('Background Color'),
             'name'      => 'badge_background_color',
             'class'     => 'color {required:false}'
         ));
+
+        $badgeBackgroundColor->setData('after_element_html', $editImg);
 
         $badgeFontFamily = $visualisationFieldset->addField('badge_font_family', 'text', array(
             'label'     => Mage::helper('customgento_productbadges')->__('Font Family'),
