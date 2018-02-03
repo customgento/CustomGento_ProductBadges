@@ -18,7 +18,7 @@ class CustomGento_ProductBadges_Block_Renderer
     protected function _construct()
     {
         $this->_containerRendererBlock = Mage::getBlockSingleton('customgento_productbadges/renderer_container');
-        $this->_badgeConfigHelper      = Mage::getModel('customgento_productbadges/config_renderTypeData');
+        $this->_badgeConfigHelper      = Mage::getSingleton('customgento_productbadges/config_renderTypeData');
     }
 
     /**
