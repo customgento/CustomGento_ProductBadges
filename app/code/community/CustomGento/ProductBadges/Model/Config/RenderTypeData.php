@@ -16,6 +16,7 @@ class CustomGento_ProductBadges_Model_Config_RenderTypeData
             ->addFieldToSelect(
                 array(
                     'badge_text',
+                    'render_type',
                     'internal_code',
                     'badge_image',
                     'badge_background_color',

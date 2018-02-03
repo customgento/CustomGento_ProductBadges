@@ -9,19 +9,25 @@ class CustomGento_ProductBadges_Block_Renderer_Container
     /** @var CustomGento_ProductBadges_Model_Config_RenderContainer $_containerConfigModel */
     private $_containerConfigModel;
 
+    /** @var CustomGento_ProductBadges_Block_Renderer_Badge $_badgeRenderer */
+    private $_badgeRenderer;
+
     protected function _construct()
     {
         $this->_containerConfigModel = Mage::getModel('customgento_productbadges/config_renderContainer');
+
+        /** @var CustomGento_ProductBadges_Block_Renderer_Badge $badge */
+        $this->_badgeRenderer = Mage::getBlockSingleton('customgento_productbadges/renderer_badge');
     }
 
     /**
      * @param string $badgeInternalCode
-     * @param CustomGento_ProductBadges_Block_Renderer_Type_Interface $badge
+     * @param CustomGento_ProductBadges_Model_BadgeConfig $badgeConfig
      */
-    public function attachBadgeToContainer($badgeInternalCode, CustomGento_ProductBadges_Block_Renderer_Type_Interface $badge)
+    public function attachBadgeToContainer($badgeInternalCode, CustomGento_ProductBadges_Model_BadgeConfig $badgeConfig)
     {
         $containerName = $this->_containerConfigModel->getContainerOfProductBadge($badgeInternalCode);
-        $this->_containers[$containerName][$badgeInternalCode] = $badge;
+        $this->_containers[$containerName][$badgeInternalCode] = $badgeConfig;
     }
 
     /**
@@ -40,9 +46,9 @@ class CustomGento_ProductBadges_Block_Renderer_Container
             $containerHtml = '<div class="product-badge-container ' . $containerCssClass . '">###BADGES_HTML_PLACEHOLDER###</div>';
             $badgesHtml = '';
 
-            /** @var $badge CustomGento_ProductBadges_Block_Renderer_Type_Interface */
-            foreach ($badges as $badgeInternalId => $badge) {
-                $badgesHtml .= $badge->getBadgeHtml($badgeInternalId);
+            /** @var $badge CustomGento_ProductBadges_Block_Renderer_Badge */
+            foreach ($badges as $badge) {
+                $badgesHtml .= $this->_badgeRenderer->renderBadge($badge);
             }
 
             $containerHtml = str_replace('###BADGES_HTML_PLACEHOLDER###', $badgesHtml, $containerHtml);

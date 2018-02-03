@@ -6,7 +6,7 @@ class CustomGento_ProductBadges_Block_Renderer
     /** @var CustomGento_ProductBadges_Block_Renderer_Container */
     private $_containerRendererBlock;
 
-    /** @var CustomGento_ProductBadges_Helper_RenderTypeConfig */
+    /** @var CustomGento_ProductBadges_Model_Config_RenderTypeData */
     private $_badgeConfigHelper;
 
     /** @var array */
@@ -18,7 +18,7 @@ class CustomGento_ProductBadges_Block_Renderer
     protected function _construct()
     {
         $this->_containerRendererBlock = Mage::getBlockSingleton('customgento_productbadges/renderer_container');
-        $this->_badgeConfigHelper = Mage::helper('customgento_productbadges/renderTypeConfig');
+        $this->_badgeConfigHelper      = Mage::getModel('customgento_productbadges/config_renderTypeData');
     }
 
     /**
@@ -64,16 +64,9 @@ class CustomGento_ProductBadges_Block_Renderer
         }
 
         foreach ($badges as $badgeCode => $value) {
-            $badgeType = $this->_badgeConfigHelper->getBadgeRenderType($badgeCode);
+            $badgeConfig = $this->_badgeConfigHelper->getBadgeConfig($badgeCode);
 
-            /** @var CustomGento_ProductBadges_Block_Renderer_Type_Interface $badge */
-            try {
-                $badge = Mage::getBlockSingleton('customgento_productbadges/renderer_type_' . $badgeType);
-
-                $this->_containerRendererBlock->attachBadgeToContainer($badgeCode, $badge);
-            } catch(Exception $e) {
-                Mage::logException($e);
-            }
+            $this->_containerRendererBlock->attachBadgeToContainer($badgeCode, $badgeConfig);
         }
 
         $badgesHtml = $this->_containerRendererBlock->generateContainersHtml($productId);

@@ -12,12 +12,10 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
      */
     public function render(Varien_Object $row)
     {
-        $renderType = $row->getData('render_type');
+        /** @var CustomGento_ProductBadges_Block_Renderer_Badge $badge */
+        $badgeRenderer = Mage::getBlockSingleton('customgento_productbadges/renderer_badge');
 
-        /** @var CustomGento_ProductBadges_Block_Renderer_Type_Interface $badge */
-        $badge = Mage::getBlockSingleton('customgento_productbadges/renderer_type_' . $renderType);
-
-        return $badge->getBadgeHtml($row->getData('internal_code'));
+        return $badgeRenderer->renderBadge($row);
     }
 
 }

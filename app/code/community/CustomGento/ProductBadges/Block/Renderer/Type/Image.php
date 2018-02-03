@@ -5,13 +5,11 @@ class CustomGento_ProductBadges_Block_Renderer_Type_Image
 {
 
     /**
-     * @param string $badgeInternalId
+     * @param CustomGento_ProductBadges_Model_BadgeConfig $badgeConfig
      * @return string
      */
-    public function getBadgeHtml($badgeInternalId)
+    public function getBadgeHtml(CustomGento_ProductBadges_Model_BadgeConfig $badgeConfig)
     {
-        $badgeConfig = $this->_badgeConfigHelper->getBadgeConfig($badgeInternalId);
-
         if ($badgeConfig === false) {
             return '';
         }
@@ -19,6 +17,8 @@ class CustomGento_ProductBadges_Block_Renderer_Type_Image
         $imageUrl = Mage::getBaseUrl('media') . $badgeConfig->getBadgeImage();
 
         $imageUrl = $this->escapeHtml($imageUrl);
+
+        $badgeInternalId = $badgeConfig->getInternalCode();
 
         return '<span class="product-badge product-badge--image product-badge--' . $badgeInternalId . '"><img src=" ' . $imageUrl . '" /></span>';
     }

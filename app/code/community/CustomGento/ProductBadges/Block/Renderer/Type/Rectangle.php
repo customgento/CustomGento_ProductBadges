@@ -5,13 +5,11 @@ class CustomGento_ProductBadges_Block_Renderer_Type_Rectangle
 {
 
     /**
-     * @param string $badgeInternalId
+     * @param CustomGento_ProductBadges_Model_BadgeConfig $badgeConfig
      * @return string
      */
-    public function getBadgeHtml($badgeInternalId)
+    public function getBadgeHtml(CustomGento_ProductBadges_Model_BadgeConfig $badgeConfig)
     {
-        $badgeConfig = $this->_badgeConfigHelper->getBadgeConfig($badgeInternalId);
-
         if ($badgeConfig === false) {
             return '';
         }
@@ -19,6 +17,8 @@ class CustomGento_ProductBadges_Block_Renderer_Type_Rectangle
         $badgeText = $badgeConfig->getBadgeText();
 
         $badgeText = $this->escapeHtml($badgeText);
+
+        $badgeInternalId = $badgeConfig->getInternalCode();
 
         return '<span ' . $this->_customStyling($badgeConfig) . ' class="product-badge product-badge--rectangle product-badge--' . $badgeInternalId . '">' . $badgeText . '</span>';
     }
