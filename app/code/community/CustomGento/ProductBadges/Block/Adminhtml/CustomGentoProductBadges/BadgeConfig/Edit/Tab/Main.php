@@ -149,7 +149,15 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'name'      => 'render_type',
             'required'  => true,
             //@todo: probably move the options logic to a model
-            'options'   => Mage::helper('customgento_productbadges/renderTypeConfig')->getRenderTypesForAdminForm()
+            'options'   => Mage::helper('customgento_productbadges/renderTypeConfig')->getRenderTypesForAdminForm(),
+            'class'     => 'trigger-badge-preview'
+        ));
+
+        $preview = $visualisationFieldset->addField('badge_preview_dummy', 'note', array(
+            'label'              => Mage::helper('customgento_productbadges')->__('Preview'),
+            'title'              => Mage::helper('customgento_productbadges')->__('Preview'),
+            'name'               => 'badge_preview_dummy',
+            'after_element_html' => $this->getPreviewContainer()
         ));
 
         $badgeImage = $visualisationFieldset->addField('badge_image', 'image', array(
@@ -163,7 +171,8 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'label'     => Mage::helper('customgento_productbadges')->__('Badge Text'),
             'title'     => Mage::helper('customgento_productbadges')->__('Badge Text'),
             'name'      => 'badge_text',
-            'required'  => true
+            'required'  => true,
+            'class'     => 'trigger-badge-preview'
         ));
 
         $editImg = '<img src="' . $this->getSkinUrl('images/fam_rainbow.gif') . '" class="product-badge-color-picker-hint">';
@@ -173,7 +182,7 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'label'     => Mage::helper('customgento_productbadges')->__('Text Color'),
             'title'     => Mage::helper('customgento_productbadges')->__('Text Color'),
             'name'      => 'badge_text_color',
-            'class'     => 'color {required:false}'
+            'class'     => 'color {required:false} trigger-badge-preview'
         ));
 
         $badgeTextColor->setData('after_element_html', $editImg);
@@ -182,7 +191,7 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'label'     => Mage::helper('customgento_productbadges')->__('Background Color'),
             'title'     => Mage::helper('customgento_productbadges')->__('Background Color'),
             'name'      => 'badge_background_color',
-            'class'     => 'color {required:false}'
+            'class'     => 'color {required:false} trigger-badge-preview'
         ));
 
         $badgeBackgroundColor->setData('after_element_html', $editImg);
@@ -190,13 +199,15 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
         $badgeFontFamily = $visualisationFieldset->addField('badge_font_family', 'text', array(
             'label'     => Mage::helper('customgento_productbadges')->__('Font Family'),
             'title'     => Mage::helper('customgento_productbadges')->__('Font Family'),
-            'name'      => 'badge_font_family'
+            'name'      => 'badge_font_family',
+            'class'     => 'trigger-badge-preview'
         ));
 
         $badgeFontSize = $visualisationFieldset->addField('badge_font_size', 'text', array(
             'label'     => Mage::helper('customgento_productbadges')->__('Font Size'),
             'title'     => Mage::helper('customgento_productbadges')->__('Font Size'),
-            'name'      => 'badge_font_size'
+            'name'      => 'badge_font_size',
+            'class'     => 'trigger-badge-preview'
         ));
 
         $renderContainer = $visualisationFieldset->addField('render_container', 'note', array(
@@ -227,6 +238,7 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
                 ->addFieldMap($badgeBackgroundColor->getHtmlId(), $badgeBackgroundColor->getName())
                 ->addFieldMap($badgeFontFamily->getHtmlId(), $badgeFontFamily->getName())
                 ->addFieldMap($badgeFontSize->getHtmlId(), $badgeFontSize->getName())
+                ->addFieldMap($preview->getHtmlId(), $preview->getName())
                 ->addFieldDependence(
                     $badgeText->getName(),
                     $renderType->getName(),
@@ -253,6 +265,11 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
                     array('circle', 'rectangle')
                 )
                 ->addFieldDependence(
+                    $preview->getName(),
+                    $renderType->getName(),
+                    array('circle', 'rectangle')
+                )
+                ->addFieldDependence(
                     $badgeImage->getName(),
                     $renderType->getName(),
                     'image'
@@ -262,6 +279,26 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
         Mage::dispatchEvent('customgento_productbadges_badge_config_edit_tab_main_prepare_form', array('form' => $form));
 
         return parent::_prepareForm();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getPreviewContainer()
+    {
+        $dataAttributes = array(
+            'data-form-key'     => $this->getFormKey(),
+            'data-update-url'   => $this->quoteEscape($this->getUrl('*/*/badgePreview', array('isAjax' => true))),
+            'data-loader-image' => $this->getSkinUrl('images/ajax-loader-tr.gif')
+        );
+
+        $attributesString = '';
+
+        foreach ($dataAttributes as $attribute => $value) {
+            $attributesString .= $attribute . '="' . $value . '" ';
+        }
+
+        return '<div id="badge_preview_holder_field" '. $attributesString .'></div>';
     }
 
 }

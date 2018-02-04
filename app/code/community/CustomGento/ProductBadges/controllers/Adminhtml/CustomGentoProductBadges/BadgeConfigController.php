@@ -170,6 +170,29 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
         $this->getResponse()->setBody($html);
     }
 
+    public function badgePreviewAction()
+    {
+        $badgeData = $this->getRequest()->getPost();
+
+        $badgeData['internal_code'] = 'dummy-code-for-preview';
+
+        if(empty($badgeData['badge_text'])) {
+            $badgeData['badge_text'] = '---';
+        }
+
+        /** @var CustomGento_ProductBadges_Model_BadgeConfig $badgeConfig */
+        $badgeConfig = Mage::getModel('customgento_productbadges/badgeConfig');
+        $badgeConfig->setData($badgeData);
+
+        /** @var CustomGento_ProductBadges_Block_Renderer_Badge $badgeRenderer */
+        $badgeRenderer = Mage::getBlockSingleton('customgento_productbadges/renderer_badge');
+
+        $badgeHtml = $badgeRenderer->renderBadge($badgeConfig);
+
+        $this->getResponse()
+            ->setBody($badgeHtml);
+    }
+
     /**
      * @param CustomGento_ProductBadges_Model_BadgeConfig $model
      * @param array $postData
