@@ -68,7 +68,14 @@ document.observe('dom:loaded', function(){
         var ajaxLoaderImageUrl = badgePreviewHolder.getAttribute('data-loader-image');
 
         var updatePreviewArea = function() {
-            badgePreviewHolder.innerHTML = this.response;
+            var response = JSON.parse(this.response);
+
+            // In case admin session has expired
+            if (response.ajaxExpired !== undefined) {
+                window.location = response.ajaxRedirect;
+            }
+
+            badgePreviewHolder.innerHTML = response.preview;
         };
 
         var visualisationChanged = function() {

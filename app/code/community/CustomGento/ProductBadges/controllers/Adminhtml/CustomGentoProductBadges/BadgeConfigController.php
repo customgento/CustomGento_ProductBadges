@@ -189,8 +189,9 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
 
         $badgeHtml = $badgeRenderer->renderBadge($badgeConfig);
 
-        $this->getResponse()
-            ->setBody($badgeHtml);
+        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode(array(
+            'preview' => $badgeHtml
+        )));
     }
 
     /**
