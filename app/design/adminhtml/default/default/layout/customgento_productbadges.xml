@@ -25,7 +25,8 @@
             </block>
         </reference>
         <reference name="content">
-            <block type="customgento_productbadges/adminhtml_customGentoProductBadges_badgeConfig_edit" name="badge_config_edit" />
+            <block type="customgento_productbadges/adminhtml_customGentoProductBadges_badgeConfig_edit" name="badge_config_edit"/>
+            <block type="adminhtml/template" name="jscolor_init" template="customgento/productbadges/badgeconfig/edit/jscolor.phtml"/>
         </reference>
     </adminhtml_customgentoproductbadges_badgeconfig_edit>
 </layout>
