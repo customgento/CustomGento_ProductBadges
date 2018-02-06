@@ -44,7 +44,7 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
             $model->addData($data);
         }
 
-        $model->getConditions()->setJsFormObject('rule_conditions_fieldset');
+        $model->getConditions()->setJsFormObject('current_badge_conditions_fieldset');
 
         Mage::register('current_badge_config', $model);
 
