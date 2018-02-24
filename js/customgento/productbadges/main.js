@@ -63,20 +63,8 @@ document.observe('dom:loaded', function(){
         var visualisationInputs = d.getElementsByClassName("trigger-badge-preview");
         var badgePreviewHolder = d.getElementById('badge_preview_holder_field');
 
-        var formKey = badgePreviewHolder.getAttribute('data-form-key');
         var badgePreviewUrl = badgePreviewHolder.getAttribute('data-update-url');
         var ajaxLoaderImageUrl = badgePreviewHolder.getAttribute('data-loader-image');
-
-        var updatePreviewArea = function() {
-            var response = JSON.parse(this.response);
-
-            // In case admin session has expired
-            if (response.ajaxExpired !== undefined) {
-                window.location = response.ajaxRedirect;
-            }
-
-            badgePreviewHolder.innerHTML = response.preview;
-        };
 
         var visualisationChanged = function() {
             // We don't have preview for the image
@@ -86,16 +74,13 @@ document.observe('dom:loaded', function(){
 
             badgePreviewHolder.innerHTML = '<img src="' + ajaxLoaderImageUrl + '"></img>';
 
-            var badgePreviewXHR = new XMLHttpRequest();
-
-            badgePreviewXHR.addEventListener('load', updatePreviewArea);
-
-            badgePreviewXHR.open('POST', badgePreviewUrl);
-            badgePreviewXHR.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-            badgePreviewXHR.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            /**
+             * In Magento admin we have global JS variable called FORM_KEY,
+             * it is usually defined in Admin page/head.phtml
+             */
 
             var data = {
-                form_key: formKey
+                form_key: FORM_KEY
             };
 
             var visualisationInputs = d.getElementsByClassName("trigger-badge-preview");
@@ -104,18 +89,30 @@ document.observe('dom:loaded', function(){
                 data[visualisationInputs[i].getAttribute('name')] = visualisationInputs[i].value;
             }
 
-            // Preparing POST params
-            var params = typeof data == 'string' ? data : Object.keys(data).map(
-                function(k) { return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) }
-            ).join('&');
+            new Ajax.Request(badgePreviewUrl, {
+                parameters: data,
+                method: 'post',
+                onSuccess: function(transport) {
+                    var response = transport.responseText.evalJSON();
+                    if (response.error) {
+                        alert(response.message);
+                    }
+                    if(response.ajaxExpired && response.ajaxRedirect) {
+                        setLocation(response.ajaxRedirect);
+                        return;
+                    }
 
-            badgePreviewXHR.send(params);
+                    badgePreviewHolder.innerHTML = response.preview;
+
+                }.bind(this)
+            });
         };
 
         for (var i = 0; i < visualisationInputs.length; i++) {
             visualisationInputs[i].addEventListener('change', visualisationChanged);
         }
 
+        // Triggers badge preview of first load
         visualisationChanged();
     }(document));
 });

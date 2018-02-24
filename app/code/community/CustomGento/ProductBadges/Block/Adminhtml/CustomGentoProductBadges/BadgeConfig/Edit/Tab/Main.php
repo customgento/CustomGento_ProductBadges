@@ -287,7 +287,6 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
     protected function getPreviewContainer()
     {
         $dataAttributes = array(
-            'data-form-key'     => $this->getFormKey(),
             'data-update-url'   => $this->quoteEscape($this->getUrl('*/*/badgePreview', array('isAjax' => true))),
             'data-loader-image' => $this->getSkinUrl('images/ajax-loader-tr.gif')
         );
