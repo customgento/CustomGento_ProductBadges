@@ -45,7 +45,7 @@ class CustomGento_ProductBadges_Block_Renderer_Type_Abstract
                 $styleString .= $cssProperty . ':' . $value . ' !important;';
             }
 
-            return 'style="' . $styleString . '"';
+            return 'style="' . $this->escapeHtml($styleString) . '"';
         }
 
         return '';
