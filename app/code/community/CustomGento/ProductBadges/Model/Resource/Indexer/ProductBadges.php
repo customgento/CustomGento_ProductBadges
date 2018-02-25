@@ -302,4 +302,13 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
         return $this;
     }
 
+    /**
+     * @param Mage_Core_Model_Store $store
+     */
+    public function dropIndexTableForStore(Mage_Core_Model_Store $store)
+    {
+        $tableName = $this->getFlatTableName($store->getId());
+        $this->_getWriteAdapter()->dropTable($tableName);
+    }
+
 }
