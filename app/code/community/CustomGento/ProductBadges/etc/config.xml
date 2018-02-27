@@ -2,7 +2,7 @@
 <config>
     <modules>
         <CustomGento_ProductBadges>
-            <version>1.0.6</version>
+            <version>1.0.7</version>
         </CustomGento_ProductBadges>
     </modules>
     <global>
@@ -18,6 +18,9 @@
                     <badge_config>
                         <table>customgento_productbadges_badges_config</table>
                     </badge_config>
+                    <queue>
+                        <table>customgento_productbadges_queue</table>
+                    </queue>
                 </entities>
             </customgento_productbadges_resource>
         </models>
@@ -117,6 +120,10 @@
                         <class>customgento_productbadges/observer</class>
                         <method>customgentoProductbadgesBadgeConfigSaveCommitAfter</method>
                     </customgento_productbadges>
+                    <customgento_productbadges_register_badge_change>
+                        <class>customgento_productbadges/queue_observer</class>
+                        <method>registerBadgeChange</method>
+                    </customgento_productbadges_register_badge_change>
                 </observers>
             </customgento_productbadges_badge_config_save_commit_after>
         </events>
