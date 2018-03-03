@@ -1,6 +1,6 @@
 <?php
 
-class CustomGento_ProductBadges_Model_Indexer_ProductBadges
+class CustomGento_ProductBadges_Model_Scanner_ProductBadges
 {
 
     protected $_chunkSize = 500;
@@ -20,7 +20,12 @@ class CustomGento_ProductBadges_Model_Indexer_ProductBadges
     /** @var CustomGento_ProductBadges_Model_Resource_BadgeConfig_Collection */
     private $_badgeConfigsCollection;
 
-    public function __construct($storeId)
+    /**
+     * @param $storeId
+     *
+     * @return CustomGento_ProductBadges_Model_Scanner_ProductBadges
+     */
+    public function init($storeId)
     {
         $this->_chunks      = $this->_getProductIdChunks($this->_chunkSize);
         $this->_chunksCount = count($this->_chunks);
@@ -30,7 +35,8 @@ class CustomGento_ProductBadges_Model_Indexer_ProductBadges
 
         $this->_badgeConfigsCollection = $badgeConfigsCollection
             ->addFiltersNeededForIndexer($storeId);
-        $this->_init('customgento_productbadges/indexer_productBadges');
+
+        return $this;
     }
 
     public function fetchBadges($productIds = array())

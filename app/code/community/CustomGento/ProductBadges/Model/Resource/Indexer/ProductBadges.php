@@ -16,11 +16,13 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
 
     /**
      * @param int $storeId
-     * @return CustomGento_ProductBadges_Model_Indexer_ProductBadges
+     * @return CustomGento_ProductBadges_Model_Scanner_ProductBadges
      */
     protected function _spawnProductBadges($storeId)
     {
-        return Mage::getModel('customgento_productbadges/indexer_productBadges', $storeId);
+        /** @var CustomGento_ProductBadges_Model_Scanner_ProductBadges $productBadgesScanner */
+        $productBadgesScanner = Mage::getModel('customgento_productbadges/scanner_productBadges');
+        return $productBadgesScanner->init($storeId);
     }
 
     private $_badgesIndexTableNamePrefix = 'customgento_productbadges_badges_index_';
@@ -57,7 +59,8 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
     /**
      * Rebuild Catalog Product Flat Data
      *
-     * @param Mage_Core_Model_Store|int $store
+     * @param Mage_Core_Model_Store $store
+     * @param array $productIds
      * @return Mage_Catalog_Model_Resource_Product_Flat_Indexer
      */
     public function rebuild($store = null, $productIds = array())
@@ -168,11 +171,11 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
     /**
      * Retrieve catalog product flat columns array in DDL format
      *
-     * @param CustomGento_ProductBadges_Model_Indexer_ProductBadges $productBadges
+     * @param CustomGento_ProductBadges_Model_Scanner_ProductBadges $productBadges
      *
      * @return array
      */
-    protected function getFlatColumns(CustomGento_ProductBadges_Model_Indexer_ProductBadges $productBadges)
+    protected function getFlatColumns(CustomGento_ProductBadges_Model_Scanner_ProductBadges $productBadges)
     {
         $columns = array();
 
@@ -239,12 +242,12 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
      * Prepare flat table for store
      *
      * @param int $storeId
-     * @param CustomGento_ProductBadges_Model_Indexer_ProductBadges $productBadges
+     * @param CustomGento_ProductBadges_Model_Scanner_ProductBadges $productBadges
      *
      * @throws Mage_Core_Exception
      * @return Mage_Catalog_Model_Resource_Product_Flat_Indexer
      */
-    public function prepareFlatTable($storeId, CustomGento_ProductBadges_Model_Indexer_ProductBadges $productBadges)
+    public function prepareFlatTable($storeId, CustomGento_ProductBadges_Model_Scanner_ProductBadges $productBadges)
     {
         if (isset($this->_preparedFlatTables[$storeId])) {
             return $this;
