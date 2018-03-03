@@ -100,6 +100,14 @@
                     </customgento_productbadges_register_store_delete>
                 </observers>
             </store_delete>
+            <store_group_delete_before>
+                <observers>
+                    <customgento_productbadges_register_store_group_delete>
+                        <class>customgento_productbadges/queue_observer</class>
+                        <method>registerStoreGroupDelete</method>
+                    </customgento_productbadges_register_store_group_delete>
+                </observers>
+            </store_group_delete_before>
         </events>
     </global>
     <admin>

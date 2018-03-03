@@ -30,4 +30,19 @@ class CustomGento_ProductBadges_Model_Queue_Observer
         $queueRegisterJob->attemptToRegisterJob($job, $store);
     }
 
+    /**
+     * @param Varien_Event_Observer $observer
+     */
+    public function registerStoreGroupDelete(Varien_Event_Observer $observer)
+    {
+        $queueRegisterJob = new CustomGento_ProductBadges_Model_Queue_RegisterJob();
+
+        /** @var Mage_Core_Model_Store_Group $store */
+        $storeGroup = $observer->getEvent()->getStoreGroup();
+
+        $job = new CustomGento_ProductBadges_Model_Queue_Job_StoreGroupDelete();
+
+        $queueRegisterJob->attemptToRegisterJob($job, $storeGroup);
+    }
+
 }
