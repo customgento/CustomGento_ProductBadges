@@ -87,7 +87,7 @@
         <index>
             <indexer>
                 <customgento_productbadges>
-                    <model>customgento_productbadges/indexer_productBadges</model>
+                    <model>customgento_productbadges/indexer</model>
                 </customgento_productbadges>
             </indexer>
         </index>
