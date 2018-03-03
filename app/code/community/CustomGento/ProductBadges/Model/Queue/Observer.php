@@ -7,12 +7,12 @@ class CustomGento_ProductBadges_Model_Queue_Observer
      */
     public function registerBadgeChange(Varien_Event_Observer $observer)
     {
-        $queueRegister = new CustomGento_ProductBadges_Model_Queue_Register();
+        $queueRegisterJob = new CustomGento_ProductBadges_Model_Queue_RegisterJob();
         $badgeConfig = $observer->getBadgeConfig();
 
         $job = new CustomGento_ProductBadges_Model_Queue_Job_BadgeConditionChange();
 
-        $queueRegister->attemptToRegisterJob($job, $badgeConfig);
+        $queueRegisterJob->attemptToRegisterJob($job, $badgeConfig);
     }
 
 }

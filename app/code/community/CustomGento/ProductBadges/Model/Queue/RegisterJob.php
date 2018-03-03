@@ -1,5 +1,5 @@
 <?php
-class CustomGento_ProductBadges_Model_Queue_Register
+class CustomGento_ProductBadges_Model_Queue_RegisterJob
 {
 
     /**
