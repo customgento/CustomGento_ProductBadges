@@ -76,7 +76,7 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
 
             // Cleaning index tables for non active stores
             foreach ($notActiveStores as $store) {
-                $this->dropIndexTableForStore($store);
+                $this->dropIndexTableByStoreId($store->getId());
             }
 
             return $this;
@@ -316,11 +316,11 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
     }
 
     /**
-     * @param Mage_Core_Model_Store $store
+     * @param int $storeId
      */
-    public function dropIndexTableForStore(Mage_Core_Model_Store $store)
+    public function dropIndexTableByStoreId($storeId)
     {
-        $tableName = $this->getFlatTableName($store->getId());
+        $tableName = $this->getFlatTableName($storeId);
         /**
          * This does "DROP TABLE IF EXISTS" so we don't have
          * to be worried if the table does not exist

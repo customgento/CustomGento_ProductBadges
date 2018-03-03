@@ -94,10 +94,10 @@
         <events>
             <store_delete>
                 <observers>
-                    <customgento_productbadges_store_delete>
-                        <class>customgento_productbadges/observer</class>
-                        <method>processStoreDelete</method>
-                    </customgento_productbadges_store_delete>
+                    <customgento_productbadges_register_store_delete>
+                        <class>customgento_productbadges/queue_observer</class>
+                        <method>registerStoreDelete</method>
+                    </customgento_productbadges_register_store_delete>
                 </observers>
             </store_delete>
         </events>
