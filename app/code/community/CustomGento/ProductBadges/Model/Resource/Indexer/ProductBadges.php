@@ -63,9 +63,22 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
     public function rebuild($store = null, $productIds = array())
     {
         if ($store === null) {
+            $notActiveStores = [];
+
+            /** @var Mage_Core_Model_Store $store */
             foreach (Mage::app()->getStores() as $store) {
-                $this->rebuild($store->getId(), $productIds);
+                if ($store->getIsActive()) {
+                    $this->rebuild($store->getId(), $productIds);
+                } else {
+                    $notActiveStores[] = $store;
+                }
             }
+
+            // Cleaning index tables for non active stores
+            foreach ($notActiveStores as $store) {
+                $this->dropIndexTableForStore($store);
+            }
+
             return $this;
         }
 
@@ -300,6 +313,19 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
         $this->_preparedFlatTables[$storeId] = true;
 
         return $this;
+    }
+
+    /**
+     * @param Mage_Core_Model_Store $store
+     */
+    public function dropIndexTableForStore(Mage_Core_Model_Store $store)
+    {
+        $tableName = $this->getFlatTableName($store->getId());
+        /**
+         * This does "DROP TABLE IF EXISTS" so we don't have
+         * to be worried if the table does not exist
+         */
+        $this->_getWriteAdapter()->dropTable($tableName);
     }
 
 }
