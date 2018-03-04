@@ -16,6 +16,8 @@ class CustomGento_ProductBadges_Model_Queue_Cron
             $this->_getProcessModel()->attemptToProcessJob($queueEntry);
         }
 
+        $this->_getQueueResourceModel()->removeOldJobs();
+
         return $this;
     }
 
@@ -34,6 +36,15 @@ class CustomGento_ProductBadges_Model_Queue_Cron
     {
         return Mage::getModel('customgento_productbadges/queue')
             ->getCollection();
+    }
+
+    /**
+     * @return CustomGento_ProductBadges_Model_Resource_Queue
+     */
+    protected function _getQueueResourceModel()
+    {
+        return Mage::getModel('customgento_productbadges/queue')
+            ->getResource();
     }
 
 }

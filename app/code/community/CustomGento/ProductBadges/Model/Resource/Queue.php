@@ -11,4 +11,19 @@ class CustomGento_ProductBadges_Model_Resource_Queue
         $this->_init('customgento_productbadges/queue', 'job_id');
     }
 
+    /**
+     * Remove already sent messages
+     *
+     * @return Mage_Core_Model_Resource_Email_Queue
+     */
+    public function removeOldJobs()
+    {
+        $days = 1;
+
+        $this->_getWriteAdapter()->delete(
+            $this->getMainTable(),
+            'created_at < NOW() - INTERVAL '.$days.' DAY');
+        return $this;
+    }
+
 }
