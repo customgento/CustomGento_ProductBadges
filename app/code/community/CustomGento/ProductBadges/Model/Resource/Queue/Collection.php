@@ -11,4 +11,13 @@ class CustomGento_ProductBadges_Model_Resource_Queue_Collection
         $this->_init('customgento_productbadges/queue');
     }
 
+    /**
+     * @return CustomGento_ProductBadges_Model_Resource_Queue_Collection
+     */
+    public function filterNotProcessedJobs()
+    {
+        $this->addFieldToFilter('status', array('eq' => CustomGento_ProductBadges_Model_Queue_Job::STATUS_PENDING));
+        return $this;
+    }
+
 }

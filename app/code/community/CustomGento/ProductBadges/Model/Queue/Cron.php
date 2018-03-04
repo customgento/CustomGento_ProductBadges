@@ -2,16 +2,21 @@
 class CustomGento_ProductBadges_Model_Queue_Cron
 {
 
-    public function processJobs()
+    /**
+     * @param Mage_Cron_Model_Schedule $schedule
+     * @return CustomGento_ProductBadges_Model_Queue_Cron
+     */
+    public function processJobs(Mage_Cron_Model_Schedule $schedule)
     {
-        $queueCollection = Mage::getModel('customgento_productbadges/queue')
-            ->getCollection();
+        $queueCollection = $this->_getQueueCollection()
+            ->filterNotProcessedJobs();
 
         /** @var CustomGento_ProductBadges_Model_Queue $queueEntry */
         foreach ($queueCollection as $queueEntry) {
             $this->_getProcessModel()->attemptToProcessJob($queueEntry);
         }
 
+        return $this;
     }
 
     /**
@@ -20,6 +25,15 @@ class CustomGento_ProductBadges_Model_Queue_Cron
     protected function _getProcessModel()
     {
         return Mage::getSingleton('customgento_productbadges/queue_processJob');
+    }
+
+    /**
+     * @return CustomGento_ProductBadges_Model_Resource_Queue_Collection
+     */
+    protected function _getQueueCollection()
+    {
+        return Mage::getModel('customgento_productbadges/queue')
+            ->getCollection();
     }
 
 }

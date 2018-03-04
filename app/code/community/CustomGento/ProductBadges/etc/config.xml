@@ -175,6 +175,14 @@
                     <model>customgento_productbadges/cron::reindexProductBadges</model>
                 </run>
             </customgento_productbadges>
+            <customgento_productbadges_process_queue>
+                <schedule>
+                    <cron_expr>* * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>customgento_productbadges/queue_cron::processJobs</model>
+                </run>
+            </customgento_productbadges_process_queue>
         </jobs>
     </crontab>
 </config>

@@ -14,7 +14,7 @@ class CustomGento_ProductBadges_Model_Queue_RegisterJob
         $queue->setData('processor_model', $job->whoAmI());
         $queue->setData('job_data', serialize($job->getPreparedDataForJobAction($model)));
         $queue->setData('created_at', Mage::getSingleton('core/date')->gmtDate());
-        $queue->setData('status', 'pending');
+        $queue->setData('status', CustomGento_ProductBadges_Model_Queue_Job::STATUS_PENDING);
 
         $queue->save();
     }
