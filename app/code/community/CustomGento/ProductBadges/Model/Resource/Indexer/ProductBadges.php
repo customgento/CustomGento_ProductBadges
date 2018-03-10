@@ -71,7 +71,7 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
             /** @var Mage_Core_Model_Store $store */
             foreach (Mage::app()->getStores() as $store) {
                 if ($store->getIsActive()) {
-                    $this->rebuild($store->getId(), $productIds);
+                    $this->rebuild($store, $productIds);
                 } else {
                     $notActiveStores[] = $store;
                 }
@@ -85,7 +85,7 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
             return $this;
         }
 
-        $storeId = (int)Mage::app()->getStore($store)->getId();
+        $storeId = (int) $store->getId();
 
         $productBadges = $this->_spawnProductBadges($storeId);
 

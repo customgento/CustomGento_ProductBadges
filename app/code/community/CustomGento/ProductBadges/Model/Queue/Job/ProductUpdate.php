@@ -17,7 +17,15 @@ class CustomGento_ProductBadges_Model_Queue_Job_ProductUpdate
      */
     public function processJobAction(array $data)
     {
-        return;
+        $this->_getProductBadgesIndexerResource()->rebuild(null, array($data['product_id']));
+    }
+
+    /**
+     * @return CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
+     */
+    protected function _getProductBadgesIndexerResource()
+    {
+        return Mage::getResourceModel('customgento_productbadges/indexer_productBadges');
     }
 
 }

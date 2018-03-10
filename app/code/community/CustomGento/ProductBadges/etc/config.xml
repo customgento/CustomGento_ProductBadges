@@ -144,6 +144,14 @@
                     </customgento_productbadges_register_badge_change>
                 </observers>
             </customgento_productbadges_badge_config_save_commit_after>
+            <catalog_product_save_commit_after>
+                <observers>
+                    <customgento_productbadges_product_update_change>
+                        <class>customgento_productbadges/queue_observer</class>
+                        <method>registerProductUpdate</method>
+                    </customgento_productbadges_product_update_change>
+                </observers>
+            </catalog_product_save_commit_after>
         </events>
     </adminhtml>
     <frontend>

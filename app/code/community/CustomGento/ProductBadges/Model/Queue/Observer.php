@@ -45,4 +45,19 @@ class CustomGento_ProductBadges_Model_Queue_Observer
         $queueRegisterJob->attemptToRegisterJob($job, $storeGroup);
     }
 
+    /**
+     * @param Varien_Event_Observer $observer
+     */
+    public function registerProductUpdate(Varien_Event_Observer $observer)
+    {
+        $queueRegisterJob = new CustomGento_ProductBadges_Model_Queue_RegisterJob();
+
+        /** @var Mage_Catalog_Model_Product $store */
+        $product = $observer->getEvent()->getProduct();
+
+        $job = new CustomGento_ProductBadges_Model_Queue_Job_ProductUpdate();
+
+        $queueRegisterJob->attemptToRegisterJob($job, $product);
+    }
+
 }
