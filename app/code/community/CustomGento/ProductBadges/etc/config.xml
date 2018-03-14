@@ -134,10 +134,6 @@
             <!-- otherwise, we are not able to create the index table if it has not been created yet -->
             <customgento_productbadges_badge_config_save_commit_after>
                 <observers>
-                    <customgento_productbadges>
-                        <class>customgento_productbadges/observer</class>
-                        <method>customgentoProductbadgesBadgeConfigSaveCommitAfter</method>
-                    </customgento_productbadges>
                     <customgento_productbadges_register_badge_change>
                         <class>customgento_productbadges/queue_observer</class>
                         <method>registerBadgeChange</method>
