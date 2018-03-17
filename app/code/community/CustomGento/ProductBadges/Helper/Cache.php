@@ -34,14 +34,19 @@ class CustomGento_ProductBadges_Helper_Cache
 
     /**
      * @param int $productId
+     * @param int $storeId
      *
      * @return array
      */
-    public function getProductBadgesCacheKey($productId)
+    public function getProductBadgesCacheKey($productId, $storeId = null)
     {
+        if (is_null($storeId)) {
+            $storeId = Mage::app()->getStore()->getId();
+        }
+
         return Mage_Core_Block_Abstract::CACHE_KEY_PREFIX . implode('_', array(
             'CUSTOMGENTO_PRODUCT_BADGES_PRODUCT',
-            Mage::app()->getStore()->getId(),
+            $storeId,
             $productId
         ));
     }
@@ -62,6 +67,23 @@ class CustomGento_ProductBadges_Helper_Cache
     public function clearAllBadgeCache()
     {
         Mage::app()->cleanCache(array(self::CUSTOMGENTO_PRODUCT_BADGES_CACHE_TAG));
+        return $this;
+    }
+
+    /**
+     * @param int $productId
+     * @return CustomGento_ProductBadges_Helper_Cache
+     */
+    public function clearProductBadgesCache($productId)
+    {
+        /** @var Mage_Core_Model_Store $store */
+        foreach (Mage::app()->getStores() as $store) {
+            if ($store->getIsActive()) {
+                Mage::app()->getCache()
+                            ->remove($this->getProductBadgesCacheKey($productId, $store->getId()));
+            }
+        }
+
         return $this;
     }
 

@@ -119,8 +119,6 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
                 }
             }
 
-            //print_r($preparedForInsertData);
-
             if (count($preparedForInsertData) > 0) {
                 // Update / Insert new Badges
                 $insertedRows = $this->_getWriteAdapter()->insertOnDuplicate(
@@ -131,13 +129,6 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
 
             //Delete badges that should not be presented anymore
             $deletedRows = $this->_deleteOutdatedBadges($storeId, $badgesData, $preparedForInsertData);
-        }
-        if (!empty($productIds)) {
-            foreach ($productIds as $productId) {
-                Mage::getModel('core/cache')->clean(array('PRODUCT_BADGES_PRODUCT_' . $productId));
-            }
-        } else {
-            Mage::getModel('core/cache')->clean(array('PRODUCT_BADGES_PRODUCT'));
         }
         return $this;
     }

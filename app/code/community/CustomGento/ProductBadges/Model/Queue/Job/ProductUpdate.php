@@ -18,6 +18,7 @@ class CustomGento_ProductBadges_Model_Queue_Job_ProductUpdate
     public function processJobAction(array $data)
     {
         $this->_getProductBadgesIndexerResource()->rebuild(null, array($data['product_id']));
+        $this->_getCacheHelper()->clearProductBadgesCache($data['product_id']);
     }
 
     /**
@@ -26,6 +27,14 @@ class CustomGento_ProductBadges_Model_Queue_Job_ProductUpdate
     protected function _getProductBadgesIndexerResource()
     {
         return Mage::getResourceModel('customgento_productbadges/indexer_productBadges');
+    }
+
+    /**
+     * @return CustomGento_ProductBadges_Helper_Cache
+     */
+    protected function _getCacheHelper()
+    {
+        return Mage::helper('customgento_productbadges/cache');
     }
 
 }
