@@ -33,14 +33,7 @@ class CustomGento_ProductBadges_Block_Renderer
     {
         $this->_badges = $badges;
         $this->_productId = $productId;
-    }
-
-    /**
-     * @return array
-     */
-    public function getCacheKeyInfo()
-    {
-        return $this->_badgeCacheHelper->getProductBadgesCacheKey($this->_productId);
+        $this->setCacheKey($this->_badgeCacheHelper->getProductBadgesCacheKey($this->_productId));
     }
 
     /**

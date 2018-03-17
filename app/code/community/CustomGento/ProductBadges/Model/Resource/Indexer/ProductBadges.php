@@ -319,6 +319,32 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
     }
 
     /**
+     * Scan all index table for a badge and if badge exists write 0 for all products
+     *
+     * @param string $code
+     *
+     * @return $this
+     */
+    public function badgeDisablingReindex($code)
+    {
+        /** @var Mage_Core_Model_Store $store */
+        foreach (Mage::app()->getStores() as $store) {
+            if ($store->getIsActive()) {
+                $tableName = $this->getFlatTableName($store->getId());
+                if ($this->_getWriteAdapter()->isTableExists($tableName)) {
+                    $describe = $this->_getWriteAdapter()->describeTable($tableName);
+                    if (array_key_exists($code, $describe)) {
+                        // Write 0 for and make the badge not active, soft disable
+                        $this->_getWriteAdapter()->update($tableName, array($code => 0));
+                    }
+                }
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * @param int $storeId
      */
     public function dropIndexTableByStoreId($storeId)

@@ -41,6 +41,12 @@ class CustomGento_ProductBadges_Helper_Data
             return '';
         }
 
+        $badgesCacheHtml = $this->_getBadgeCacheHelper()->getProductBadgesCache($product->getId());
+
+        if (!empty($badgesCacheHtml)) {
+            return $badgesCacheHtml;
+        }
+
         $badges = isset($this->_productBadgesData[$product->getId()]) ? $this->_productBadgesData[$product->getId()]
             : array();
         $badges = $this->_filerBadgesData($badges);
@@ -57,6 +63,12 @@ class CustomGento_ProductBadges_Helper_Data
     {
         if (!$this->isEnabled()) {
             return '';
+        }
+
+        $badgesCacheHtml = $this->_getBadgeCacheHelper()->getProductBadgesCache($product->getId());
+
+        if (!empty($badgesCacheHtml)) {
+            return $badgesCacheHtml;
         }
 
         /** @var CustomGento_ProductBadges_Model_ProductBadgeMatcher $productBadgeMatcher */
@@ -111,6 +123,14 @@ class CustomGento_ProductBadges_Helper_Data
         $badgesBlock->init($badges, $productId);
 
         return $badgesBlock;
+    }
+
+    /**
+     * @return CustomGento_ProductBadges_Helper_Cache
+     */
+    protected function _getBadgeCacheHelper()
+    {
+        return Mage::helper('customgento_productbadges/cache');
     }
 
 }
