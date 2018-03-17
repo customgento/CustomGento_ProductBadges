@@ -15,10 +15,21 @@ class CustomGento_ProductBadges_Model_Queue_Job_BadgeUpdate
     /**
      * @param array $data
      *
-     * @return $this
+     * @return CustomGento_ProductBadges_Model_Queue_Job_BadgeUpdate
      */
     public function processJobAction(array $data)
     {
+
+        $newData  = $data['new_data'];
+        $origData = $data['orig_data'];
+
+        if (empty($origData) && $this->_wasNewBadgeEnabled($newData)) {
+            // We rebuild all badges because there are too many edge cases
+            $this->_getProductBadgesIndexerResource()->rebuild();
+            $this->_getCacheHelper()->clearAllBadgeCache();
+            return $this;
+        }
+
         $renderFields = array(
             'render_type',
             'render_container',
@@ -28,9 +39,6 @@ class CustomGento_ProductBadges_Model_Queue_Job_BadgeUpdate
             'badge_font_family',
             'badge_font_size'
         );
-
-        $newData  = $data['new_data'];
-        $origData = $data['orig_data'];
 
         $isDesignChanged = false;
 
@@ -129,6 +137,30 @@ class CustomGento_ProductBadges_Model_Queue_Job_BadgeUpdate
 
         if ($this->_wasBadgePeriodChanged($newData, $oldData)) {
             return ($wasActiveInOldPeriod && !$isActiveInNewPeriod);
+        }
+
+        return false;
+    }
+
+    /**
+     * Covering the case when a badge was just created and set to be active.
+     *
+     * In this case we don't have old data and we have to check against new data
+     *
+     * We check the 'is_active' flag but we also have to check from_date and to_date
+     *
+     * @param array $data
+     *
+     * @return bool
+     */
+    protected function _wasNewBadgeEnabled(array $data)
+    {
+        $isActiveInNewPeriod = Mage::app()
+            ->getLocale()
+            ->isStoreDateInInterval(Mage_Core_Model_App::ADMIN_STORE_ID, $data['from_date'], $data['to_date']);
+
+        if ($data['is_active'] == '1') {
+            return $isActiveInNewPeriod;
         }
 
         return false;
