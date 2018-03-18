@@ -164,7 +164,6 @@
             <customgento_productbadges_global_config>
                 <general>
                     <enabled>1</enabled>
-                    <automatic_reindex>1</automatic_reindex>
                 </general>
             </customgento_productbadges_global_config>
         </catalog>
