@@ -5,10 +5,9 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_Static
 {
 
     /**
-     * @param Mage_Rule_Model_Condition_Product_Abstract $condition
-     * @return string|Zend_Db_Expr
+     * @inheritdoc
      */
-    public function transform(Mage_Rule_Model_Condition_Product_Abstract $condition)
+    public function transform(Mage_Rule_Model_Condition_Product_Abstract $condition, $storeId, $fromId, $toId)
     {
         $value = $condition->getValueParsed();
         $operator = $condition->getOperatorForValidate();

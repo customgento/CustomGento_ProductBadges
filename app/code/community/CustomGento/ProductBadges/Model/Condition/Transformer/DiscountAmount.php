@@ -6,7 +6,7 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_DiscountAmount
     /**
      * @inheritdoc
      */
-    public function transform(Mage_Rule_Model_Condition_Product_Abstract $condition)
+    public function transform(Mage_Rule_Model_Condition_Product_Abstract $condition, $storeId, $fromId, $toId)
     {
         $value = $condition->getValueParsed();
         $operator = str_replace('==', '=', $condition->getOperatorForValidate());
