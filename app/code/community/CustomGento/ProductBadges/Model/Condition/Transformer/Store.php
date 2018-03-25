@@ -12,10 +12,14 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_Store
         $attribute = $condition->getAttributeObject();
         $code = $attribute->getAttributeCode();
         $value = $condition->getValueParsed();
+        $frontendInput = $attribute->getFrontendInput();
 
         $select = new Zend_Db_Select($this->getDbAdapter());
+
+        $mainTable = 'at_scope_' . $code;
+
         $select
-            ->from(['at_scope_' . $code => $attribute->getBackendTable()], ['entity_id'])
+            ->from([$mainTable => $attribute->getBackendTable()], ['entity_id'])
             ->where("e.entity_id = at_scope_{$code}.entity_id")
             ->where("at_scope_{$code}.attribute_id = ?", $attribute->getAttributeId())
         ;
@@ -23,17 +27,30 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_Store
         $operator = str_replace('==', '=', $condition->getOperatorForValidate());
 
         if ($this->isScalarOperator($operator)) {
-            $select->where("at_scope_${code}.value {$operator} ?", $value);
+            $select->where("at_scope_{$code}.value {$operator} ?", $value);
         } else {
             $prefix = $this->getOperatorPrefix($operator);
             $value = (array) $value;
             
             /** @var array $value */
             foreach ($value as $_value) {
-                $select->orWhere("at_scope_${code}.value {$prefix} REGEXP ?", "(^|,){$_value}(,|$)");
+                if ($frontendInput == 'multiselect') {
+                    $select->where("at_scope_{$code}.value {$prefix} REGEXP ?", "(^|,){$_value}(,|$)");
+                }
+
+                if ($frontendInput == 'text' || $frontendInput == 'textarea') {
+                    $select->where("at_scope_{$code}.value LIKE ?", "%{$_value}%");
+                }
             }
+        }
+
+        // Test for store id
+        if ($attribute->isScopeStore()) {
+            $select->where("at_scope_{$code}.store_id IN (0,1)");
         }
 
         return new Zend_Db_Expr("EXISTS ({$select})");
     }
+
+
 }
