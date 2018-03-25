@@ -167,8 +167,8 @@ class CustomGento_ProductBadges_Model_BadgeConfig
             case 'category_ids' === $attribute->getAttributeCode():
                 $transformer = 'category';
                 break;
-            case 'type_id' == $attribute->getAttributeCode():
-                $transformer = 'global';
+            case $attribute->getData('backend_type') == 'static':
+                $transformer = 'static';
                 break;
             case CustomGento_ProductBadges_Model_Rule_Condition_Product_StockStatus::ATTRIBUTE_NAME === $attribute->getAttributeCode():
                 $transformer = 'stockstatus';
@@ -180,7 +180,7 @@ class CustomGento_ProductBadges_Model_BadgeConfig
                 $transformer = 'store';
                 break;
             default:
-                $transformer = 'global';
+                $transformer = 'store';
                 break;
         }
 
