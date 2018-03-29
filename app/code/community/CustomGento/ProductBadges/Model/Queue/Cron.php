@@ -3,10 +3,9 @@ class CustomGento_ProductBadges_Model_Queue_Cron
 {
 
     /**
-     * @param Mage_Cron_Model_Schedule $schedule
      * @return CustomGento_ProductBadges_Model_Queue_Cron
      */
-    public function processJobs(Mage_Cron_Model_Schedule $schedule)
+    public function processJobs()
     {
         $queueCollection = $this->_getQueueCollection()
             ->filterNotProcessedJobs();
