@@ -1,6 +1,5 @@
 <?php
-class CustomGento_ProductBadges_Helper_Cache
-    extends Mage_Core_Helper_Abstract
+class CustomGento_ProductBadges_Model_Cache
 {
 
     const CUSTOMGENTO_PRODUCT_BADGES_CACHE_TAG = 'CUSTOMGENTO_PRODUCT_BADGES';
@@ -8,7 +7,7 @@ class CustomGento_ProductBadges_Helper_Cache
     /**
      * @param string $badgeCode
      *
-     * @return CustomGento_ProductBadges_Helper_Cache
+     * @return CustomGento_ProductBadges_Model_Cache
      */
     public function clearCacheForBadge($badgeCode)
     {
@@ -62,7 +61,7 @@ class CustomGento_ProductBadges_Helper_Cache
     }
 
     /**
-     * @return CustomGento_ProductBadges_Helper_Cache
+     * @return CustomGento_ProductBadges_Model_Cache
      */
     public function clearAllBadgeCache()
     {
@@ -72,7 +71,7 @@ class CustomGento_ProductBadges_Helper_Cache
 
     /**
      * @param int $productId
-     * @return CustomGento_ProductBadges_Helper_Cache
+     * @return CustomGento_ProductBadges_Model_Cache
      */
     public function clearProductBadgesCache($productId)
     {

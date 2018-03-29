@@ -26,7 +26,7 @@ class CustomGento_ProductBadges_Model_Queue_Job_BadgeUpdate
         if (empty($origData) && $this->_wasNewBadgeEnabled($newData)) {
             // We rebuild all badges because there are too many edge cases
             $this->_getProductBadgesIndexerResource()->rebuild();
-            $this->_getCacheHelper()->clearAllBadgeCache();
+            $this->_getCacheModel()->clearAllBadgeCache();
             return $this;
         }
 
@@ -52,26 +52,26 @@ class CustomGento_ProductBadges_Model_Queue_Job_BadgeUpdate
 
         if ($this->_wasBadgeDisabled($newData, $origData)) {
             $this->_getProductBadgesIndexerResource()->badgeDisablingReindex($origData['internal_code']);
-            $this->_getCacheHelper()->clearCacheForBadge($origData['internal_code']);
+            $this->_getCacheModel()->clearCacheForBadge($origData['internal_code']);
             return $this;
         }
 
         if ($this->_wasBadgeEnabled($newData, $origData)) {
             // We rebuild all badges because there are too many edge cases
             $this->_getProductBadgesIndexerResource()->rebuild();
-            $this->_getCacheHelper()->clearAllBadgeCache();
+            $this->_getCacheModel()->clearAllBadgeCache();
             return $this;
         }
 
         if ($newData['conditions_serialized'] != $origData['conditions_serialized']) {
             // We rebuild all badges because there are too many edge cases
             $this->_getProductBadgesIndexerResource()->rebuild();
-            $this->_getCacheHelper()->clearAllBadgeCache();
+            $this->_getCacheModel()->clearAllBadgeCache();
             return $this;
         }
 
         if ($isDesignChanged) {
-            $this->_getCacheHelper()->clearCacheForBadge($origData['internal_code']);
+            $this->_getCacheModel()->clearCacheForBadge($origData['internal_code']);
         }
 
         return $this;
@@ -172,11 +172,11 @@ class CustomGento_ProductBadges_Model_Queue_Job_BadgeUpdate
     }
 
     /**
-     * @return CustomGento_ProductBadges_Helper_Cache
+     * @return CustomGento_ProductBadges_Model_Cache
      */
-    protected function _getCacheHelper()
+    protected function _getCacheModel()
     {
-        return Mage::helper('customgento_productbadges/cache');
+        return Mage::getModel('customgento_productbadges/cache');
     }
 
     /**

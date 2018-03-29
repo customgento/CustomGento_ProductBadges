@@ -10,7 +10,7 @@ class CustomGento_ProductBadges_Model_Cron
     public function reindexProductBadges(Mage_Cron_Model_Schedule $schedule)
     {
         $this->_getProductBadgesIndexerResource()->rebuild();
-        $this->_getCacheHelper()->clearAllBadgeCache();
+        $this->_getCacheModel()->clearAllBadgeCache();
 
         return $this;
     }
@@ -24,11 +24,11 @@ class CustomGento_ProductBadges_Model_Cron
     }
 
     /**
-     * @return CustomGento_ProductBadges_Helper_Cache
+     * @return CustomGento_ProductBadges_Model_Cache
      */
-    protected function _getCacheHelper()
+    protected function _getCacheModel()
     {
-        return Mage::helper('customgento_productbadges/cache');
+        return Mage::getModel('customgento_productbadges/cache');
     }
 
 }
