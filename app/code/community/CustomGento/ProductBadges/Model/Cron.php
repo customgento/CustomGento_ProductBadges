@@ -4,10 +4,9 @@ class CustomGento_ProductBadges_Model_Cron
 {
 
     /**
-     * @param Mage_Cron_Model_Schedule $schedule
      * @return CustomGento_ProductBadges_Model_Cron
      */
-    public function reindexProductBadges(Mage_Cron_Model_Schedule $schedule)
+    public function reindexProductBadges()
     {
         $this->_getProductBadgesIndexerResource()->rebuild();
         $this->_getCacheModel()->clearAllBadgeCache();
