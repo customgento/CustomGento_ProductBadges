@@ -185,9 +185,6 @@ class CustomGento_ProductBadges_Model_BadgeConfig
 //            case CustomGento_ProductBadges_Model_Rule_Condition_Vitafy_Discount::ATTRIBUTE_NAME == $attribute->getAttributeCode():
 //                $transformer = 'discountAmount';
 //                break;
-            case !$attribute->isScopeGlobal():
-                $transformer = 'store';
-                break;
             default:
                 $transformer = 'store';
                 break;
