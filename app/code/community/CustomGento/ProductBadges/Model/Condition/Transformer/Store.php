@@ -32,8 +32,8 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_Store
         // Case when attribute has global scope
         $scopeTable = $this->_getScopeTable($attribute);
         $select = new Zend_Db_Select($this->getDbAdapter());
+        $select->where("`e`.`entity_id` = `{$scopeTable}`.`entity_id`");
         $this->attachAttributeValueCondition($select, $condition, $attribute);
-        $select->where("e.entity_id = `{$scopeTable}`.`entity_id`");
 
         return new Zend_Db_Expr("EXISTS ({$select})");
     }
@@ -65,18 +65,27 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_Store
             $select->where("`{$scopeTable}`.`value` {$operator} ?", $value);
         } else {
             $prefix = $this->getOperatorPrefix($operator);
+            $orAndCondition = $this->orAndCondition($operator);
             $value = (array) $value;
+
+            $subConditions = [];
 
             /** @var array $value */
             foreach ($value as $_value) {
                 if ($frontendInput == 'multiselect') {
-                    $select->where("`{$scopeTable}`.`value` {$prefix} REGEXP ?", "(^|,){$_value}(,|$)");
+                    $subConditions[] = $this
+                        ->getDbAdapter()
+                        ->quoteInto("`{$scopeTable}`.`value` {$prefix} REGEXP ?", "(^|,){$_value}(,|$)");
                 }
 
                 if ($frontendInput == 'text' || $frontendInput == 'textarea') {
-                    $select->where("`{$scopeTable}`.`value` LIKE ?", "%{$_value}%");
+                    $subConditions[] = $this
+                        ->getDbAdapter()
+                        ->quoteInto("`{$scopeTable}`.`value` LIKE ?", "%{$_value}%");
                 }
             }
+
+            $select->where(implode(" {$orAndCondition} ", $subConditions));
         }
     }
 
@@ -170,7 +179,7 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_Store
             ->where("`{$scopeTable}`.`attribute_id` = ?", $attribute->getAttributeId());
 
         if (!empty($alreadyExistInStoreViewIds)) {
-            $defaultStoreViewSelect->where("`{$scopeTable}`.`entity_id` NOT IN(?)", implode(',', $alreadyExistInStoreViewIds));
+            $defaultStoreViewSelect->where("`{$scopeTable}`.`entity_id` NOT IN (?)", implode(',', $alreadyExistInStoreViewIds));
         }
 
         return $this->getDbAdapter()->fetchCol($defaultStoreViewSelect);

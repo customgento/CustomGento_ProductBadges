@@ -13,7 +13,7 @@ abstract class CustomGento_ProductBadges_Model_Condition_Transformer_Abstract
     public function isScalarOperator($operator)
     {
         /** @todo: Check all operators if we didn't miss any. */
-        return !in_array($operator, ['!{}', '{}', '()', '!()', '[]']);
+        return !in_array($operator, ['!{}', '{}', '()', '!()', '[]', '![]']);
     }
 
     /**
@@ -26,7 +26,21 @@ abstract class CustomGento_ProductBadges_Model_Condition_Transformer_Abstract
     public function getOperatorPrefix($operator)
     {
         /** @todo: Check all operators if we didn't miss any. */
-        return in_array($operator, ['!=', '!{}', '!()']) ? 'NOT' : '';
+        return in_array($operator, ['!=', '!{}', '!()', '![]']) ? 'NOT' : '';
+    }
+
+    /**
+     * When we have many subconditions we have to decide
+     * how we concatenate them with OR or AND
+     *
+     * @param string $operator Operator
+     *
+     * @return string
+     */
+    public function orAndCondition($operator)
+    {
+        /** @todo: Check all operators if we didn't miss any. */
+        return in_array($operator, ['[]', '![]']) ? 'AND' : 'OR';
     }
 
     /**
