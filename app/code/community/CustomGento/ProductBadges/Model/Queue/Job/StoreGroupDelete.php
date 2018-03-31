@@ -4,6 +4,16 @@ class CustomGento_ProductBadges_Model_Queue_Job_StoreGroupDelete
 {
 
     /**
+     * Returns class alias for further usage later with Mage::getModel
+     *
+     * @return string
+     */
+    public function whoAmI()
+    {
+        return 'customgento_productbadges/queue_job_storeGroupDelete';
+    }
+
+    /**
      * @param Varien_Object $storeGroup
      * @return array
      */

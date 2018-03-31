@@ -16,10 +16,10 @@ class CustomGento_ProductBadges_Model_Queue_ProcessJob
 
 
         try {
-            $processorClassName = $queueEntry->getProcessorModel();
+            $processorModel = $queueEntry->getProcessorModel();
 
             /** @var CustomGento_ProductBadges_Model_Queue_Job_Abstract $processorModel */
-            $processorModel = new $processorClassName();
+            $processorModel = Mage::getModel($processorModel);
             $processorModel->processJobAction(unserialize($queueEntry->getJobData()));
 
             /**

@@ -9,9 +9,6 @@ abstract class CustomGento_ProductBadges_Model_Queue_Job_Abstract
     /**
      * @return string
      */
-    public function whoAmI()
-    {
-        return get_class($this);
-    }
+    abstract public function whoAmI();
 
 }

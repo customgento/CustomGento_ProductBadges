@@ -4,6 +4,16 @@ class CustomGento_ProductBadges_Model_Queue_Job_BadgeUpdate
 {
 
     /**
+     * Returns class alias for further usage later with Mage::getModel
+     *
+     * @return string
+     */
+    public function whoAmI()
+    {
+        return 'customgento_productbadges/queue_job_badgeUpdate';
+    }
+
+    /**
      * @param Varien_Object $badgeConfig
      * @return array
      */
