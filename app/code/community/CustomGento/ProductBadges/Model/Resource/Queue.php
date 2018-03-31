@@ -26,4 +26,24 @@ class CustomGento_ProductBadges_Model_Resource_Queue
         return $this;
     }
 
+    /**
+     * @param array $jobIds
+     * @return $this
+     */
+    public function markJobsAsPicked(array $jobIds)
+    {
+        $bind = array('status' => CustomGento_ProductBadges_Model_Queue_Job::STATUS_PICKED);
+
+        $condition = $this->_getWriteAdapter()
+            ->quoteInto('job_id IN (?)', $jobIds);
+
+        $this->_getWriteAdapter()->update(
+            $this->getMainTable(),
+            $bind,
+            $condition
+        );
+
+        return $this;
+    }
+
 }

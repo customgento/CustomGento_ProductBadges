@@ -7,15 +7,30 @@ class CustomGento_ProductBadges_Model_Queue_Cron
      */
     public function processJobs()
     {
+        $this->_getQueueResourceModel()->removeOldJobs();
+
+        $pickedJobsCollection = $this->_getQueueCollection()
+            ->filterPickedJobs();
+
+        $runningJobsCollection = $this->_getQueueCollection()
+            ->filterRunningJobs();
+
+        // Lock mechanism in case crons start overlapping
+        if (count($pickedJobsCollection) > 0 || count($runningJobsCollection) > 0) {
+            return $this;
+        }
+
         $queueCollection = $this->_getQueueCollection()
-            ->filterNotProcessedJobs();
+            ->filterNotProcessedJobs()
+            ->load();
+
+        // Mark as picked the jobs are part of locking mechanism
+        $this->_getQueueResourceModel()->markJobsAsPicked($queueCollection->getAllIds());
 
         /** @var CustomGento_ProductBadges_Model_Queue $queueEntry */
         foreach ($queueCollection as $queueEntry) {
             $this->_getProcessModel()->attemptToProcessJob($queueEntry);
         }
-
-        $this->_getQueueResourceModel()->removeOldJobs();
 
         return $this;
     }

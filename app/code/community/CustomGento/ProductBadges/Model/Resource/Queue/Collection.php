@@ -20,4 +20,22 @@ class CustomGento_ProductBadges_Model_Resource_Queue_Collection
         return $this;
     }
 
+    /**
+     * @return CustomGento_ProductBadges_Model_Resource_Queue_Collection
+     */
+    public function filterPickedJobs()
+    {
+        $this->addFieldToFilter('status', array('eq' => CustomGento_ProductBadges_Model_Queue_Job::STATUS_PICKED));
+        return $this;
+    }
+
+    /**
+     * @return CustomGento_ProductBadges_Model_Resource_Queue_Collection
+     */
+    public function filterRunningJobs()
+    {
+        $this->addFieldToFilter('status', array('eq' => CustomGento_ProductBadges_Model_Queue_Job::STATUS_RUNNING));
+        return $this;
+    }
+
 }
