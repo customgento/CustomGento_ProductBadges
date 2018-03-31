@@ -22,7 +22,9 @@ class CustomGento_ProductBadges_Model_Resource_Queue
 
         $this->_getWriteAdapter()->delete(
             $this->getMainTable(),
-            'created_at < NOW() - INTERVAL '.$days.' DAY');
+            array('created_at < NOW() - INTERVAL ? DAY' => $days)
+        );
+
         return $this;
     }
 

@@ -25,7 +25,10 @@ class CustomGento_ProductBadges_Model_Queue_Cron
             ->load();
 
         // Mark as picked the jobs are part of locking mechanism
-        $this->_getQueueResourceModel()->markJobsAsPicked($queueCollection->getAllIds());
+        $jobIds = $queueCollection->getAllIds();
+        if (!empty($jobIds)) {
+            $this->_getQueueResourceModel()->markJobsAsPicked($jobIds);
+        }
 
         /** @var CustomGento_ProductBadges_Model_Queue $queueEntry */
         foreach ($queueCollection as $queueEntry) {
