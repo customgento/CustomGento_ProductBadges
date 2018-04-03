@@ -233,4 +233,26 @@ class CustomGento_ProductBadges_Model_BadgeConfig
         Mage::log($message, $level, 'customegento_product_badges.log');
     }
 
+    /**
+     * Creates an internal code from the given entity ID.
+     *
+     * @param $id
+     *
+     * @return string
+     */
+    public static function getInternalCodeFromId($id)
+    {
+        // make sure that we produce a valid column name for the index table
+        $id = (int) $id;
+        return 'badge_' . $id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInternalCode()
+    {
+        return static::getInternalCodeFromId($this->getId());
+    }
+
 }

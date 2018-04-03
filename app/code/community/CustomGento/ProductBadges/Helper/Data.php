@@ -5,7 +5,6 @@ class CustomGento_ProductBadges_Helper_Data
 {
 
     CONST CUSTOMGENTO_PRODUCT_BADGES_ENABLED_XML_CONFIG_PATH = 'customgento_productbadges_global_config/general/enabled';
-    CONST CUSTOMGENTO_PRODUCT_BADGES_AUTOMATIC_REINDEX_XML_CONFIG_PATH = 'customgento_productbadges_global_config/general/automatic_reindex';
 
     /** @var array */
     private $_productBadgesData;
@@ -41,6 +40,12 @@ class CustomGento_ProductBadges_Helper_Data
             return '';
         }
 
+        $badgesCacheHtml = $this->_getBadgeCacheModel()->getProductBadgesCache($product->getId());
+
+        if (!empty($badgesCacheHtml)) {
+            return $badgesCacheHtml;
+        }
+
         $badges = isset($this->_productBadgesData[$product->getId()]) ? $this->_productBadgesData[$product->getId()]
             : array();
         $badges = $this->_filerBadgesData($badges);
@@ -57,6 +62,12 @@ class CustomGento_ProductBadges_Helper_Data
     {
         if (!$this->isEnabled()) {
             return '';
+        }
+
+        $badgesCacheHtml = $this->_getBadgeCacheModel()->getProductBadgesCache($product->getId());
+
+        if (!empty($badgesCacheHtml)) {
+            return $badgesCacheHtml;
         }
 
         /** @var CustomGento_ProductBadges_Model_ProductBadgeMatcher $productBadgeMatcher */
@@ -79,11 +90,6 @@ class CustomGento_ProductBadges_Helper_Data
     public function isEnabled()
     {
         return Mage::getStoreConfigFlag(self::CUSTOMGENTO_PRODUCT_BADGES_ENABLED_XML_CONFIG_PATH);
-    }
-
-    public function shouldAutomaticallyReindexAfterBadgeSave()
-    {
-        return Mage::getStoreConfigFlag(self::CUSTOMGENTO_PRODUCT_BADGES_AUTOMATIC_REINDEX_XML_CONFIG_PATH);
     }
 
     /**
@@ -111,6 +117,14 @@ class CustomGento_ProductBadges_Helper_Data
         $badgesBlock->init($badges, $productId);
 
         return $badgesBlock;
+    }
+
+    /**
+     * @return CustomGento_ProductBadges_Model_Cache
+     */
+    protected function _getBadgeCacheModel()
+    {
+        return Mage::getModel('customgento_productbadges/cache');
     }
 
 }

@@ -16,11 +16,13 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
 
     /**
      * @param int $storeId
-     * @return CustomGento_ProductBadges_Model_Indexer_ProductBadges
+     * @return CustomGento_ProductBadges_Model_Scanner_ProductBadges
      */
     protected function _spawnProductBadges($storeId)
     {
-        return Mage::getModel('customgento_productbadges/indexer_productBadges', $storeId);
+        /** @var CustomGento_ProductBadges_Model_Scanner_ProductBadges $productBadgesScanner */
+        $productBadgesScanner = Mage::getModel('customgento_productbadges/scanner_productBadges');
+        return $productBadgesScanner->init($storeId);
     }
 
     private $_badgesIndexTableNamePrefix = 'customgento_productbadges_badges_index_';
@@ -57,7 +59,8 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
     /**
      * Rebuild Catalog Product Flat Data
      *
-     * @param Mage_Core_Model_Store|int $store
+     * @param Mage_Core_Model_Store $store
+     * @param array $productIds
      * @return Mage_Catalog_Model_Resource_Product_Flat_Indexer
      */
     public function rebuild($store = null, $productIds = array())
@@ -68,7 +71,7 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
             /** @var Mage_Core_Model_Store $store */
             foreach (Mage::app()->getStores() as $store) {
                 if ($store->getIsActive()) {
-                    $this->rebuild($store->getId(), $productIds);
+                    $this->rebuild($store, $productIds);
                 } else {
                     $notActiveStores[] = $store;
                 }
@@ -76,13 +79,13 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
 
             // Cleaning index tables for non active stores
             foreach ($notActiveStores as $store) {
-                $this->dropIndexTableForStore($store);
+                $this->dropIndexTableByStoreId($store->getId());
             }
 
             return $this;
         }
 
-        $storeId = (int)Mage::app()->getStore($store)->getId();
+        $storeId = (int) $store->getId();
 
         $productBadges = $this->_spawnProductBadges($storeId);
 
@@ -116,8 +119,6 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
                 }
             }
 
-            //print_r($preparedForInsertData);
-
             if (count($preparedForInsertData) > 0) {
                 // Update / Insert new Badges
                 $insertedRows = $this->_getWriteAdapter()->insertOnDuplicate(
@@ -128,13 +129,6 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
 
             //Delete badges that should not be presented anymore
             $deletedRows = $this->_deleteOutdatedBadges($storeId, $badgesData, $preparedForInsertData);
-        }
-        if (!empty($productIds)) {
-            foreach ($productIds as $productId) {
-                Mage::getModel('core/cache')->clean(array('PRODUCT_BADGES_PRODUCT_' . $productId));
-            }
-        } else {
-            Mage::getModel('core/cache')->clean(array('PRODUCT_BADGES_PRODUCT'));
         }
         return $this;
     }
@@ -168,11 +162,11 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
     /**
      * Retrieve catalog product flat columns array in DDL format
      *
-     * @param CustomGento_ProductBadges_Model_Indexer_ProductBadges $productBadges
+     * @param CustomGento_ProductBadges_Model_Scanner_ProductBadges $productBadges
      *
      * @return array
      */
-    protected function getFlatColumns(CustomGento_ProductBadges_Model_Indexer_ProductBadges $productBadges)
+    protected function getFlatColumns(CustomGento_ProductBadges_Model_Scanner_ProductBadges $productBadges)
     {
         $columns = array();
 
@@ -239,12 +233,12 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
      * Prepare flat table for store
      *
      * @param int $storeId
-     * @param CustomGento_ProductBadges_Model_Indexer_ProductBadges $productBadges
+     * @param CustomGento_ProductBadges_Model_Scanner_ProductBadges $productBadges
      *
      * @throws Mage_Core_Exception
      * @return Mage_Catalog_Model_Resource_Product_Flat_Indexer
      */
-    public function prepareFlatTable($storeId, CustomGento_ProductBadges_Model_Indexer_ProductBadges $productBadges)
+    public function prepareFlatTable($storeId, CustomGento_ProductBadges_Model_Scanner_ProductBadges $productBadges)
     {
         if (isset($this->_preparedFlatTables[$storeId])) {
             return $this;
@@ -316,11 +310,37 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
     }
 
     /**
-     * @param Mage_Core_Model_Store $store
+     * Scan all index table for a badge and if badge exists write 0 for all products
+     *
+     * @param string $code
+     *
+     * @return $this
      */
-    public function dropIndexTableForStore(Mage_Core_Model_Store $store)
+    public function badgeDisablingReindex($code)
     {
-        $tableName = $this->getFlatTableName($store->getId());
+        /** @var Mage_Core_Model_Store $store */
+        foreach (Mage::app()->getStores() as $store) {
+            if ($store->getIsActive()) {
+                $tableName = $this->getFlatTableName($store->getId());
+                if ($this->_getWriteAdapter()->isTableExists($tableName)) {
+                    $describe = $this->_getWriteAdapter()->describeTable($tableName);
+                    if (array_key_exists($code, $describe)) {
+                        // Write 0 for and make the badge not active, soft disable
+                        $this->_getWriteAdapter()->update($tableName, array($code => 0));
+                    }
+                }
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param int $storeId
+     */
+    public function dropIndexTableByStoreId($storeId)
+    {
+        $tableName = $this->getFlatTableName($storeId);
         /**
          * This does "DROP TABLE IF EXISTS" so we don't have
          * to be worried if the table does not exist
