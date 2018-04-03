@@ -61,7 +61,7 @@ class CustomGento_ProductBadges_Helper_RenderTypeConfig
     {
         $badgeConfigCollection = Mage::getModel('customgento_productbadges/badgeConfig')
             ->getCollection()
-            ->addFieldToSelect(array('render_type', 'internal_code'));
+            ->addFieldToSelect('render_type');
 
         if (false === $this->_renderTypesMapping) {
             /** @var CustomGento_ProductBadges_Model_BadgeConfig $badgeConfig */

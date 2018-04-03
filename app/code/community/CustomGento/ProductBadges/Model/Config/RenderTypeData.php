@@ -18,7 +18,6 @@ class CustomGento_ProductBadges_Model_Config_RenderTypeData
                     array(
                         'badge_text',
                         'render_type',
-                        'internal_code',
                         'badge_image',
                         'badge_background_color',
                         'badge_text_color',

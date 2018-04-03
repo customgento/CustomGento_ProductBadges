@@ -78,8 +78,7 @@ class CustomGento_ProductBadges_Model_Scanner_ProductBadges
         if (count($this->_badgeCodes) === 0) {
             /** @var CustomGento_ProductBadges_Model_BadgeConfig $badgeConfig */
             foreach ($this->_badgeConfigsCollection as $badgeConfig) {
-                //@todo get real badge code, it should be unique
-                $this->_badgeCodes[] = trim($badgeConfig->getInternalCode());
+                $this->_badgeCodes[] = $badgeConfig->getInternalCode();
             }
         }
 
