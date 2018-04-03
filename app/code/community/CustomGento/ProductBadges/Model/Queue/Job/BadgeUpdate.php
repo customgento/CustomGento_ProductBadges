@@ -29,7 +29,6 @@ class CustomGento_ProductBadges_Model_Queue_Job_BadgeUpdate
      */
     public function processJobAction(array $data)
     {
-
         $newData  = $data['new_data'];
         $origData = $data['orig_data'];
 
@@ -59,10 +58,11 @@ class CustomGento_ProductBadges_Model_Queue_Job_BadgeUpdate
             }
         }
 
+        $internalCode = CustomGento_ProductBadges_Model_BadgeConfig::getInternalCodeFromId($origData['badge_config_id']);
 
         if ($this->_wasBadgeDisabled($newData, $origData)) {
-            $this->_getProductBadgesIndexerResource()->badgeDisablingReindex($origData['internal_code']);
-            $this->_getCacheModel()->clearCacheForBadge($origData['internal_code']);
+            $this->_getProductBadgesIndexerResource()->badgeDisablingReindex($internalCode);
+            $this->_getCacheModel()->clearCacheForBadge($internalCode);
             return $this;
         }
 
@@ -81,7 +81,7 @@ class CustomGento_ProductBadges_Model_Queue_Job_BadgeUpdate
         }
 
         if ($isDesignChanged) {
-            $this->_getCacheModel()->clearCacheForBadge($origData['internal_code']);
+            $this->_getCacheModel()->clearCacheForBadge($internalCode);
         }
 
         return $this;
