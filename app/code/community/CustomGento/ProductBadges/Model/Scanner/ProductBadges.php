@@ -1,15 +1,7 @@
 <?php
 
-class CustomGento_ProductBadges_Model_Indexer_ProductBadges extends Mage_Index_Model_Indexer_Abstract
+class CustomGento_ProductBadges_Model_Scanner_ProductBadges
 {
-
-    protected $_matchedEntities
-        = array(
-            Mage_Catalog_Model_Product::ENTITY => array(
-                Mage_Index_Model_Event::TYPE_SAVE,
-                Mage_Index_Model_Event::TYPE_MASS_ACTION
-            ),
-        );
 
     protected $_chunkSize = 500;
 
@@ -28,7 +20,12 @@ class CustomGento_ProductBadges_Model_Indexer_ProductBadges extends Mage_Index_M
     /** @var CustomGento_ProductBadges_Model_Resource_BadgeConfig_Collection */
     private $_badgeConfigsCollection;
 
-    public function __construct($storeId)
+    /**
+     * @param $storeId
+     *
+     * @return CustomGento_ProductBadges_Model_Scanner_ProductBadges
+     */
+    public function init($storeId)
     {
         $this->_chunks      = $this->_getProductIdChunks($this->_chunkSize);
         $this->_chunksCount = count($this->_chunks);
@@ -38,34 +35,8 @@ class CustomGento_ProductBadges_Model_Indexer_ProductBadges extends Mage_Index_M
 
         $this->_badgeConfigsCollection = $badgeConfigsCollection
             ->addFiltersNeededForIndexer($storeId);
-        $this->_init('customgento_productbadges/indexer_productBadges');
-    }
 
-    protected function _registerEvent(Mage_Index_Model_Event $event)
-    {
-    }
-
-    public function getName()
-    {
-        return 'CustomGento Product Badges';
-    }
-
-    public function getDescription()
-    {
-        return 'Index product badges';
-    }
-
-    protected function _processEvent(Mage_Index_Model_Event $event)
-    {
-        if ($event->getEntity() == Mage_Catalog_Model_Product::ENTITY
-            && $event->getType() == Mage_Index_Model_Event::TYPE_SAVE) {
-            $productId = $event->getDataObject()->getId();
-            $this->getResource()->rebuild(null, array($productId));
-        } else if ($event->getEntity() == Mage_Catalog_Model_Product::ENTITY
-            && $event->getType() == Mage_Index_Model_Event::TYPE_MASS_ACTION) {
-            $productIds = $event->getDataObject()->getProductIds();
-            $this->getResource()->rebuild(null, $productIds);
-        }
+        return $this;
     }
 
     public function fetchBadges($productIds = array())
