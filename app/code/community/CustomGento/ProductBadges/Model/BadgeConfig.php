@@ -59,65 +59,41 @@ class CustomGento_ProductBadges_Model_BadgeConfig
      * Get array of product ids which are matched by rule
      * @param int $fromId
      * @param int $toId
+     * @param int $storeId
      *
      * @return array Matching product IDs
      * @throws CustomGento_ProductBadges_Exception_Transform
      */
-    public function getMatchingProductIds($fromId, $toId)
+    public function getMatchingProductIds($fromId, $toId, $storeId)
     {
         $this->log('Start matching products for rule');
 
-        $storeId = 1;
-
-        $productIds = array();
         $this->setCollectedAttributes(array());
-        //$websiteIds = explode(',', $this->getWebsiteIds());
-        $websiteIds = array(1);
 
-        if ($websiteIds) {
-            /** @var Mage_Catalog_Model_Resource_Product_Collection $productCollection */
-            $productCollection = clone Mage::getResourceModel('catalog/product_collection');
-            $productCollection->addAttributeToSelect('entity_id');
-            $productCollection->addAttributeToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED);
-            $productCollection->addAttributeToFilter('visibility',
-                Mage::getSingleton('catalog/product_visibility')->getVisibleInCatalogIds());
-            $productCollection->addWebsiteFilter($websiteIds);
+        /** @var Mage_Catalog_Model_Resource_Product_Collection $productCollection */
+        $productCollection = clone Mage::getResourceModel('catalog/product_collection');
+        $productCollection->addAttributeToSelect('entity_id');
+        $productCollection->addAttributeToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED);
+        $productCollection->addAttributeToFilter('visibility',
+            Mage::getSingleton('catalog/product_visibility')->getVisibleInCatalogIds());
 
-            $this->getConditions()->collectValidatedAttributes($productCollection);
+        $productCollection->addStoreFilter($storeId);
 
-//            try {
-                $select = $productCollection->getSelect();
-                $select
-                    ->where('`e`.`entity_id` >= ?', $fromId)
-                    ->where('`e`.`entity_id` <= ?', $toId);
-                // only apply the filter if conditions have been defined! otherwise, all products should be matched
-                $conditions = $this->getConditions();
-                if (!empty($conditions->getConditions())) {
-                    $select->where($this->transformConditionToSql($conditions, $storeId, $fromId, $toId));
-                }
+        $this->getConditions()->collectValidatedAttributes($productCollection);
 
-                $this->log('SQL: ' . $select);
-                $productIds = $productCollection->getAllIds();
-//            } catch (Exception $e) {
-//                Mage::logException($e);
-//                $this->log('Exception: ' . $e, Zend_Log::ERR);
-//
-//                $productCollection = clone Mage::getResourceModel('catalog/product_collection');
-//                $productCollection->addWebsiteFilter($websiteIds);
-//
-//                $this->getConditions()->collectValidatedAttributes($productCollection);
-//
-//                // Fallback to default implementation
-//                Mage::getSingleton('core/resource_iterator')->walk(
-//                    $productCollection->getSelect(),
-//                    array(array($this, 'callbackValidateProduct')),
-//                    array(
-//                        'attributes' => $this->getCollectedAttributes(),
-//                        'product' => Mage::getModel('catalog/product'),
-//                    )
-//                );
-//            }
+        $select = $productCollection->getSelect();
+        $select
+            ->where('`e`.`entity_id` >= ?', $fromId)
+            ->where('`e`.`entity_id` <= ?', $toId);
+        // only apply the filter if conditions have been defined! otherwise, all products should be matched
+        $conditions = $this->getConditions();
+        if (!empty($conditions->getConditions())) {
+            $select->where($this->transformConditionToSql($conditions, $storeId, $fromId, $toId));
         }
+
+        $this->log('SQL: ' . $select);
+
+        $productIds = $productCollection->getAllIds();
 
         $this->log('Finish matching products');
 
