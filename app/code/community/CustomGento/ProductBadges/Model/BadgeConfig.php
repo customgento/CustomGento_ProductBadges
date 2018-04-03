@@ -54,7 +54,6 @@ class CustomGento_ProductBadges_Model_BadgeConfig
     }
 
 
-    //Test code
     /**
      * Get array of product ids which are matched by rule
      * @param int $fromId
@@ -158,9 +157,6 @@ class CustomGento_ProductBadges_Model_BadgeConfig
             case CustomGento_ProductBadges_Model_Rule_Condition_Product_StockStatus::ATTRIBUTE_NAME === $attribute->getAttributeCode():
                 $transformer = 'stockstatus';
                 break;
-//            case CustomGento_ProductBadges_Model_Rule_Condition_Vitafy_Discount::ATTRIBUTE_NAME == $attribute->getAttributeCode():
-//                $transformer = 'discountAmount';
-//                break;
             default:
                 $transformer = 'store';
                 break;
