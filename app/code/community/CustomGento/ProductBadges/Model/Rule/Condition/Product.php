@@ -63,9 +63,7 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product
         $attributes = array();
         foreach ($productAttributes as $attribute) {
             /* @var $attribute Mage_Catalog_Model_Resource_Eav_Attribute */
-            if ($attribute->isAllowedForRuleCondition()
-                && $attribute->getDataUsingMethod('is_used_for_promo_rules')
-            ) {
+            if ($attribute->isAllowedForRuleCondition()) {
                 $attributes[$attribute->getAttributeCode()] = $attribute->getFrontendLabel();
             }
         }
