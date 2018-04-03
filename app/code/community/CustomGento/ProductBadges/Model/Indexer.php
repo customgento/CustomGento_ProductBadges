@@ -11,6 +11,11 @@ class CustomGento_ProductBadges_Model_Indexer
             ),
         );
 
+    protected function _construct()
+    {
+        $this->_init('customgento_productbadges/indexer_productBadges');
+    }
+
     protected function _registerEvent(Mage_Index_Model_Event $event)
     {
     }
