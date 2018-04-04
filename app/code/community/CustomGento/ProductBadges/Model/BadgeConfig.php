@@ -68,7 +68,7 @@ class CustomGento_ProductBadges_Model_BadgeConfig
         $this->setCollectedAttributes(array());
 
         /** @var Mage_Catalog_Model_Resource_Product_Collection $productCollection */
-        $productCollection = clone Mage::getResourceModel('catalog/product_collection');
+        $productCollection = Mage::getResourceModel('catalog/product_collection');
         $productCollection->addAttributeToSelect('entity_id');
         $productCollection->addAttributeToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED);
         $productCollection->addAttributeToFilter('visibility',
@@ -87,7 +87,7 @@ class CustomGento_ProductBadges_Model_BadgeConfig
         if (!empty($conditions->getConditions())) {
             $select->where($this->transformConditionToSql($conditions, $storeId, $fromId, $toId));
         }
-        
+
         $productIds = $productCollection->getAllIds();
 
         return $productIds;
