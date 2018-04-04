@@ -65,8 +65,6 @@ class CustomGento_ProductBadges_Model_BadgeConfig
      */
     public function getMatchingProductIds($fromId, $toId, $storeId)
     {
-        $this->log('Start matching products for rule');
-
         $this->setCollectedAttributes(array());
 
         /** @var Mage_Catalog_Model_Resource_Product_Collection $productCollection */
@@ -89,12 +87,8 @@ class CustomGento_ProductBadges_Model_BadgeConfig
         if (!empty($conditions->getConditions())) {
             $select->where($this->transformConditionToSql($conditions, $storeId, $fromId, $toId));
         }
-
-        $this->log('SQL: ' . $select);
-
+        
         $productIds = $productCollection->getAllIds();
-
-        $this->log('Finish matching products');
 
         return $productIds;
     }
