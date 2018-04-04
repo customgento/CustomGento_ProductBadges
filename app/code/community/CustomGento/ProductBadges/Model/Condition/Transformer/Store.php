@@ -6,16 +6,16 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_Store
     /**
      * @inheritdoc
      */
-    public function transform(Mage_Rule_Model_Condition_Product_Abstract $condition, $storeId, $fromId, $toId)
+    public function transform(Mage_Rule_Model_Condition_Product_Abstract $condition, $fromId, $toId, $storeId)
     {
         $attribute = $condition->getAttributeObject();
 
         // Case when attribute has store scope
         if ($attribute->isScopeStore()) {
 
-            $storeMatchesData = $this->_getMatchesForStoreView($attribute, $condition, $storeId, $fromId, $toId);
+            $storeMatchesData = $this->_getMatchesForStoreView($attribute, $condition, $fromId, $toId, $storeId);
 
-            $alreadyExistInStoreViewIds = $this->_getExistingInStoreScope($attribute, $storeId, $fromId, $toId);
+            $alreadyExistInStoreViewIds = $this->_getExistingInStoreScope($attribute, $fromId, $toId, $storeId);
 
             $defaultStoreMatchesData = $this->_getExistingInDefaultScope($attribute, $condition, $fromId, $toId, $alreadyExistInStoreViewIds);
 
@@ -92,18 +92,18 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_Store
     /**
      * @param $attribute
      * @param Mage_Rule_Model_Condition_Product_Abstract $condition
-     * @param $storeId
      * @param $fromId
      * @param $toId
+     * @param $storeId
      *
      * @return array
      */
     private function _getMatchesForStoreView(
         Mage_Catalog_Model_Resource_Eav_Attribute $attribute,
         Mage_Rule_Model_Condition_Product_Abstract $condition,
-        $storeId,
         $fromId,
-        $toId
+        $toId,
+        $storeId
     )
     {
         $storeViewSelect = new Zend_Db_Select($this->getDbAdapter());
@@ -121,17 +121,17 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_Store
 
     /**
      * @param Mage_Catalog_Model_Resource_Eav_Attribute $attribute
-     * @param int $storeId
      * @param int $fromId
      * @param int $toId
+     * @param int $storeId
      *
      * @return array
      */
     private function _getExistingInStoreScope(
         Mage_Catalog_Model_Resource_Eav_Attribute $attribute,
-        $storeId,
         $fromId,
-        $toId
+        $toId,
+        $storeId
     )
     {
         // Search for NON candidates for search in default Store View Id

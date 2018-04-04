@@ -85,7 +85,7 @@ class CustomGento_ProductBadges_Model_BadgeConfig
         // only apply the filter if conditions have been defined! otherwise, all products should be matched
         $conditions = $this->getConditions();
         if (!empty($conditions->getConditions())) {
-            $select->where($this->transformConditionToSql($conditions, $storeId, $fromId, $toId));
+            $select->where($this->transformConditionToSql($conditions, $fromId, $toId, $storeId));
         }
 
         $productIds = $productCollection->getAllIds();
@@ -97,20 +97,20 @@ class CustomGento_ProductBadges_Model_BadgeConfig
      * Transform rule condition to sql
      *
      * @param Mage_Rule_Model_Condition_Abstract $condition Rule condition $condition
-     * @param int $storeId
      * @param int $fromId
      * @param int $toId
+     * @param int $storeId
      *
      * @return Zend_Db_Expr
      * @throws CustomGento_ProductBadges_Exception_Transform
      */
-    protected function transformConditionToSql(Mage_Rule_Model_Condition_Abstract $condition, $storeId, $fromId, $toId)
+    protected function transformConditionToSql(Mage_Rule_Model_Condition_Abstract $condition, $fromId, $toId, $storeId)
     {
 
         switch (true) {
             case $condition instanceof Mage_Rule_Model_Condition_Combine:
-                $conditions = array_map(Closure::bind(function(Mage_Rule_Model_Condition_Abstract $condition) use ($storeId, $fromId, $toId) {
-                    return $this->transformConditionToSql($condition, $storeId, $fromId, $toId);
+                $conditions = array_map(Closure::bind(function(Mage_Rule_Model_Condition_Abstract $condition) use ($fromId, $toId, $storeId) {
+                    return $this->transformConditionToSql($condition, $fromId, $toId, $storeId);
                 }, $this) , $condition->getConditions());
 
                 $operator = $condition->getData('aggregator') === 'all' ? 'AND' : 'OR';
@@ -118,7 +118,7 @@ class CustomGento_ProductBadges_Model_BadgeConfig
                 return new \Zend_Db_Expr('(' . implode(") {$operator} (", $conditions) . ')');
             case $condition instanceof Mage_Rule_Model_Condition_Product_Abstract:
 
-                return $this->transformProductConditionToSql($condition, $storeId, $fromId, $toId);
+                return $this->transformProductConditionToSql($condition, $fromId, $toId, $storeId);
             default:
                 $conditionClass = get_class($condition);
                 throw new CustomGento_ProductBadges_Exception_Transform("Invalid '{$conditionClass}' condition.");
@@ -129,14 +129,14 @@ class CustomGento_ProductBadges_Model_BadgeConfig
      * Transform product rule condition to sql
      *
      * @param Mage_Rule_Model_Condition_Product_Abstract $condition Rule condition
-     * @param int $storeId
      * @param int $fromId
      * @param int $toId
+     * @param int $storeId
      *
      * @return Zend_Db_Expr
      * @throws CustomGento_ProductBadges_Exception_Transform
      */
-    protected function transformProductConditionToSql(Mage_Rule_Model_Condition_Product_Abstract $condition, $storeId, $fromId, $toId)
+    protected function transformProductConditionToSql(Mage_Rule_Model_Condition_Product_Abstract $condition, $fromId, $toId, $storeId)
     {
         $attribute = $condition->getAttributeObject();
         $transformer = null;
@@ -163,7 +163,7 @@ class CustomGento_ProductBadges_Model_BadgeConfig
             throw new CustomGento_ProductBadges_Exception_Transform("Couldn't transform condition!");
         }
 
-        return $transformer->transform($condition, $storeId, $fromId, $toId);
+        return $transformer->transform($condition, $fromId, $toId, $storeId);
     }
 
     /**

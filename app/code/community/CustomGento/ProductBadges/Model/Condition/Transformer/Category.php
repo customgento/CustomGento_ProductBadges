@@ -6,7 +6,7 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_Category
     /**
      * @inheritdoc
      */
-    public function transform(Mage_Rule_Model_Condition_Product_Abstract $condition, $storeId, $fromId, $toId)
+    public function transform(Mage_Rule_Model_Condition_Product_Abstract $condition, $fromId, $toId, $storeId)
     {
         $value = $condition->getValueParsed();
         $operator = $condition->getOperatorForValidate();
