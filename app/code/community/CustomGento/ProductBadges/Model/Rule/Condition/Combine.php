@@ -16,9 +16,6 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Combine
 
         $attributes = array();
         foreach ($productAttributes as $code => $label) {
-            /**
-             * Workaround for Vitafy catalog rule rewrite
-             */
             $class = 'customgento_productbadges/rule_condition_product_baseCondition';
 
             $attributes[] = array(

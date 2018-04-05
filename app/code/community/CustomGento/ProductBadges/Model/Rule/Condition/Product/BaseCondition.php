@@ -3,20 +3,6 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product_BaseCondition
     //@todo I have to check if I can get rid of this inheritance
     extends CustomGento_ProductBadges_Model_Rule_Condition_Product
 {
-    /**
-     * Add special attributes
-     *
-     * @param array $attributes
-     */
-//    protected function _addSpecialAttributes(array &$attributes)
-//    {
-//        parent::_addSpecialAttributes($attributes);
-
-//        $attributes['price'] = Mage::helper('customgento_productbadges')->__('Price');
-//        $attributes['type_id'] = Mage::helper('customgento_productbadges')->__('Product Type');
-//        $attributes[CustomGento_ProductBadges_Model_Rule_Condition_Vitafy_Stock::ATTRIBUTE_NAME] = Mage::helper('customgento_productbadges')->__('Stock Status');
-//        $attributes[CustomGento_ProductBadges_Model_Rule_Condition_Vitafy_Discount::ATTRIBUTE_NAME] = Mage::helper('customgento_productbadges')->__('Discount amount (%)');
-//    }
 
     /**
      * Retrieve input type

@@ -20,6 +20,9 @@ class CustomGento_ProductBadges_Model_Scanner_ProductBadges
     /** @var CustomGento_ProductBadges_Model_Resource_BadgeConfig_Collection */
     private $_badgeConfigsCollection;
 
+    /** @var int */
+    private $_storeId;
+
     /**
      * @param $storeId
      *
@@ -27,6 +30,8 @@ class CustomGento_ProductBadges_Model_Scanner_ProductBadges
      */
     public function init($storeId)
     {
+        $this->_storeId = $storeId;
+
         $this->_chunks      = $this->_getProductIdChunks($this->_chunkSize);
         $this->_chunksCount = count($this->_chunks);
 
@@ -61,7 +66,7 @@ class CustomGento_ProductBadges_Model_Scanner_ProductBadges
             $badgeCode = trim($badgeConfig->getInternalCode());
 
             $productMappingBadges['found_badges'][$badgeCode] = $badgeConfig
-                ->getMatchingProductIds($productIdRanges['from'], $productIdRanges['to']);
+                ->getMatchingProductIds($productIdRanges['from'], $productIdRanges['to'], $this->_storeId);
         }
 
         $productMappingBadges['product_id_scanned_from'] = $productIdRanges['from'];

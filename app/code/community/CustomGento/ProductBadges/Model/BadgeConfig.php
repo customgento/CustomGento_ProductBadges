@@ -54,70 +54,41 @@ class CustomGento_ProductBadges_Model_BadgeConfig
     }
 
 
-    //Test code
     /**
      * Get array of product ids which are matched by rule
      * @param int $fromId
      * @param int $toId
+     * @param int $storeId
      *
      * @return array Matching product IDs
      * @throws CustomGento_ProductBadges_Exception_Transform
      */
-    public function getMatchingProductIds($fromId, $toId)
+    public function getMatchingProductIds($fromId, $toId, $storeId)
     {
-        $this->log('Start matching products for rule');
-
-        $productIds = array();
         $this->setCollectedAttributes(array());
-        //$websiteIds = explode(',', $this->getWebsiteIds());
-        $websiteIds = array(1);
 
-        if ($websiteIds) {
-            /** @var Mage_Catalog_Model_Resource_Product_Collection $productCollection */
-            $productCollection = clone Mage::getResourceModel('catalog/product_collection');
-            $productCollection->addAttributeToSelect('entity_id');
-            $productCollection->addAttributeToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED);
-            $productCollection->addAttributeToFilter('visibility',
-                Mage::getSingleton('catalog/product_visibility')->getVisibleInCatalogIds());
-            $productCollection->addWebsiteFilter($websiteIds);
+        /** @var Mage_Catalog_Model_Resource_Product_Collection $productCollection */
+        $productCollection = Mage::getResourceModel('catalog/product_collection');
+        $productCollection->addAttributeToSelect('entity_id');
+        $productCollection->addAttributeToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED);
+        $productCollection->addAttributeToFilter('visibility',
+            Mage::getSingleton('catalog/product_visibility')->getVisibleInCatalogIds());
 
-            $this->getConditions()->collectValidatedAttributes($productCollection);
+        $productCollection->addStoreFilter($storeId);
 
-//            try {
-                $select = $productCollection->getSelect();
-                $select
-                    ->where('`e`.`entity_id` >= ?', $fromId)
-                    ->where('`e`.`entity_id` <= ?', $toId);
-                // only apply the filter if conditions have been defined! otherwise, all products should be matched
-                $conditions = $this->getConditions();
-                if (!empty($conditions->getConditions())) {
-                    $select->where($this->transformConditionToSql($conditions));
-                }
+        $this->getConditions()->collectValidatedAttributes($productCollection);
 
-                $this->log('SQL: ' . $select);
-                $productIds = $productCollection->getAllIds();
-//            } catch (Exception $e) {
-//                Mage::logException($e);
-//                $this->log('Exception: ' . $e, Zend_Log::ERR);
-//
-//                $productCollection = clone Mage::getResourceModel('catalog/product_collection');
-//                $productCollection->addWebsiteFilter($websiteIds);
-//
-//                $this->getConditions()->collectValidatedAttributes($productCollection);
-//
-//                // Fallback to default implementation
-//                Mage::getSingleton('core/resource_iterator')->walk(
-//                    $productCollection->getSelect(),
-//                    array(array($this, 'callbackValidateProduct')),
-//                    array(
-//                        'attributes' => $this->getCollectedAttributes(),
-//                        'product' => Mage::getModel('catalog/product'),
-//                    )
-//                );
-//            }
+        $select = $productCollection->getSelect();
+        $select
+            ->where('`e`.`entity_id` >= ?', $fromId)
+            ->where('`e`.`entity_id` <= ?', $toId);
+        // only apply the filter if conditions have been defined! otherwise, all products should be matched
+        $conditions = $this->getConditions();
+        if (!empty($conditions->getConditions())) {
+            $select->where($this->transformConditionToSql($conditions, $fromId, $toId, $storeId));
         }
 
-        $this->log('Finish matching products');
+        $productIds = $productCollection->getAllIds();
 
         return $productIds;
     }
@@ -125,25 +96,29 @@ class CustomGento_ProductBadges_Model_BadgeConfig
     /**
      * Transform rule condition to sql
      *
-     * @param Mage_Rule_Model_Condition_Abstract $condition Rule condition
+     * @param Mage_Rule_Model_Condition_Abstract $condition Rule condition $condition
+     * @param int $fromId
+     * @param int $toId
+     * @param int $storeId
      *
      * @return Zend_Db_Expr
      * @throws CustomGento_ProductBadges_Exception_Transform
      */
-    protected function transformConditionToSql(Mage_Rule_Model_Condition_Abstract $condition)
+    protected function transformConditionToSql(Mage_Rule_Model_Condition_Abstract $condition, $fromId, $toId, $storeId)
     {
+
         switch (true) {
             case $condition instanceof Mage_Rule_Model_Condition_Combine:
-                $conditions = array_map(Closure::bind(function(Mage_Rule_Model_Condition_Abstract $condition) {
-                    return $this->transformConditionToSql($condition);
-                }, $this), $condition->getConditions());
+                $conditions = array_map(Closure::bind(function(Mage_Rule_Model_Condition_Abstract $condition) use ($fromId, $toId, $storeId) {
+                    return $this->transformConditionToSql($condition, $fromId, $toId, $storeId);
+                }, $this) , $condition->getConditions());
 
                 $operator = $condition->getData('aggregator') === 'all' ? 'AND' : 'OR';
 
                 return new \Zend_Db_Expr('(' . implode(") {$operator} (", $conditions) . ')');
             case $condition instanceof Mage_Rule_Model_Condition_Product_Abstract:
 
-                return $this->transformProductConditionToSql($condition);
+                return $this->transformProductConditionToSql($condition, $fromId, $toId, $storeId);
             default:
                 $conditionClass = get_class($condition);
                 throw new CustomGento_ProductBadges_Exception_Transform("Invalid '{$conditionClass}' condition.");
@@ -154,11 +129,14 @@ class CustomGento_ProductBadges_Model_BadgeConfig
      * Transform product rule condition to sql
      *
      * @param Mage_Rule_Model_Condition_Product_Abstract $condition Rule condition
+     * @param int $fromId
+     * @param int $toId
+     * @param int $storeId
      *
      * @return Zend_Db_Expr
      * @throws CustomGento_ProductBadges_Exception_Transform
      */
-    protected function transformProductConditionToSql(Mage_Rule_Model_Condition_Product_Abstract $condition)
+    protected function transformProductConditionToSql(Mage_Rule_Model_Condition_Product_Abstract $condition, $fromId, $toId, $storeId)
     {
         $attribute = $condition->getAttributeObject();
         $transformer = null;
@@ -167,20 +145,14 @@ class CustomGento_ProductBadges_Model_BadgeConfig
             case 'category_ids' === $attribute->getAttributeCode():
                 $transformer = 'category';
                 break;
-            case 'type_id' == $attribute->getAttributeCode():
-                $transformer = 'global';
+            case $attribute->getData('backend_type') == 'static':
+                $transformer = 'static';
                 break;
             case CustomGento_ProductBadges_Model_Rule_Condition_Product_StockStatus::ATTRIBUTE_NAME === $attribute->getAttributeCode():
                 $transformer = 'stockstatus';
                 break;
-//            case CustomGento_ProductBadges_Model_Rule_Condition_Vitafy_Discount::ATTRIBUTE_NAME == $attribute->getAttributeCode():
-//                $transformer = 'discountAmount';
-//                break;
-            case !$attribute->isScopeGlobal():
-                $transformer = 'store';
-                break;
             default:
-                $transformer = 'global';
+                $transformer = 'store';
                 break;
         }
 
@@ -191,7 +163,7 @@ class CustomGento_ProductBadges_Model_BadgeConfig
             throw new CustomGento_ProductBadges_Exception_Transform("Couldn't transform condition!");
         }
 
-        return $transformer->transform($condition);
+        return $transformer->transform($condition, $fromId, $toId, $storeId);
     }
 
     /**
