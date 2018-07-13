@@ -68,6 +68,7 @@ class CustomGento_ProductBadges_Model_Config_RenderContainer
     {
         $badgeConfigCollection = Mage::getModel('customgento_productbadges/badgeConfig')
             ->getCollection()
+            ->addFieldToSelect('badge_config_id')
             ->addFieldToSelect('render_container');
 
         if (false === $this->_badgeRenderContainersMapping) {
