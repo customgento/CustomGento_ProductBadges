@@ -3,7 +3,6 @@
 class CustomGento_ProductBadges_Model_Rule_Condition_Combine
     extends Mage_CatalogRule_Model_Rule_Condition_Combine
 {
-
     /**
      * Get inherited conditions selectors
      *
@@ -11,7 +10,7 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Combine
      */
     public function getNewChildSelectOptions()
     {
-        $productCondition = Mage::getModel('customgento_productbadges/rule_condition_product_baseCondition');
+        $productCondition  = Mage::getModel('customgento_productbadges/rule_condition_product_baseCondition');
         $productAttributes = $productCondition->loadAttributeOptions()->getAttributeOption();
 
         $attributes = array();
@@ -30,8 +29,7 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Combine
         $rulesConfigs = $configHelper->getRulesConfigurations();
 
         /** @var CustomGento_ProductBadges_Model_Rule_Config $configModel */
-        foreach ($rulesConfigs as $configModel)
-        {
+        foreach ($rulesConfigs as $configModel) {
             $attributes[] = array(
                 'value' => $configModel->getConditionClass() . '|' . $configModel->getInternalCode(),
                 'label' => $configModel->getLabel()
@@ -66,8 +64,7 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Combine
     {
         $this->setAggregatorOption(
             array(
-                'all' => Mage::helper('rule')->__('ALL'),
-                //'any' => Mage::helper('rule')->__('ANY'),
+                'all' => Mage::helper('rule')->__('ALL')
             )
         );
 
@@ -84,8 +81,7 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Combine
     {
         $this->setValueOption(
             array(
-                1 => Mage::helper('rule')->__('TRUE'),
-                //0 => Mage::helper('rule')->__('FALSE'),
+                1 => Mage::helper('rule')->__('TRUE')
             )
         );
 

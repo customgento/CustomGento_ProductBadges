@@ -1,8 +1,8 @@
 <?php
+
 class CustomGento_ProductBadges_Model_Queue_Job_BadgeUpdate
     extends CustomGento_ProductBadges_Model_Queue_Job_Abstract
 {
-
     /**
      * Returns class alias for further usage later with Mage::getModel
      *
@@ -15,6 +15,7 @@ class CustomGento_ProductBadges_Model_Queue_Job_BadgeUpdate
 
     /**
      * @param Varien_Object $badgeConfig
+     *
      * @return array
      */
     public function getPreparedDataForJobAction(Varien_Object $badgeConfig)
@@ -36,6 +37,7 @@ class CustomGento_ProductBadges_Model_Queue_Job_BadgeUpdate
             // We rebuild all badges because there are too many edge cases
             $this->_getProductBadgesIndexerResource()->rebuild();
             $this->_getCacheModel()->clearAllBadgeCache();
+
             return $this;
         }
 
@@ -58,11 +60,13 @@ class CustomGento_ProductBadges_Model_Queue_Job_BadgeUpdate
             }
         }
 
-        $internalCode = CustomGento_ProductBadges_Model_BadgeConfig::getInternalCodeFromId($origData['badge_config_id']);
+        $internalCode
+            = CustomGento_ProductBadges_Model_BadgeConfig::getInternalCodeFromId($origData['badge_config_id']);
 
         if ($this->_wasBadgeDisabled($newData, $origData)) {
             $this->_getProductBadgesIndexerResource()->badgeDisablingReindex($internalCode);
             $this->_getCacheModel()->clearCacheForBadge($internalCode);
+
             return $this;
         }
 
@@ -70,6 +74,7 @@ class CustomGento_ProductBadges_Model_Queue_Job_BadgeUpdate
             // We rebuild all badges because there are too many edge cases
             $this->_getProductBadgesIndexerResource()->rebuild();
             $this->_getCacheModel()->clearAllBadgeCache();
+
             return $this;
         }
 
@@ -77,6 +82,7 @@ class CustomGento_ProductBadges_Model_Queue_Job_BadgeUpdate
             // We rebuild all badges because there are too many edge cases
             $this->_getProductBadgesIndexerResource()->rebuild();
             $this->_getCacheModel()->clearAllBadgeCache();
+
             return $this;
         }
 
@@ -176,7 +182,7 @@ class CustomGento_ProductBadges_Model_Queue_Job_BadgeUpdate
         return false;
     }
 
-    private function _wasBadgePeriodChanged(array $newData, array $oldData)
+    protected function _wasBadgePeriodChanged(array $newData, array $oldData)
     {
         return !($newData['from_date'] == $oldData['from_date'] && $newData['to_date'] == $oldData['to_date']);
     }
@@ -196,5 +202,4 @@ class CustomGento_ProductBadges_Model_Queue_Job_BadgeUpdate
     {
         return Mage::getResourceModel('customgento_productbadges/indexer_productBadges');
     }
-
 }

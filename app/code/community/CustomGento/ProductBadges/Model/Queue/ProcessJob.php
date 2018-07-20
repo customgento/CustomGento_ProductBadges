@@ -1,7 +1,7 @@
 <?php
+
 class CustomGento_ProductBadges_Model_Queue_ProcessJob
 {
-
     /**
      * @param CustomGento_ProductBadges_Model_Queue $queueEntry
      */
@@ -13,7 +13,6 @@ class CustomGento_ProductBadges_Model_Queue_ProcessJob
         $queueEntry->setStatus(CustomGento_ProductBadges_Model_Queue_Job::STATUS_RUNNING);
         $queueEntry->setExecutedAt(Mage::getSingleton('core/date')->gmtDate());
         $queueEntry->save();
-
 
         try {
             $processorModel = $queueEntry->getProcessorModel();
@@ -39,5 +38,4 @@ class CustomGento_ProductBadges_Model_Queue_ProcessJob
         }
 
     }
-
 }

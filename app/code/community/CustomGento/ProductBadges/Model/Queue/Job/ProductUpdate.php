@@ -1,8 +1,8 @@
 <?php
+
 class CustomGento_ProductBadges_Model_Queue_Job_ProductUpdate
     extends CustomGento_ProductBadges_Model_Queue_Job_Abstract
 {
-
     /**
      * Returns class alias for further usage later with Mage::getModel
      *
@@ -15,6 +15,7 @@ class CustomGento_ProductBadges_Model_Queue_Job_ProductUpdate
 
     /**
      * @param Varien_Object $product
+     *
      * @return array
      */
     public function getPreparedDataForJobAction(Varien_Object $product)
@@ -46,5 +47,4 @@ class CustomGento_ProductBadges_Model_Queue_Job_ProductUpdate
     {
         return Mage::getModel('customgento_productbadges/cache');
     }
-
 }

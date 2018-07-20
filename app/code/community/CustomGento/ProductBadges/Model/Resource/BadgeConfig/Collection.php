@@ -1,8 +1,8 @@
 <?php
+
 class CustomGento_ProductBadges_Model_Resource_BadgeConfig_Collection
     extends Mage_Core_Model_Resource_Db_Collection_Abstract
 {
-
     /**
      * Set resource model and determine field mapping
      */
@@ -18,15 +18,21 @@ class CustomGento_ProductBadges_Model_Resource_BadgeConfig_Collection
      */
     public function addFiltersNeededForIndexer($storeId)
     {
-        $now = Mage::getModel('core/date')->date('Y-m-d');
-        $this->addFieldToFilter('from_date', array(
-            array('null' => true),
-            array('lteq' => $now)
-        ));
-        $this->addFieldToFilter('to_date', array(
-            array('null' => true),
-            array('gteq' => $now)
-        ));
+        $now = Mage::getSingleton('core/date')->date('Y-m-d');
+        $this->addFieldToFilter(
+            'from_date',
+            array(
+                array('null' => true),
+                array('lteq' => $now)
+            )
+        );
+        $this->addFieldToFilter(
+            'to_date',
+            array(
+                array('null' => true),
+                array('gteq' => $now)
+            )
+        );
         $this->addFieldToFilter('is_active', 1);
 
 
@@ -37,6 +43,7 @@ class CustomGento_ProductBadges_Model_Resource_BadgeConfig_Collection
 
     /**
      * @param int $storeId
+     *
      * @return Zend_Db_Expr
      */
     protected function _getStoreMatchingExpression($storeId)
@@ -54,5 +61,4 @@ class CustomGento_ProductBadges_Model_Resource_BadgeConfig_Collection
 
         return new Zend_Db_Expr('(' . implode(') OR (', $storeExpression) . ')');
     }
-
 }

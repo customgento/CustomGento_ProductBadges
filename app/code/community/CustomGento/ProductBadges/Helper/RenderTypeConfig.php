@@ -1,8 +1,8 @@
 <?php
+
 class CustomGento_ProductBadges_Helper_RenderTypeConfig
     extends Mage_Core_Helper_Abstract
 {
-
     const CUSTOMGENTO_PRODUCTBADGES_RENDER_TYPE_CONFIG_XML_PATH = 'global/customgento_productbadges/renderer_types';
 
     /** @var array */
@@ -16,8 +16,8 @@ class CustomGento_ProductBadges_Helper_RenderTypeConfig
         $config = Mage::getConfig()
             ->getNode(self::CUSTOMGENTO_PRODUCTBADGES_RENDER_TYPE_CONFIG_XML_PATH);
 
-        if(!empty($config)) {
-            $this->_renderTypesConfigurations = (array) $config->asCanonicalArray();
+        if (!empty($config)) {
+            $this->_renderTypesConfigurations = (array)$config->asCanonicalArray();
         }
     }
 
@@ -55,6 +55,7 @@ class CustomGento_ProductBadges_Helper_RenderTypeConfig
 
     /**
      * @param string $badgeCode
+     *
      * @return string
      */
     public function getBadgeRenderType($badgeCode)
@@ -76,5 +77,4 @@ class CustomGento_ProductBadges_Helper_RenderTypeConfig
             // In case there is not render type configured we give the first know render type
             : reset($this->_renderTypesConfigurations);
     }
-
 }

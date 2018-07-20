@@ -1,7 +1,7 @@
 <?php
+
 class CustomGento_ProductBadges_Model_ProductBadgeMatcher
 {
-
     /**
      * @param array $productIds
      *
@@ -23,13 +23,13 @@ class CustomGento_ProductBadges_Model_ProductBadgeMatcher
         $select = $readConnection
             ->select()
             ->from($badgesIndexTable)
-            ->where('product_id IN(?)',  $productIds);
+            ->where('product_id IN(?)', $productIds);
 
         $data = $readConnection->fetchAll($select);
 
         $transformedData = array();
 
-        foreach($data as $productBadgeData) {
+        foreach ($data as $productBadgeData) {
             $transformedData[$productBadgeData['product_id']] = $productBadgeData;
         }
 
@@ -39,7 +39,7 @@ class CustomGento_ProductBadges_Model_ProductBadgeMatcher
     /**
      * @return string|false
      */
-    private function _getBadgeIndexTableName()
+    protected function _getBadgeIndexTableName()
     {
         /** @var Mage_Core_Model_Resource $resource */
         $resource = Mage::getSingleton('core/resource');
@@ -54,5 +54,4 @@ class CustomGento_ProductBadges_Model_ProductBadgeMatcher
 
         return $badgesIndexTable;
     }
-
 }

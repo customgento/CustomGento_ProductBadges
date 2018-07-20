@@ -1,7 +1,7 @@
 <?php
+
 class CustomGento_ProductBadges_Model_Config_RenderContainer
 {
-
     const CUSTOMGENTO_PRODUCTBADGES_RENDER_CONTAINERS_GLOBAL_CONFIG_XML_PATH = 'global/customgento_productbadges/render_containers';
 
     /** @var array|bool */
@@ -15,7 +15,7 @@ class CustomGento_ProductBadges_Model_Config_RenderContainer
         $config = Mage::getConfig()
             ->getNode(self::CUSTOMGENTO_PRODUCTBADGES_RENDER_CONTAINERS_GLOBAL_CONFIG_XML_PATH);
 
-        if(!empty($config)) {
+        if (!empty($config)) {
             $configsArray = $config->asCanonicalArray();
 
             foreach ($configsArray as $data) {
@@ -27,7 +27,8 @@ class CustomGento_ProductBadges_Model_Config_RenderContainer
                     $data['css_class']
                 );
 
-                $this->_renderContainersConfigurations[$renderContainerConfigModel->getInternalCode()] = $renderContainerConfigModel;
+                $this->_renderContainersConfigurations[$renderContainerConfigModel->getInternalCode()]
+                    = $renderContainerConfigModel;
             }
         }
     }
@@ -62,6 +63,7 @@ class CustomGento_ProductBadges_Model_Config_RenderContainer
 
     /**
      * @param string $badgeCode
+     *
      * @return string
      */
     public function getContainerOfProductBadge($badgeCode)
@@ -74,7 +76,8 @@ class CustomGento_ProductBadges_Model_Config_RenderContainer
         if (false === $this->_badgeRenderContainersMapping) {
             /** @var CustomGento_ProductBadges_Model_BadgeConfig $badgeConfig */
             foreach ($badgeConfigCollection as $badgeConfig) {
-                $this->_badgeRenderContainersMapping[$badgeConfig->getInternalCode()] = $badgeConfig->getRenderContainer();
+                $this->_badgeRenderContainersMapping[$badgeConfig->getInternalCode()]
+                    = $badgeConfig->getRenderContainer();
             }
         }
 
@@ -84,5 +87,4 @@ class CustomGento_ProductBadges_Model_Config_RenderContainer
             // In case there is not container configured we give the first know container
             : reset($this->_renderContainersConfigurations);
     }
-
 }

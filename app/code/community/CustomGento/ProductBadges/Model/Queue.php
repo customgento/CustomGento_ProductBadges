@@ -6,7 +6,6 @@
 class CustomGento_ProductBadges_Model_Queue
     extends Mage_Core_Model_Abstract
 {
-
     /**
      * Prefix of model events names
      *
@@ -30,5 +29,4 @@ class CustomGento_ProductBadges_Model_Queue
         $this->_init('customgento_productbadges/queue');
         $this->setIdFieldName('job_id');
     }
-
 }

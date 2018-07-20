@@ -8,7 +8,7 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_Category
      */
     public function transform(Mage_Rule_Model_Condition_Product_Abstract $condition, $fromId, $toId, $storeId)
     {
-        $value = $condition->getValueParsed();
+        $value    = $condition->getValueParsed();
         $operator = $condition->getOperatorForValidate();
 
         $select = new \Zend_Db_Select($this->getDbAdapter());
@@ -18,7 +18,7 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_Category
         }
 
         $select
-            ->from(['category_product' => $this->getTableName('catalog/category_product_index')])
+            ->from(array('category_product' => $this->getTableName('catalog/category_product_index')))
             ->where('category_product.product_id = e.entity_id')
             ->where("category_product.category_id IN ({$value})");
 

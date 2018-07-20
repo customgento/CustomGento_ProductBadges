@@ -2,7 +2,6 @@
 
 class CustomGento_ProductBadges_Model_Cron
 {
-
     /**
      * @return CustomGento_ProductBadges_Model_Cron
      */
@@ -29,5 +28,4 @@ class CustomGento_ProductBadges_Model_Cron
     {
         return Mage::getModel('customgento_productbadges/cache');
     }
-
 }

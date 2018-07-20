@@ -3,7 +3,6 @@
 class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
     extends Mage_Index_Model_Resource_Abstract
 {
-
     /**
      * Initialize connection
      *
@@ -16,16 +15,18 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
 
     /**
      * @param int $storeId
+     *
      * @return CustomGento_ProductBadges_Model_Scanner_ProductBadges
      */
     protected function _spawnProductBadges($storeId)
     {
         /** @var CustomGento_ProductBadges_Model_Scanner_ProductBadges $productBadgesScanner */
         $productBadgesScanner = Mage::getModel('customgento_productbadges/scanner_productBadges');
+
         return $productBadgesScanner->init($storeId);
     }
 
-    private $_badgesIndexTableNamePrefix = 'customgento_productbadges_badges_index_';
+    protected $_badgesIndexTableNamePrefix = 'customgento_productbadges_badges_index_';
 
     /**
      * Flat tables which were prepared
@@ -43,9 +44,10 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
 
     /**
      * @param int $storeId
+     *
      * @return string
      */
-    private function getFlatTableName($storeId)
+    protected function getFlatTableName($storeId)
     {
         return $this->_getReadAdapter()
             ->getTableName($this->_badgesIndexTableNamePrefix . $storeId);
@@ -60,13 +62,14 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
      * Rebuild Catalog Product Flat Data
      *
      * @param Mage_Core_Model_Store $store
-     * @param array $productIds
-     * @return Mage_Catalog_Model_Resource_Product_Flat_Indexer
+     * @param array                 $productIds
+     *
+     * @return CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
      */
     public function rebuild($store = null, $productIds = array())
     {
         if ($store === null) {
-            $notActiveStores = [];
+            $notActiveStores = array();
 
             /** @var Mage_Core_Model_Store $store */
             foreach (Mage::app()->getStores() as $store) {
@@ -85,7 +88,7 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
             return $this;
         }
 
-        $storeId = (int) $store->getId();
+        $storeId = (int)$store->getId();
 
         $productBadges = $this->_spawnProductBadges($storeId);
 
@@ -96,11 +99,10 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
 
             $preparedForInsertData = array();
 
-            if(! isset($badgesData['found_badges']))
-            {
+            if (!isset($badgesData['found_badges'])) {
                 continue;
             }
-            //$preparedForInsertData = array_fill_keys($preparedForInsertData, array_keys($badgesData));
+
             foreach ($badgesData['found_badges'] as $badgeCode => $foundProductIds) {
                 foreach ($foundProductIds as $productId) {
                     // Here we pre-fill default values
@@ -119,7 +121,7 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
                 }
             }
 
-            if (count($preparedForInsertData) > 0) {
+            if (!empty($preparedForInsertData)) {
                 // Update / Insert new Badges
                 $insertedRows = $this->_getWriteAdapter()->insertOnDuplicate(
                     $this->getFlatTableName($storeId),
@@ -130,10 +132,11 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
             //Delete badges that should not be presented anymore
             $deletedRows = $this->_deleteOutdatedBadges($storeId, $badgesData, $preparedForInsertData);
         }
+
         return $this;
     }
 
-    private function _deleteOutdatedBadges($storeId, $badgesData, $preparedForInsertData)
+    protected function _deleteOutdatedBadges($storeId, $badgesData, $preparedForInsertData)
     {
         $condition = array();
 
@@ -200,6 +203,7 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
      * Check is flat table for store exists
      *
      * @param int $storeId
+     *
      * @return bool
      */
     protected function _isFlatTableExists($storeId)
@@ -217,10 +221,11 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
     /**
      * Retrieve UNIQUE HASH for a Table foreign key
      *
-     * @param string $priTableName the target table name
+     * @param string $priTableName  the target table name
      * @param string $priColumnName the target table column name
-     * @param string $refTableName the reference table name
+     * @param string $refTableName  the reference table name
      * @param string $refColumnName the reference table column name
+     *
      * @return string
      */
     public function getFkName($priTableName, $priColumnName, $refTableName, $refColumnName)
@@ -232,17 +237,18 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
     /**
      * Prepare flat table for store
      *
-     * @param int $storeId
+     * @param int                                                   $storeId
      * @param CustomGento_ProductBadges_Model_Scanner_ProductBadges $productBadges
      *
-     * @throws Mage_Core_Exception
-     * @return Mage_Catalog_Model_Resource_Product_Flat_Indexer
+     * @return CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
+     * @throws Zend_Db_Exception
      */
     public function prepareFlatTable($storeId, CustomGento_ProductBadges_Model_Scanner_ProductBadges $productBadges)
     {
         if (isset($this->_preparedFlatTables[$storeId])) {
             return $this;
         }
+
         $adapter   = $this->_getWriteAdapter();
         $tableName = $this->getFlatTableName($storeId);
 
@@ -271,9 +277,14 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
                 );
             }
 
-            $table->addForeignKey($foreignEntityKey,
-                'product_id', $this->getTable('catalog/product'), 'entity_id',
-                Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE);
+            $table->addForeignKey(
+                $foreignEntityKey,
+                'product_id',
+                $this->getTable('catalog/product'),
+                'entity_id',
+                Varien_Db_Ddl_Table::ACTION_CASCADE,
+                Varien_Db_Ddl_Table::ACTION_CASCADE
+            );
 
             $table->setComment("Product Badges Flat (Store {$storeId})");
 
@@ -300,6 +311,7 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
                 if (!isset($columnProp['COMMENT'])) {
                     $columnProp['COMMENT'] = ucwords(str_replace('_', ' ', $columnName));
                 }
+
                 $adapter->addColumn($tableName, $columnName, $columnProp);
             }
         }
@@ -347,5 +359,4 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
          */
         $this->_getWriteAdapter()->dropTable($tableName);
     }
-
 }

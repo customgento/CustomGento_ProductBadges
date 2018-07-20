@@ -1,10 +1,10 @@
 <?php
+
 class CustomGento_ProductBadges_Model_Queue_RegisterJob
 {
-
     /**
      * @param CustomGento_ProductBadges_Model_Queue_Job_Abstract $job
-     * @param Varien_Object $model
+     * @param Varien_Object                                      $model
      */
     public function attemptToRegisterJob(CustomGento_ProductBadges_Model_Queue_Job_Abstract $job, Varien_Object $model)
     {
@@ -18,5 +18,4 @@ class CustomGento_ProductBadges_Model_Queue_RegisterJob
 
         $queue->save();
     }
-
 }

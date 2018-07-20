@@ -1,7 +1,7 @@
 <?php
+
 class CustomGento_ProductBadges_Model_Queue_Observer
 {
-
     /**
      * @param Varien_Event_Observer $observer
      */
@@ -9,7 +9,7 @@ class CustomGento_ProductBadges_Model_Queue_Observer
     {
         /** @var CustomGento_ProductBadges_Model_Queue_RegisterJob $queueRegisterJob */
         $queueRegisterJob = Mage::getModel('customgento_productbadges/queue_registerJob');
-        $badgeConfig = $observer->getBadgeConfig();
+        $badgeConfig      = $observer->getBadgeConfig();
 
         /** @var CustomGento_ProductBadges_Model_Queue_Job_BadgeUpdate $job */
         $job = Mage::getModel('customgento_productbadges/queue_job_badgeUpdate');;
@@ -67,5 +67,4 @@ class CustomGento_ProductBadges_Model_Queue_Observer
 
         $queueRegisterJob->attemptToRegisterJob($job, $product);
     }
-
 }

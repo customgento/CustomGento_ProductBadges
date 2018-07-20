@@ -1,11 +1,12 @@
 <?php
+
 class CustomGento_ProductBadges_Block_Renderer_Type_Circle
     extends CustomGento_ProductBadges_Block_Renderer_Type_Abstract
-        implements CustomGento_ProductBadges_Block_Renderer_Type_Interface
+    implements CustomGento_ProductBadges_Block_Renderer_Type_Interface
 {
-
     /**
      * @param CustomGento_ProductBadges_Model_BadgeConfig $badgeConfig
+     *
      * @return string
      */
     public function getBadgeHtml(CustomGento_ProductBadges_Model_BadgeConfig $badgeConfig)
@@ -20,7 +21,8 @@ class CustomGento_ProductBadges_Block_Renderer_Type_Circle
 
         $badgeInternalId = $badgeConfig->getInternalCode();
 
-        return '<span ' . $this->_customStyling($badgeConfig) . ' class="product-badge product-badge--circle product-badge--' . $badgeInternalId . '"><span>' . $badgeText . '</span></span>';
+        return '<span ' . $this->_customStyling($badgeConfig)
+            . ' class="product-badge product-badge--circle product-badge--' . $badgeInternalId . '"><span>' . $badgeText
+            . '</span></span>';
     }
-
 }

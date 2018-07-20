@@ -3,7 +3,6 @@
 class CustomGento_ProductBadges_Model_Admin_BadgeConfig_Grid_Filter_Store
     extends Varien_Object
 {
-
     /**
      * Website collection
      * websiteId => Mage_Core_Model_Website
@@ -36,11 +35,10 @@ class CustomGento_ProductBadges_Model_Admin_BadgeConfig_Grid_Filter_Store
      */
     public function __construct()
     {
+        parent::__construct();
         $this->_loadWebsiteCollection();
         $this->_loadGroupCollection();
         $this->_loadStoreCollection();
-
-        return $this;
     }
 
     /**
@@ -51,6 +49,7 @@ class CustomGento_ProductBadges_Model_Admin_BadgeConfig_Grid_Filter_Store
     protected function _loadWebsiteCollection()
     {
         $this->_websiteCollection = Mage::app()->getWebsites();
+
         return $this;
     }
 
@@ -67,6 +66,7 @@ class CustomGento_ProductBadges_Model_Admin_BadgeConfig_Grid_Filter_Store
                 $this->_groupCollection[$group->getId()] = $group;
             }
         }
+
         return $this;
     }
 
@@ -78,6 +78,7 @@ class CustomGento_ProductBadges_Model_Admin_BadgeConfig_Grid_Filter_Store
     protected function _loadStoreCollection()
     {
         $this->_storeCollection = Mage::app()->getStores();
+
         return $this;
     }
 
@@ -90,7 +91,8 @@ class CustomGento_ProductBadges_Model_Admin_BadgeConfig_Grid_Filter_Store
     {
         $options = array();
 
-        $options[Mage_Core_Model_App::ADMIN_STORE_ID] = Mage::helper('customgento_productbadges')->__('All Store Views');
+        $options[Mage_Core_Model_App::ADMIN_STORE_ID] = Mage::helper('customgento_productbadges')
+            ->__('All Store Views');
 
         foreach ($this->_websiteCollection as $website) {
             foreach ($this->_groupCollection as $group) {
@@ -103,12 +105,12 @@ class CustomGento_ProductBadges_Model_Admin_BadgeConfig_Grid_Filter_Store
                         continue;
                     }
 
-                    $options[$store->getId()] = $website->getName() . ' > ' . $group->getName() . ' > ' .$store->getName();
+                    $options[$store->getId()] = $website->getName() . ' > ' . $group->getName() . ' > '
+                        . $store->getName();
                 }
             }
         }
 
         return $options;
     }
-
 }

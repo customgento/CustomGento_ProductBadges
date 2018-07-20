@@ -1,7 +1,7 @@
 <?php
+
 class CustomGento_ProductBadges_Model_Queue_Cron
 {
-
     /**
      * @return CustomGento_ProductBadges_Model_Queue_Cron
      */
@@ -63,5 +63,4 @@ class CustomGento_ProductBadges_Model_Queue_Cron
         return Mage::getModel('customgento_productbadges/queue')
             ->getResource();
     }
-
 }

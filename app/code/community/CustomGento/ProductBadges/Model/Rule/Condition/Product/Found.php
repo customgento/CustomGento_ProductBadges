@@ -1,4 +1,5 @@
 <?php
+
 class CustomGento_ProductBadges_Model_Rule_Condition_Product_Found
     extends CustomGento_ProductBadges_Model_Rule_Condition_Product_Combine
 {
@@ -21,8 +22,7 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product_Found
     {
         $this->setValueOption(
             array(
-                1 => Mage::helper('customgento_productbadges')->__('FOUND'),
-                //0 => Mage::helper('dynamiccategory')->__('NOT FOUND'),
+                1 => Mage::helper('customgento_productbadges')->__('FOUND')
             )
         );
 

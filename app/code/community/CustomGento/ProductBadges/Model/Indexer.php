@@ -1,8 +1,8 @@
 <?php
+
 class CustomGento_ProductBadges_Model_Indexer
     extends Mage_Index_Model_Indexer_Abstract
 {
-
     protected $_matchedEntities
         = array(
             Mage_Catalog_Model_Product::ENTITY => array(
@@ -42,5 +42,4 @@ class CustomGento_ProductBadges_Model_Indexer
             $this->getResource()->rebuild(null, $productIds);
         }
     }
-
 }

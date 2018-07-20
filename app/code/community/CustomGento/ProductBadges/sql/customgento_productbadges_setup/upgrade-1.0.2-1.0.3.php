@@ -10,10 +10,11 @@ $installer->getConnection()
     ->addColumn(
         $installer->getTable('customgento_productbadges/badge_config'),
         'badge_image', array(
-            'type'      => Varien_Db_Ddl_Table::TYPE_TEXT,
-            'nullable'  => true,
-            'length'    => 255,
-            'comment'   => 'Badge Image'
-        ));
+            'type'     => Varien_Db_Ddl_Table::TYPE_TEXT,
+            'nullable' => true,
+            'length'   => 255,
+            'comment'  => 'Badge Image'
+        )
+    );
 
 $installer->endSetup();

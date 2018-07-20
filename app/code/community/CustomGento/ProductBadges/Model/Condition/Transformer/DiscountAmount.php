@@ -8,7 +8,7 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_DiscountAmount
      */
     public function transform(Mage_Rule_Model_Condition_Product_Abstract $condition, $fromId, $toId, $storeId)
     {
-        $value = $condition->getValueParsed();
+        $value    = $condition->getValueParsed();
         $operator = str_replace('==', '=', $condition->getOperatorForValidate());
 
         if (is_array($value)) {
@@ -17,17 +17,19 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_DiscountAmount
 
         $select = new Zend_Db_Select($this->getDbAdapter());
         $select
-            ->from(['t1' => $this->getTableName('catalog_product_entity_decimal')], ['entity_id'])
+            ->from(array('t1' => $this->getTableName('catalog_product_entity_decimal')), array('entity_id'))
             ->joinLeft(
-                ['t2' => $this->getTableName('catalog_product_entity_decimal')],
+                array('t2' => $this->getTableName('catalog_product_entity_decimal')),
                 't1.entity_id = t2.entity_id',
-                []
+                array()
             )
             ->where(
-                "t1.attribute_id = ?", Mage::getResourceModel('eav/entity_attribute')->getIdByCode('catalog_product', 'price')
+                "t1.attribute_id = ?",
+                Mage::getResourceModel('eav/entity_attribute')->getIdByCode('catalog_product', 'price')
             )
             ->where(
-                "t2.attribute_id = ?", Mage::getResourceModel('eav/entity_attribute')->getIdByCode('catalog_product', 'msrp')
+                "t2.attribute_id = ?",
+                Mage::getResourceModel('eav/entity_attribute')->getIdByCode('catalog_product', 'msrp')
             )
             ->where("t1.store_id = ?", Mage::app()->getStore()->getId())
             ->where("t2.store_id = ?", Mage::app()->getStore()->getId());

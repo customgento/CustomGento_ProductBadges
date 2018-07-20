@@ -1,12 +1,12 @@
 <?php
+
 class CustomGento_ProductBadges_Model_Config_RenderContainer_Config
 {
+    /** @var string */
+    protected $_internalCode;
 
     /** @var string */
-    private $_internalCode;
-
-    /** @var string */
-    private  $_cssClass;
+    protected $_cssClass;
 
     /**
      * @param string $internalCode
@@ -33,5 +33,4 @@ class CustomGento_ProductBadges_Model_Config_RenderContainer_Config
     {
         return $this->_internalCode;
     }
-
 }

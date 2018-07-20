@@ -1,8 +1,8 @@
 <?php
+
 class CustomGento_ProductBadges_Model_Queue_Job_StoreDelete
     extends CustomGento_ProductBadges_Model_Queue_Job_Abstract
 {
-
     /**
      * Returns class alias for further usage later with Mage::getModel
      *
@@ -15,6 +15,7 @@ class CustomGento_ProductBadges_Model_Queue_Job_StoreDelete
 
     /**
      * @param Varien_Object $store
+     *
      * @return array
      */
     public function getPreparedDataForJobAction(Varien_Object $store)
@@ -42,5 +43,4 @@ class CustomGento_ProductBadges_Model_Queue_Job_StoreDelete
     {
         return Mage::getResourceModel('customgento_productbadges/indexer_productBadges');
     }
-
 }
