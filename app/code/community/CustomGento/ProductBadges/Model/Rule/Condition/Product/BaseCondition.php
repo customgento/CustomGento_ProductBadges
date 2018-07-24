@@ -65,6 +65,7 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product_BaseCondition
             'category_ids',
             'type_id',
             'stock_status',
+            'day_interval'
         );
 
         if (!in_array($attribute, $skippedAttributes)) {

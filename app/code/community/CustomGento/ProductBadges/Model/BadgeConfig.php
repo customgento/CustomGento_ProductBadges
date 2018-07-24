@@ -152,6 +152,9 @@ class CustomGento_ProductBadges_Model_BadgeConfig
         $transformer = null;
 
         switch (true) {
+            case 'day_interval' === $attribute->getAttributeCode():
+                $transformer = 'dayInterval';
+                break;
             case 'category_ids' === $attribute->getAttributeCode():
                 $transformer = 'category';
                 break;
