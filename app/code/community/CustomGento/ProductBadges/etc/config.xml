@@ -149,6 +149,15 @@
                 </observers>
             </catalog_product_save_commit_after>
         </events>
+        <translate>
+            <modules>
+                <CustomGento_ProductBadges>
+                    <files>
+                        <default>CustomGento_ProductBadges.csv</default>
+                    </files>
+                </CustomGento_ProductBadges>
+            </modules>
+        </translate>
     </adminhtml>
     <frontend>
         <layout>
