@@ -208,7 +208,7 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_DayInterval
      */
     protected function _getScopeTable($attribute)
     {
-        return $scopeTable = "at_scope_{$attribute->getAttributeCode()}";
+        return "at_scope_{$attribute->getAttributeCode()}";
     }
 
 }
