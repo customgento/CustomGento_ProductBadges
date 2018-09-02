@@ -38,12 +38,6 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product_DayInterval
         foreach ($this->getOperatorOptions() as $v => $l) {
             $opt[] = ['value' => $v, 'label' => $l];
         }
-//
-//        $opt = [
-//            ['value' => '>=', 'label' => $this->_getHelper()->__('is newer than X days')],
-//            ['value' => '==', 'label' => $this->_getHelper()->__('is exactly X days ago')],
-//            ['value' => '<=', 'label' => $this->_getHelper()->__('is older than X days')],
-//        ];
 
         return $opt;
     }
@@ -89,6 +83,11 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product_DayInterval
         }
 
         return $dateAttributes;
+    }
+
+    public function asHtml()
+    {
+        return $this->_getHelper()->__('If') . parent::asHtml();
     }
 
     /**
