@@ -1,9 +1,8 @@
 <?php
 
 class CustomGento_ProductBadges_Model_Rule_Condition_Product_DayInterval
-    extends CustomGento_ProductBadges_Model_Rule_Condition_Product_BaseCondition
+    extends Mage_Rule_Model_Condition_Product_Abstract
 {
-    const ATTRIBUTE_NAME = 'day_interval';
 
     /**
      * Init the product found conditions and set the custom type
@@ -15,136 +14,67 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product_DayInterval
     }
 
     /**
-     * Add special attributes
+     * Load attribute options
      *
-     * @param array $attributes
+     * @return CustomGento_ProductBadges_Model_Rule_Condition_Product_DayInterval
      */
-    protected function _addSpecialAttributes(array &$attributes)
+    public function loadAttributeOptions()
     {
-        $attributes[self::ATTRIBUTE_NAME] = Mage::helper('customgento_productbadges')->__('Day Interval');
+        $attributes = $this->_getAllDateAttributes();
+
+        asort($attributes);
+        $this->setAttributeOption($attributes);
+
+        return $this;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getAttribute()
+    public function getOperatorSelectOptions()
     {
-        return self::ATTRIBUTE_NAME;
-    }
+        $opt = [];
 
-    /**
-     * @return string
-     */
-    public function asHtml()
-    {
-        $html = $this->getTypeElementHtml()
-                . $this->getAttributeElementHtml();
-
-        $html .= Mage::helper('customgento_productbadges')->
-            __("If %s %s %s day(s)",
-                $this->getQualifiedAttributesHtml(),
-                $this->getOperatorHtml(),
-                $this->getValueHtml()
-            );
-        if ($this->getId() != '1') {
-            $html.= $this->getRemoveLinkHtml();
+        foreach ($this->getOperatorOptions() as $v => $l) {
+            $opt[] = ['value' => $v, 'label' => $l];
         }
-        return $html;
+//
+//        $opt = [
+//            ['value' => '>=', 'label' => $this->_getHelper()->__('is newer than X days')],
+//            ['value' => '==', 'label' => $this->_getHelper()->__('is exactly X days ago')],
+//            ['value' => '<=', 'label' => $this->_getHelper()->__('is older than X days')],
+//        ];
+
+        return $opt;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    protected function getQualifiedAttributesHtml()
-    {
-        $attributeCode = '';
-
-        $value = $this->getValue();
-
-        if (!empty($value['attribute_code'])) {
-            $attributeCode = $value['attribute_code'];
-        }
-
-        $values = $this->_getAllDateAttributes();
-
-        $field = $this->getForm()->addField($this->getPrefix().'__'.$this->getId().'__value__attribute_code', 'select', array(
-            'name'=>'rule['.$this->getPrefix().']['.$this->getId().'][value][attribute_code]',
-            'values' => $values,
-            'value'=> $attributeCode,
-            'value_name'=> !empty($attributeCode) ? $values[$attributeCode] : Mage::helper('customgento_productbadges')->__('(Choose attribute)')
-        ))->setRenderer(Mage::getBlockSingleton('rule/editable'));
-
-        return $field->toHtml();
+    public function getOperatorOptions() {
+        return [
+            '>=' => $this->_getHelper()->__('is newer than X days'),
+            '==' => $this->_getHelper()->__('is exactly X days ago'),
+            '<=' => $this->_getHelper()->__('is older than X days')
+        ];
     }
 
     /**
+     * @param string $option
      * @return string
      */
-    protected function getOperatorHtml()
+    public function getOperatorOption($option)
     {
-        $operators = $this->_getOperatorOptions();
-
-        $operator = $this->getOperator();
-
-        $field = $this->getForm()->addField($this->getPrefix().'__'.$this->getId().'__operator', 'select', array(
-            'name'=>'rule['.$this->getPrefix().']['.$this->getId().'][operator]',
-            'values' => $operators,
-            'value'=> $operator,
-            'value_name'=> !empty($operator) ? $this->_defaultOperatorOptions[$operator] : Mage::helper('customgento_productbadges')->__('(Choose condition)')
-        ))->setRenderer(Mage::getBlockSingleton('rule/editable'));
-
-        return $field->toHtml();
+        $options = $this->getOperatorOptions();
+        return $options[$option];
     }
 
     /**
-     * @return string
+     * @return array
      */
-    protected function getValueHtml()
-    {
-        $days = '';
-
-        $value = $this->getValue();
-
-        if (!empty($value['days'])) {
-            $days = $value['days'];
-        }
-
-        $field = $this->getForm()->addField($this->getPrefix().'__'.$this->getId().'__value__days', 'text', array(
-            'name'=>'rule['.$this->getPrefix().']['.$this->getId().'][value][days]',
-            'value'=> $days,
-            'value_name'=> $days
-        ))->setRenderer(Mage::getBlockSingleton('rule/editable'));
-
-        return $field->toHtml();
-    }
-
-    /**
-     * @return string
-     */
-    public function getPrefix()
-    {
-        return 'conditions';
-    }
-
-    /**
-     * @return string
-     */
-    public function getAttributeElementHtml()
-    {
-        $field = $this->getForm()->addField($this->getPrefix().'__'.$this->getId().'__attribute', 'hidden', array(
-            'name' => 'rule['.$this->getPrefix().']['.$this->getId().'][attribute]',
-            'value' => $this->getAttribute(),
-            'no_span' => true,
-            'class'   => 'hidden'
-        ));
-
-        return $field->toHtml();
-    }
-
     protected function _getAllDateAttributes()
     {
         $productAttributes = Mage::getResourceModel('catalog/product_attribute_collection');
-
 
         $dateAttributes = array(
             'created_at' => Mage::helper('customgento_productbadges')->__('Created At'),
@@ -162,19 +92,12 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product_DayInterval
     }
 
     /**
-     * @return array
+     *
+     * @return CustomGento_ProductBadges_Helper_Data
      */
-    protected function _getOperatorOptions()
+    protected function _getHelper()
     {
-        $options = array();
-
-        $dateOperatorCodes = $this->_defaultOperatorInputByType['date'];
-
-        foreach ($dateOperatorCodes as $code) {
-            $options[$code] = $this->_defaultOperatorOptions[$code];
-        }
-
-        return $options;
+        return Mage::helper('customgento_productbadges');
     }
 
 }

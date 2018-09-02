@@ -48,8 +48,6 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product
         $attributes['attribute_set_id'] = $this->getHelper()->__('Attribute Set');
         $attributes['category_ids']     = $this->getHelper()->__('Category');
         $attributes['type_id']          = $this->getHelper()->__('Product Type');
-        $attributes['created_at']       = $this->getHelper()->__('Product Created At');
-        $attributes['updated_at']       = $this->getHelper()->__('Product Updated At');
     }
 
     /**
@@ -64,7 +62,7 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product
         $attributes = array();
         foreach ($productAttributes as $attribute) {
             /* @var $attribute Mage_Catalog_Model_Resource_Eav_Attribute */
-            if ($attribute->isAllowedForRuleCondition()) {
+            if ($attribute->isAllowedForRuleCondition() && 'date' !== $attribute->getFrontendInput()) {
                 $attributes[$attribute->getAttributeCode()] = $attribute->getFrontendLabel();
             }
         }
@@ -230,11 +228,6 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product
             return 'select';
         }
 
-        $dateAttributes = array('created_at', 'updated_at');
-        if (in_array($this->getAttribute(), $dateAttributes)) {
-            return 'date';
-        }
-
         if (!is_object($this->getAttributeObject())) {
             return 'string';
         }
@@ -269,11 +262,6 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product
             return 'select';
         }
 
-        $dateAttributes = array('created_at', 'updated_at');
-        if (in_array($this->getAttribute(), $dateAttributes)) {
-            return 'date';
-        }
-
         if (!is_object($this->getAttributeObject())) {
             return 'text';
         }
@@ -294,30 +282,6 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product
         }
 
         return $frontendInput;
-    }
-
-    /**
-     * Retrieve value element
-     *
-     * @return Varien_Data_Form_Element_Abstract Element
-     */
-    public function getValueElement()
-    {
-        $element = parent::getValueElement();
-        if (is_object($this->getAttributeObject())) {
-            switch ($this->getAttributeObject()->getFrontendInput()) {
-                case 'date':
-                    $element->setImage(Mage::getDesign()->getSkinUrl('images/grid-cal.gif'));
-                    break;
-            }
-        }
-
-        $dateAttributes = array('created_at', 'updated_at');
-        if (in_array($this->getAttribute(), $dateAttributes)) {
-            $element->setImage(Mage::getDesign()->getSkinUrl('images/grid-cal.gif'));
-        }
-
-        return $element;
     }
 
     /**
@@ -433,7 +397,6 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product
     }
 
     /**
-     * Retrieve the DynamicCategory helper
      *
      * @return CustomGento_ProductBadges_Helper_Data
      */

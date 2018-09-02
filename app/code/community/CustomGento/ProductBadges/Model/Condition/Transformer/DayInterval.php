@@ -8,16 +8,17 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_DayInterval
      */
     public function transform(Mage_Rule_Model_Condition_Product_Abstract $condition, $fromId, $toId, $storeId)
     {
-        $value    = $condition->getValueParsed();
         $operator = $condition->getOperatorForValidate();
+        $operator = str_replace('==', '=', $operator);
 
-        $attributeCode = $value['attribute_code'];
-        $days = $value['days'];
+        $days = $condition->getValueParsed();
 
-        $attribute = $this->_getAttribute($attributeCode);
+        $attribute = $attribute = $condition->getAttributeObject();
 
         // In case we have date attribute from catalog_product_entity table
         if ('static' == $attribute->getData('backend_type')) {
+            $attributeCode = $attribute->getAttributeCode();
+
             return new Zend_Db_Expr(
                 $this->getDbAdapter()
                     ->quoteInto("{$attributeCode} {$operator} NOW() - INTERVAL  ? DAY", $days)
@@ -25,21 +26,6 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_DayInterval
         }
 
         return $this->_transformEav($attribute, $operator, $days, $fromId, $toId, $storeId);
-    }
-
-    /**
-     * @param string $code
-     * @return Mage_Catalog_Model_Resource_Eav_Attribute
-     */
-    protected function _getAttribute($code)
-    {
-        $entityTypeId = Mage::getModel('eav/entity')->setType(Mage_Catalog_Model_Product::ENTITY)->getTypeId();
-
-        /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
-        $attribute = Mage::getModel('catalog/resource_eav_attribute')
-            ->loadByCode($entityTypeId, $code);
-
-        return $attribute;
     }
 
     /**
@@ -111,8 +97,6 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_DayInterval
         $select
             ->from(array($scopeTable => $attribute->getBackendTable()), array('entity_id'))
             ->where("`{$scopeTable}`.`attribute_id` = ?", $attribute->getAttributeId());
-
-        $operator = str_replace('==', '=', $operator);
 
         $select->where("`{$scopeTable}`.`value` {$operator} NOW() - INTERVAL  ? DAY", $days);
     }

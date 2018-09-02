@@ -50,12 +50,6 @@
                     <internal_code>stock_status</internal_code>
                     <label>Stock Status</label>
                 </stock_status>
-                <day_interval>
-                    <condition_class>customgento_productbadges/rule_condition_product_dayInterval</condition_class>
-                    <transformer_class>customgento_productbadges/condition_transformer_stockStatus</transformer_class>
-                    <internal_code>day_interval</internal_code>
-                    <label>Day Interval</label>
-                </day_interval>
             </rules>
             <renderer_types>
                 <circle>
