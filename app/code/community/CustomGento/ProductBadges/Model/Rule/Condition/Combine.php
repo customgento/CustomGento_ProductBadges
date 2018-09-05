@@ -50,6 +50,11 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Combine
             );
         }
 
+        // Sort again alphabetically
+        usort($attributes, function ($a, $b) {
+            return strcmp($a['label'], $b['label']);
+        });
+
         $conditions = array(
             array(
                 'value' => '',
