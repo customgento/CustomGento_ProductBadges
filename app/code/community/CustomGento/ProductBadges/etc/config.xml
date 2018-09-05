@@ -149,6 +149,15 @@
                 </observers>
             </catalog_product_save_commit_after>
         </events>
+        <translate>
+            <modules>
+                <CustomGento_ProductBadges>
+                    <files>
+                        <default>CustomGento_ProductBadges.csv</default>
+                    </files>
+                </CustomGento_ProductBadges>
+            </modules>
+        </translate>
     </adminhtml>
     <frontend>
         <layout>
@@ -170,14 +179,14 @@
     </default>
     <crontab>
         <jobs>
-            <customgento_productbadges>
+            <customgento_productbadges_reindex_all>
                 <schedule>
                     <cron_expr>42 0 * * *</cron_expr>
                 </schedule>
                 <run>
                     <model>customgento_productbadges/cron::reindexProductBadges</model>
                 </run>
-            </customgento_productbadges>
+            </customgento_productbadges_reindex_all>
             <customgento_productbadges_process_queue>
                 <schedule>
                     <cron_expr>* * * * *</cron_expr>

@@ -1,7 +1,7 @@
 <?php
+
 class CustomGento_ProductBadges_Model_Cache
 {
-
     const CUSTOMGENTO_PRODUCT_BADGES_CACHE_TAG = 'CUSTOMGENTO_PRODUCT_BADGES';
 
     /**
@@ -18,6 +18,7 @@ class CustomGento_ProductBadges_Model_Cache
 
     /**
      * @param array $badgeCodes
+     *
      * @return array
      */
     public function getProductBadgesTags($badgeCodes)
@@ -35,19 +36,19 @@ class CustomGento_ProductBadges_Model_Cache
      * @param int $productId
      * @param int $storeId
      *
-     * @return array
+     * @return string
+     * @throws Mage_Core_Model_Store_Exception
      */
     public function getProductBadgesCacheKey($productId, $storeId = null)
     {
-        if (is_null($storeId)) {
+        if ($storeId === null) {
             $storeId = Mage::app()->getStore()->getId();
         }
 
-        return Mage_Core_Block_Abstract::CACHE_KEY_PREFIX . implode('_', array(
-            'CUSTOMGENTO_PRODUCT_BADGES_PRODUCT',
-            $storeId,
-            $productId
-        ));
+        $cacheKey = Mage_Core_Block_Abstract::CACHE_KEY_PREFIX;
+        $cacheKey .= implode('_', array('CUSTOMGENTO_PRODUCT_BADGES_PRODUCT', $storeId, $productId));
+
+        return $cacheKey;
     }
 
     /**
@@ -66,11 +67,13 @@ class CustomGento_ProductBadges_Model_Cache
     public function clearAllBadgeCache()
     {
         Mage::app()->cleanCache(array(self::CUSTOMGENTO_PRODUCT_BADGES_CACHE_TAG));
+
         return $this;
     }
 
     /**
      * @param int $productId
+     *
      * @return CustomGento_ProductBadges_Model_Cache
      */
     public function clearProductBadgesCache($productId)
@@ -79,11 +82,10 @@ class CustomGento_ProductBadges_Model_Cache
         foreach (Mage::app()->getStores() as $store) {
             if ($store->getIsActive()) {
                 Mage::app()->getCache()
-                            ->remove($this->getProductBadgesCacheKey($productId, $store->getId()));
+                    ->remove($this->getProductBadgesCacheKey($productId, $store->getId()));
             }
         }
 
         return $this;
     }
-
 }

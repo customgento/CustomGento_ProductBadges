@@ -3,14 +3,14 @@
 class CustomGento_ProductBadges_Helper_Data
     extends Mage_Core_Helper_Abstract
 {
-
-    CONST CUSTOMGENTO_PRODUCT_BADGES_ENABLED_XML_CONFIG_PATH = 'customgento_productbadges_global_config/general/enabled';
+    const CUSTOMGENTO_PRODUCT_BADGES_ENABLED_XML_CONFIG_PATH = 'customgento_productbadges_global_config/general/enabled';
 
     /** @var array */
-    private $_productBadgesData;
+    protected $_productBadgesData;
 
     /**
      * @param Mage_Eav_Model_Entity_Collection_Abstract $productCollection
+     *
      * @return $this
      */
     public function initProductBadgeCollection(Mage_Eav_Model_Entity_Collection_Abstract $productCollection)
@@ -78,6 +78,7 @@ class CustomGento_ProductBadges_Helper_Data
         if (!empty($singleProductBadges[$product->getId()])) {
             $badges = $singleProductBadges[$product->getId()];
             $badges = $this->_filerBadgesData($badges);
+
             return $this->_createBadgesRendererBlock($badges, $product->getId())->toHtml();
         }
 
@@ -94,9 +95,10 @@ class CustomGento_ProductBadges_Helper_Data
 
     /**
      * @param array $badges
+     *
      * @return array
      */
-    private function _filerBadgesData(array $badges)
+    protected function _filerBadgesData(array $badges)
     {
         unset($badges['product_id']);
         $badges = array_filter($badges);
@@ -106,11 +108,11 @@ class CustomGento_ProductBadges_Helper_Data
 
     /**
      * @param array $badges
-     * @param int $productId
+     * @param int   $productId
      *
      * @return CustomGento_ProductBadges_Block_Renderer
      */
-    private function _createBadgesRendererBlock(array $badges, $productId)
+    protected function _createBadgesRendererBlock(array $badges, $productId)
     {
         /** @var CustomGento_ProductBadges_Block_Renderer $badgesBlock */
         $badgesBlock = Mage::app()->getLayout()->createBlock('customgento_productbadges/renderer', 'product_badges');
@@ -126,5 +128,4 @@ class CustomGento_ProductBadges_Helper_Data
     {
         return Mage::getModel('customgento_productbadges/cache');
     }
-
 }

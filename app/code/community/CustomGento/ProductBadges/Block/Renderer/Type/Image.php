@@ -1,11 +1,12 @@
 <?php
+
 class CustomGento_ProductBadges_Block_Renderer_Type_Image
     extends CustomGento_ProductBadges_Block_Renderer_Type_Abstract
-        implements CustomGento_ProductBadges_Block_Renderer_Type_Interface
+    implements CustomGento_ProductBadges_Block_Renderer_Type_Interface
 {
-
     /**
      * @param CustomGento_ProductBadges_Model_BadgeConfig $badgeConfig
+     *
      * @return string
      */
     public function getBadgeHtml(CustomGento_ProductBadges_Model_BadgeConfig $badgeConfig)
@@ -20,7 +21,7 @@ class CustomGento_ProductBadges_Block_Renderer_Type_Image
 
         $badgeInternalId = $badgeConfig->getInternalCode();
 
-        return '<span class="product-badge product-badge--image product-badge--' . $badgeInternalId . '"><img src=" ' . $imageUrl . '" /></span>';
+        return '<span class="product-badge product-badge--image product-badge--' . $badgeInternalId . '"><img src=" '
+            . $imageUrl . '" /></span>';
     }
-
 }

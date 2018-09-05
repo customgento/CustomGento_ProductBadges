@@ -1,8 +1,8 @@
 <?php
+
 class CustomGento_ProductBadges_Model_Queue_Job_StoreGroupDelete
     extends CustomGento_ProductBadges_Model_Queue_Job_Abstract
 {
-
     /**
      * Returns class alias for further usage later with Mage::getModel
      *
@@ -15,6 +15,7 @@ class CustomGento_ProductBadges_Model_Queue_Job_StoreGroupDelete
 
     /**
      * @param Varien_Object $storeGroup
+     *
      * @return array
      */
     public function getPreparedDataForJobAction(Varien_Object $storeGroup)
@@ -63,7 +64,7 @@ class CustomGento_ProductBadges_Model_Queue_Job_StoreGroupDelete
 
         foreach ($data['store_ids'] as $storeId) {
             /** @var Mage_Core_Model_Store $store */
-            $store = Mage::getModel('core/store')->load($storeId);
+            $store        = Mage::getModel('core/store')->load($storeId);
             $storeIdCheck = $store->getId();
 
             /**
@@ -85,5 +86,4 @@ class CustomGento_ProductBadges_Model_Queue_Job_StoreGroupDelete
     {
         return Mage::getResourceModel('customgento_productbadges/indexer_productBadges');
     }
-
 }

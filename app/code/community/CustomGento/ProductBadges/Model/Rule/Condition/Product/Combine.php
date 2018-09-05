@@ -1,4 +1,5 @@
 <?php
+
 class CustomGento_ProductBadges_Model_Rule_Condition_Product_Combine
     extends Mage_Rule_Model_Condition_Combine
 {
@@ -19,7 +20,7 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product_Combine
      */
     public function getNewChildSelectOptions()
     {
-        $productCondition = Mage::getModel('customgento_productbadges/rule_condition_product');
+        $productCondition  = Mage::getModel('customgento_productbadges/rule_condition_product');
         $productAttributes = $productCondition->loadAttributeOptions()->getAttributeOption();
 
         $pAttributes = array();

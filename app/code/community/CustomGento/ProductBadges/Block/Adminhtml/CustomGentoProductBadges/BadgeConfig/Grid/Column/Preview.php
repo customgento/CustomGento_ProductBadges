@@ -3,11 +3,11 @@
 class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeConfig_Grid_Column_Preview
     extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract
 {
-
     /**
      * Renders grid column
      *
      * @param   Varien_Object $row
+     *
      * @return  string
      */
     public function render(Varien_Object $row)
@@ -17,5 +17,4 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
 
         return $badgeRenderer->renderBadge($row);
     }
-
 }

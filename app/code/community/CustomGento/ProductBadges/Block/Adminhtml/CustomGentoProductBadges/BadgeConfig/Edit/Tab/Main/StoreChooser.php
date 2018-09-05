@@ -3,7 +3,7 @@
 class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeConfig_Edit_Tab_Main_StoreChooser
     extends Varien_Data_Form_Element_Abstract
 {
-    public function __construct($attributes=array())
+    public function __construct($attributes = array())
     {
         parent::__construct($attributes);
         $this->setType('select');
@@ -15,8 +15,9 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
     {
         $name = parent::getName();
         if (strpos($name, '[]') === false) {
-            $name.= '[]';
+            $name .= '[]';
         }
+
         return $name;
     }
 
@@ -25,26 +26,28 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
         $this->addClass('select multiselect');
 
         $checkedStoreChooserEnabler = '';
-        $disabledStoreChooser = '';
-        $disableAllStoreViews = 'disabled';
+        $disabledStoreChooser       = '';
+        $disableAllStoreViews       = 'disabled';
         if ($this->shouldAllStoreViewsBeChosen()) {
             $checkedStoreChooserEnabler = 'checked';
-            $disabledStoreChooser = 'disabled="disabled"';
-            $disableAllStoreViews = '';
+            $disabledStoreChooser       = 'disabled="disabled"';
+            $disableAllStoreViews       = '';
         }
 
-        $html = '<label><input class="badges_store_enabler" type="checkbox" id="' . $this->getHtmlId() . '_all_store_views" '.
-            'data-controlled-default="' .$this->getHtmlId() . '_default" ' .
+        $html = '<label><input class="badges_store_enabler" type="checkbox" id="' . $this->getHtmlId()
+            . '_all_store_views" ' .
+            'data-controlled-default="' . $this->getHtmlId() . '_default" ' .
             ' ' . $checkedStoreChooserEnabler . ' ' .
-            'data-controlled-chooser="' .$this->getHtmlId() . '" /> ' .
+            'data-controlled-chooser="' . $this->getHtmlId() . '" /> ' .
             Mage::helper('customgento_productbadges')->__('All Store Views') . '</label>';
 
         $html .= '<input type="hidden" value="' . Mage_Core_Model_App::ADMIN_STORE_ID . '" ' . $disableAllStoreViews .
-            ' id="' .$this->getHtmlId() . '_default"' . ' name="' . $this->getName() . '" />';
+            ' id="' . $this->getHtmlId() . '_default"' . ' name="' . $this->getName() . '" />';
 
         $html .= '<br />';
 
-        $html .= '<select id="' . $this->getHtmlId() . '" ' . $disabledStoreChooser . ' name="' . $this->getName() . '" ' .
+        $html .= '<select id="' . $this->getHtmlId() . '" ' . $disabledStoreChooser . ' name="' . $this->getName()
+            . '" ' .
             $this->serialize($this->getHtmlAttributes()) . ' multiple="multiple">' . "\n";
 
         $value = $this->getValue();
@@ -59,6 +62,7 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
                     foreach ($option['value'] as $groupItem) {
                         $html .= $this->_optionToHtml($groupItem, $value);
                     }
+
                     $html .= '</optgroup>' . "\n";
                 } else {
                     $html .= $this->_optionToHtml($option, $value);
@@ -82,8 +86,7 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             $values = explode(',', $values);
         }
 
-        if (empty($values)
-            || (1 === count($values) && $values[0] == Mage_Core_Model_App::ADMIN_STORE_ID) ) {
+        if (empty($values) || (1 === count($values) && $values[0] == Mage_Core_Model_App::ADMIN_STORE_ID)) {
             return true;
         }
 
@@ -92,13 +95,15 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
 
     protected function _optionToHtml($option, $selected)
     {
-        $html = '<option value="'.$this->_escape($option['value']).'"';
-        $html.= isset($option['title']) ? 'title="'.$this->_escape($option['title']).'"' : '';
-        $html.= isset($option['style']) ? 'style="'.$option['style'].'"' : '';
+        $html = '<option value="' . $this->_escape($option['value']) . '"';
+        $html .= isset($option['title']) ? 'title="' . $this->_escape($option['title']) . '"' : '';
+        $html .= isset($option['style']) ? 'style="' . $option['style'] . '"' : '';
         if (in_array((string)$option['value'], $selected)) {
-            $html.= ' selected="selected"';
+            $html .= ' selected="selected"';
         }
-        $html.= '>'.$this->_escape($option['label']). '</option>'."\n";
+
+        $html .= '>' . $this->_escape($option['label']) . '</option>' . "\n";
+
         return $html;
     }
 }

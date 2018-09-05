@@ -1,8 +1,8 @@
 <?php
+
 class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeConfig_Grid
     extends Mage_Adminhtml_Block_Widget_Grid
 {
-
     /**
      * Initialize grid
      * Set sort settings
@@ -30,6 +30,7 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
         $this->setCollection($collection);
 
         parent::_prepareCollection();
+
         return $this;
     }
 
@@ -40,86 +41,104 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
      */
     protected function _prepareColumns()
     {
-        $this->addColumn('badge_config_id', array(
-            'header'    => Mage::helper('customgento_productbadges')->__('ID'),
-            'align'     =>'right',
-            'width'     => '50px',
-            'index'     => 'badge_config_id',
-        ));
+        $this->addColumn(
+            'badge_config_id',
+            array(
+                'header' => Mage::helper('customgento_productbadges')->__('ID'),
+                'align'  => 'right',
+                'width'  => '50px',
+                'index'  => 'badge_config_id',
+            )
+        );
 
-        $this->addColumn('name', array(
-            'header'    => Mage::helper('customgento_productbadges')->__('Badge Name'),
-            'align'     =>'left',
-            'index'     => 'name',
-        ));
+        $this->addColumn(
+            'name', array(
+                'header' => Mage::helper('customgento_productbadges')->__('Badge Name'),
+                'align'  => 'left',
+                'index'  => 'name',
+            )
+        );
 
-        $this->addColumn('preview', array(
-            'header'    => Mage::helper('customgento_productbadges')->__('Preview'),
-            'index'     => 'preview',
-            'sortable'  => false,
-            'filter'    => false,
-            'renderer'  => 'customgento_productbadges/adminhtml_customGentoProductBadges_badgeConfig_grid_column_preview'
-        ));
+        $renderer = 'customgento_productbadges/adminhtml_customGentoProductBadges_badgeConfig_grid_column_preview';
+        $this->addColumn(
+            'preview', array(
+                'header'   => Mage::helper('customgento_productbadges')->__('Preview'),
+                'index'    => 'preview',
+                'sortable' => false,
+                'filter'   => false,
+                'renderer' => $renderer
+            )
+        );
 
-        $this->addColumn('from_date', array(
-            'header'    => Mage::helper('customgento_productbadges')->__('Date Start'),
-            'align'     => 'left',
-            'width'     => '120px',
-            'type'      => 'date',
-            'default'   => '--',
-            'index'     => 'from_date',
-        ));
+        $this->addColumn(
+            'from_date', array(
+                'header'  => Mage::helper('customgento_productbadges')->__('Date Start'),
+                'align'   => 'left',
+                'width'   => '120px',
+                'type'    => 'date',
+                'default' => '--',
+                'index'   => 'from_date',
+            )
+        );
 
-        $this->addColumn('to_date', array(
-            'header'    => Mage::helper('customgento_productbadges')->__('Date End'),
-            'align'     => 'left',
-            'width'     => '120px',
-            'type'      => 'date',
-            'default'   => '--',
-            'index'     => 'to_date',
-        ));
+        $this->addColumn(
+            'to_date', array(
+                'header'  => Mage::helper('customgento_productbadges')->__('Date End'),
+                'align'   => 'left',
+                'width'   => '120px',
+                'type'    => 'date',
+                'default' => '--',
+                'index'   => 'to_date',
+            )
+        );
 
-        $this->addColumn('is_active', array(
-            'header'    => Mage::helper('customgento_productbadges')->__('Status'),
-            'align'     => 'left',
-            'width'     => '80px',
-            'index'     => 'is_active',
-            'type'      => 'options',
-            'options'   => array(
-                1 => 'Active',
-                0 => 'Inactive',
-            ),
-        ));
+        $this->addColumn(
+            'is_active', array(
+                'header'  => Mage::helper('customgento_productbadges')->__('Status'),
+                'align'   => 'left',
+                'width'   => '80px',
+                'index'   => 'is_active',
+                'type'    => 'options',
+                'options' => array(
+                    1 => 'Active',
+                    0 => 'Inactive',
+                ),
+            )
+        );
 
         if (!Mage::app()->isSingleStoreMode()) {
-            $this->addColumn('store_ids', array(
-                'header'    => Mage::helper('customgento_productbadges')->__('Store'),
-                'align'     => 'left',
-                'index'     => 'store_ids',
-                'type'      => 'options',
-                'renderer'  => 'customgento_productbadges/adminhtml_customGentoProductBadges_badgeConfig_grid_renderer_store',
-                'sortable'  => false,
-                'options'   => Mage::getSingleton('customgento_productbadges/admin_badgeConfig_grid_filter_store')->getStoreOptionHash(),
-                'width'     => 250,
-                'filter_condition_callback' => array($this, '_storeFilterCallBack')
-            ));
+            $renderer    = 'customgento_productbadges/adminhtml_customGentoProductBadges_badgeConfig_grid_renderer_store';
+            $storeFilter = Mage::getSingleton('customgento_productbadges/admin_badgeConfig_grid_filter_store');
+            $this->addColumn(
+                'store_ids', array(
+                    'header'                    => Mage::helper('customgento_productbadges')->__('Store'),
+                    'align'                     => 'left',
+                    'index'                     => 'store_ids',
+                    'type'                      => 'options',
+                    'renderer'                  => $renderer,
+                    'sortable'                  => false,
+                    'options'                   => $storeFilter->getStoreOptionHash(),
+                    'width'                     => 250,
+                    'filter_condition_callback' => array($this, '_storeFilterCallBack')
+                )
+            );
         }
 
         parent::_prepareColumns();
+
         return $this;
     }
 
     /**
      * @param CustomGento_ProductBadges_Model_Resource_BadgeConfig_Collection $collection
-     * @param Mage_Adminhtml_Block_Widget_Grid_Column $column
+     * @param Mage_Adminhtml_Block_Widget_Grid_Column                         $column
      *
      * @return $this
      */
     protected function _storeFilterCallBack(
         CustomGento_ProductBadges_Model_Resource_BadgeConfig_Collection $collection,
         Mage_Adminhtml_Block_Widget_Grid_Column $column
-    )
-    {
+    ) {
         $value = $column->getFilter()->getValue();
 
         if ($value == null) {
@@ -142,5 +161,4 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
     {
         return $this->getUrl('*/*/edit', array('badge_config_id' => $row->getData('badge_config_id')));
     }
-
 }

@@ -1,16 +1,16 @@
 <?php
+
 class CustomGento_ProductBadges_Block_Renderer_Container
     extends Mage_Core_Block_Abstract
 {
-
     /** @var array */
-    private $_containers = array();
+    protected $_containers = array();
 
     /** @var CustomGento_ProductBadges_Model_Config_RenderContainer $_containerConfigModel */
-    private $_containerConfigModel;
+    protected $_containerConfigModel;
 
     /** @var CustomGento_ProductBadges_Block_Renderer_Badge $_badgeRenderer */
-    private $_badgeRenderer;
+    protected $_badgeRenderer;
 
     protected function _construct()
     {
@@ -21,20 +21,19 @@ class CustomGento_ProductBadges_Block_Renderer_Container
     }
 
     /**
-     * @param string $badgeInternalCode
+     * @param string                                      $badgeInternalCode
      * @param CustomGento_ProductBadges_Model_BadgeConfig $badgeConfig
      */
     public function attachBadgeToContainer($badgeInternalCode, CustomGento_ProductBadges_Model_BadgeConfig $badgeConfig)
     {
-        $containerName = $this->_containerConfigModel->getContainerOfProductBadge($badgeInternalCode);
+        $containerName                                         = $this->_containerConfigModel->getContainerOfProductBadge($badgeInternalCode);
         $this->_containers[$containerName][$badgeInternalCode] = $badgeConfig;
     }
 
     /**
-     * @param $productId
      * @return string
      */
-    public function generateContainersHtml($productId)
+    public function generateContainersHtml()
     {
         $containersHtml = '';
 
@@ -43,15 +42,16 @@ class CustomGento_ProductBadges_Block_Renderer_Container
                 ->getRenderContainersConfigByContainerName($containerName)
                 ->getCssClass();
 
-            $containerHtml = '<div class="product-badge-container ' . $containerCssClass . '">###BADGES_HTML_PLACEHOLDER###</div>';
-            $badgesHtml = '';
+            $containerHtml = '<div class="product-badge-container ' . $containerCssClass
+                . '">###BADGES_HTML_PLACEHOLDER###</div>';
+            $badgesHtml    = '';
 
             /** @var $badge CustomGento_ProductBadges_Block_Renderer_Badge */
             foreach ($badges as $badge) {
                 $badgesHtml .= $this->_badgeRenderer->renderBadge($badge);
             }
 
-            $containerHtml = str_replace('###BADGES_HTML_PLACEHOLDER###', $badgesHtml, $containerHtml);
+            $containerHtml  = str_replace('###BADGES_HTML_PLACEHOLDER###', $badgesHtml, $containerHtml);
             $containersHtml .= $containerHtml;
         }
 
@@ -67,5 +67,4 @@ class CustomGento_ProductBadges_Block_Renderer_Container
         /** NOTE: May be we just unset all value instead of = array(); */
         $this->_containers = array();
     }
-
 }

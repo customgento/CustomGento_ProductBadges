@@ -1,4 +1,5 @@
 <?php
+
 class CustomGento_ProductBadges_Model_Rule_Condition_Product
     extends Mage_Rule_Model_Condition_Product_Abstract
 {
@@ -45,10 +46,10 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product
     protected function _addSpecialAttributes(array &$attributes)
     {
         $attributes['attribute_set_id'] = $this->getHelper()->__('Attribute Set');
-        $attributes['category_ids'] = $this->getHelper()->__('Category');
-        $attributes['type_id'] = $this->getHelper()->__('Product Type');
-        $attributes['created_at'] = $this->getHelper()->__('Product Created At');
-        $attributes['updated_at'] = $this->getHelper()->__('Product Updated At');
+        $attributes['category_ids']     = $this->getHelper()->__('Category');
+        $attributes['type_id']          = $this->getHelper()->__('Product Type');
+        $attributes['created_at']       = $this->getHelper()->__('Product Created At');
+        $attributes['updated_at']       = $this->getHelper()->__('Product Updated At');
     }
 
     /**
@@ -79,6 +80,7 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product
      * Retrieve value by option
      *
      * @param  mixed $option Current Option
+     *
      * @return string Value of an Option
      */
     public function getValueOption($option = null)
@@ -104,7 +106,7 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product
                 }
 
                 $optionsArr = $this->getAttributeObject()->getSource()->getAllOptions($addEmptyOption);
-                $options = array();
+                $options    = array();
                 foreach ($optionsArr as $o) {
                     if (!is_array($o['value'])) {
                         $options[$o['value']] = $o['label'];
@@ -115,7 +117,7 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product
             }
         }
 
-        return $this->getData('value_option' . (!is_null($option) ? '/' . $option : ''));
+        return $this->getData('value_option' . (null !== $option ? '/' . $option : ''));
     }
 
     /**
@@ -169,7 +171,8 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product
         }
 
         if (!empty($image)) {
-            $html = '<a href="javascript:void(0)" class="rule-chooser-trigger">
+            $html
+                = '<a href="javascript:void(0)" class="rule-chooser-trigger">
                 <img src="' . $image . '" alt="" class="v-middle rule-chooser-trigger"
                 title="' . Mage::helper('rule')->__('Open Chooser') . '" /></a>';
         }
@@ -194,6 +197,7 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product
      * Collect validated attributes
      *
      * @param  Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Collection $productCollection Product Collection
+     *
      * @return CustomGento_ProductBadges_Model_Rule_Condition_Product
      */
     public function collectValidatedAttributes($productCollection)
@@ -202,7 +206,7 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product
 
         if ('category_ids' != $attribute) {
             if ($this->getAttributeObject()->isScopeGlobal()) {
-                $attributes = $this->getRule()->getCollectedAttributes();
+                $attributes             = $this->getRule()->getCollectedAttributes();
                 $attributes[$attribute] = true;
                 $this->getRule()->setCollectedAttributes($attributes);
                 $productCollection->addAttributeToSelect($attribute, 'left');
@@ -349,6 +353,7 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product
      * Load array
      *
      * @param  array $arr Attribute Array
+     *
      * @return CustomGento_ProductBadges_Model_Rule_Condition_Product
      */
     public function loadArray($arr)
@@ -377,6 +382,7 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product
      * Validate product attrbute value for condition
      *
      * @param  Varien_Object $object Object
+     *
      * @return boolean True/False
      */
     public function validate(Varien_Object $object)
@@ -404,7 +410,7 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product
 
             return parent::validate($object);
         } else {
-            $result = false;
+            $result       = false;
             $oldAttrValue = $object->hasData($attrCode) ? $object->getData($attrCode) : null;
 
             foreach ($this->_entityAttributeValues[$object->getId()] as $storeId => $value) {

@@ -1,18 +1,18 @@
 <?php
+
 class CustomGento_ProductBadges_Model_Rule_Config
 {
+    /** @var string */
+    protected $_conditionClass;
 
     /** @var string */
-    private $_conditionClass;
+    protected $_transformerClass;
 
     /** @var string */
-    private $_transformerClass;
+    protected $_internalCode;
 
     /** @var string */
-    private $_internalCode;
-
-    /** @var string */
-    private  $_label;
+    protected $_label;
 
     /**
      * @param string $conditionClass
@@ -59,5 +59,4 @@ class CustomGento_ProductBadges_Model_Rule_Config
     {
         return $this->_label;
     }
-
 }

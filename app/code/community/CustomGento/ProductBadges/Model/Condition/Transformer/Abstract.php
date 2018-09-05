@@ -13,7 +13,7 @@ abstract class CustomGento_ProductBadges_Model_Condition_Transformer_Abstract
     public function isScalarOperator($operator)
     {
         /** @todo: Check all operators if we didn't miss any. */
-        return !in_array($operator, ['!{}', '{}', '()', '!()', '[]', '![]']);
+        return !in_array($operator, array('!{}', '{}', '()', '!()', '[]', '![]'));
     }
 
     /**
@@ -26,7 +26,7 @@ abstract class CustomGento_ProductBadges_Model_Condition_Transformer_Abstract
     public function getOperatorPrefix($operator)
     {
         /** @todo: Check all operators if we didn't miss any. */
-        return in_array($operator, ['!=', '!{}', '!()', '![]']) ? 'NOT' : '';
+        return in_array($operator, array('!=', '!{}', '!()', '![]')) ? 'NOT' : '';
     }
 
     /**
@@ -40,7 +40,7 @@ abstract class CustomGento_ProductBadges_Model_Condition_Transformer_Abstract
     public function orAndCondition($operator)
     {
         /** @todo: Check all operators if we didn't miss any. */
-        return in_array($operator, ['[]', '![]']) ? 'AND' : 'OR';
+        return in_array($operator, array('[]', '![]')) ? 'AND' : 'OR';
     }
 
     /**
@@ -64,5 +64,4 @@ abstract class CustomGento_ProductBadges_Model_Condition_Transformer_Abstract
     {
         return Mage::getSingleton('core/resource')->getTableName($alias);
     }
-
 }

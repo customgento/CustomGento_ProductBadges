@@ -9,11 +9,12 @@ $installer->startSetup();
 $installer->getConnection()
     ->addColumn(
         $installer->getTable('customgento_productbadges/badge_config'),
-        'badge_text' ,array(
-            'type'      => Varien_Db_Ddl_Table::TYPE_TEXT,
-            'nullable'  => true,
-            'length'    => 255,
-            'comment'   => 'Badge Text'
-        ));
+        'badge_text', array(
+            'type'     => Varien_Db_Ddl_Table::TYPE_TEXT,
+            'nullable' => true,
+            'length'   => 255,
+            'comment'  => 'Badge Text'
+        )
+    );
 
 $installer->endSetup();

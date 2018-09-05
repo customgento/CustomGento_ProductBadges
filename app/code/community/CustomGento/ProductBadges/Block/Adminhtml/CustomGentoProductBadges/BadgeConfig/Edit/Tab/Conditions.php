@@ -1,9 +1,9 @@
 <?php
+
 class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeConfig_Edit_Tab_Conditions
     extends Mage_Adminhtml_Block_Widget_Form
     implements Mage_Adminhtml_Block_Widget_Tab_Interface
 {
-
     /**
      * Prepare content for tab
      *
@@ -55,9 +55,13 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
 
         $form->setHtmlIdPrefix('current_badge_');
 
-        $fieldset = $form->addFieldset('conditions_fieldset', array(
-            'legend'=>Mage::helper('customgento_productbadges')->__('Apply the badge only if the following conditions are met (leave blank for all products)')
-        ));
+        $fieldset = $form->addFieldset(
+            'conditions_fieldset',
+            array(
+                'legend' => Mage::helper('customgento_productbadges')
+                    ->__('Apply the badge only if the following conditions are met (leave blank for all products)')
+            )
+        );
 
         $renderer = Mage::getBlockSingleton('adminhtml/widget_form_renderer_fieldset')
             ->setTemplate('promo/fieldset.phtml')
@@ -65,11 +69,15 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
 
         $fieldset->setRenderer($renderer);
 
-        $fieldset->addField('conditions', 'text', array(
-            'name' => 'conditions',
-            'label' => Mage::helper('customgento_productbadges')->__('Conditions'),
-            'title' => Mage::helper('customgento_productbadges')->__('Conditions'),
-        ))->setRule($model)->setRenderer(Mage::getBlockSingleton('rule/conditions'));
+        $fieldset->addField(
+            'conditions',
+            'text',
+            array(
+                'name'  => 'conditions',
+                'label' => Mage::helper('customgento_productbadges')->__('Conditions'),
+                'title' => Mage::helper('customgento_productbadges')->__('Conditions'),
+            )
+        )->setRule($model)->setRenderer(Mage::getBlockSingleton('rule/conditions'));
 
         $form->setValues($model->getData());
 
@@ -77,5 +85,4 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
 
         return parent::_prepareForm();
     }
-
 }

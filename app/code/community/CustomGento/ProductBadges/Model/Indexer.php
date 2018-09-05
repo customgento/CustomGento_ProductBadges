@@ -1,4 +1,5 @@
 <?php
+
 class CustomGento_ProductBadges_Model_Indexer
     extends Mage_Index_Model_Indexer_Abstract
 {
@@ -39,5 +40,4 @@ class CustomGento_ProductBadges_Model_Indexer
     protected function _processEvent(Mage_Index_Model_Event $event)
     {
     }
-
 }

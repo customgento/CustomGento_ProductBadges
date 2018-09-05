@@ -6,7 +6,6 @@
 class CustomGento_ProductBadges_Model_BadgeConfig
     extends Mage_Rule_Model_Abstract
 {
-
     /**
      * Prefix of model events names
      *
@@ -50,18 +49,17 @@ class CustomGento_ProductBadges_Model_BadgeConfig
      */
     public function getActionsInstance()
     {
-        return new Mage_Rule_Model_Action_Collection();
+        return Mage::getModel('rule/action_collection');
     }
-
 
     /**
      * Get array of product ids which are matched by rule
+     *
      * @param int $fromId
      * @param int $toId
      * @param int $storeId
      *
      * @return array Matching product IDs
-     * @throws CustomGento_ProductBadges_Exception_Transform
      */
     public function getMatchingProductIds($fromId, $toId, $storeId)
     {
@@ -71,8 +69,10 @@ class CustomGento_ProductBadges_Model_BadgeConfig
         $productCollection = Mage::getResourceModel('catalog/product_collection');
         $productCollection->addAttributeToSelect('entity_id');
         $productCollection->addAttributeToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED);
-        $productCollection->addAttributeToFilter('visibility',
-            Mage::getSingleton('catalog/product_visibility')->getVisibleInCatalogIds());
+        $productCollection->addAttributeToFilter(
+            'visibility',
+            Mage::getSingleton('catalog/product_visibility')->getVisibleInCatalogIds()
+        );
 
         $productCollection->addStoreFilter($storeId);
 
@@ -97,9 +97,9 @@ class CustomGento_ProductBadges_Model_BadgeConfig
      * Transform rule condition to sql
      *
      * @param Mage_Rule_Model_Condition_Abstract $condition Rule condition $condition
-     * @param int $fromId
-     * @param int $toId
-     * @param int $storeId
+     * @param int                                $fromId
+     * @param int                                $toId
+     * @param int                                $storeId
      *
      * @return Zend_Db_Expr
      * @throws CustomGento_ProductBadges_Exception_Transform
@@ -109,9 +109,15 @@ class CustomGento_ProductBadges_Model_BadgeConfig
 
         switch (true) {
             case $condition instanceof Mage_Rule_Model_Condition_Combine:
-                $conditions = array_map(Closure::bind(function(Mage_Rule_Model_Condition_Abstract $condition) use ($fromId, $toId, $storeId) {
-                    return $this->transformConditionToSql($condition, $fromId, $toId, $storeId);
-                }, $this) , $condition->getConditions());
+                $conditions = array_map(
+                    Closure::bind(
+                        function (Mage_Rule_Model_Condition_Abstract $condition) use ($fromId, $toId, $storeId) {
+                            return $this->transformConditionToSql($condition, $fromId, $toId, $storeId);
+                        },
+                        $this
+                    ),
+                    $condition->getConditions()
+                );
 
                 $operator = $condition->getData('aggregator') === 'all' ? 'AND' : 'OR';
 
@@ -129,16 +135,20 @@ class CustomGento_ProductBadges_Model_BadgeConfig
      * Transform product rule condition to sql
      *
      * @param Mage_Rule_Model_Condition_Product_Abstract $condition Rule condition
-     * @param int $fromId
-     * @param int $toId
-     * @param int $storeId
+     * @param int                                        $fromId
+     * @param int                                        $toId
+     * @param int                                        $storeId
      *
      * @return Zend_Db_Expr
      * @throws CustomGento_ProductBadges_Exception_Transform
      */
-    protected function transformProductConditionToSql(Mage_Rule_Model_Condition_Product_Abstract $condition, $fromId, $toId, $storeId)
-    {
-        $attribute = $condition->getAttributeObject();
+    protected function transformProductConditionToSql(
+        Mage_Rule_Model_Condition_Product_Abstract $condition,
+        $fromId,
+        $toId,
+        $storeId
+    ) {
+        $attribute   = $condition->getAttributeObject();
         $transformer = null;
 
         switch (true) {
@@ -148,7 +158,8 @@ class CustomGento_ProductBadges_Model_BadgeConfig
             case $attribute->getData('backend_type') == 'static':
                 $transformer = 'static';
                 break;
-            case CustomGento_ProductBadges_Model_Rule_Condition_Product_StockStatus::ATTRIBUTE_NAME === $attribute->getAttributeCode():
+            case CustomGento_ProductBadges_Model_Rule_Condition_Product_StockStatus::ATTRIBUTE_NAME
+                === $attribute->getAttributeCode():
                 $transformer = 'stockstatus';
                 break;
             default:
@@ -173,7 +184,7 @@ class CustomGento_ProductBadges_Model_BadgeConfig
      */
     protected function getDbAdapter()
     {
-        return  Mage::getSingleton('core/resource')->getConnection('core_read');
+        return Mage::getSingleton('core/resource')->getConnection('core_read');
     }
 
     /**
@@ -209,7 +220,8 @@ class CustomGento_ProductBadges_Model_BadgeConfig
     public static function getInternalCodeFromId($id)
     {
         // make sure that we produce a valid column name for the index table
-        $id = (int) $id;
+        $id = (int)$id;
+
         return 'badge_' . $id;
     }
 
@@ -220,5 +232,4 @@ class CustomGento_ProductBadges_Model_BadgeConfig
     {
         return static::getInternalCodeFromId($this->getId());
     }
-
 }

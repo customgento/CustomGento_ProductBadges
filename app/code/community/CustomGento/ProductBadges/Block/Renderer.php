@@ -1,22 +1,22 @@
 <?php
+
 class CustomGento_ProductBadges_Block_Renderer
     extends Mage_Core_Block_Abstract
 {
-
     /** @var CustomGento_ProductBadges_Block_Renderer_Container */
-    private $_containerRendererBlock;
+    protected $_containerRendererBlock;
 
     /** @var CustomGento_ProductBadges_Model_Config_RenderTypeData */
-    private $_badgeConfigHelper;
+    protected $_badgeConfigHelper;
 
     /** @var CustomGento_ProductBadges_Model_Cache */
-    private $_badgeCacheModel;
+    protected $_badgeCacheModel;
 
     /** @var array */
-    private $_badges = array();
+    protected $_badges = array();
 
     /** @var int */
-    private $_productId;
+    protected $_productId;
 
     protected function _construct()
     {
@@ -27,11 +27,11 @@ class CustomGento_ProductBadges_Block_Renderer
 
     /**
      * @param array $badges
-     * @param $productId
+     * @param       $productId
      */
     public function init(array $badges, $productId)
     {
-        $this->_badges = $badges;
+        $this->_badges    = $badges;
         $this->_productId = $productId;
         $this->setCacheKey($this->_badgeCacheModel->getProductBadgesCacheKey($this->_productId));
     }
@@ -46,11 +46,11 @@ class CustomGento_ProductBadges_Block_Renderer
 
     /**
      * @param array $badges
-     * @param $productId
+     * @param       $productId
      *
      * @return string
      */
-    public function generateBadgesHtml(array $badges, $productId)
+    public function generateBadgesHtml(array $badges)
     {
         if (empty($badges)) {
             return '';
@@ -62,7 +62,7 @@ class CustomGento_ProductBadges_Block_Renderer
             $this->_containerRendererBlock->attachBadgeToContainer($badgeCode, $badgeConfig);
         }
 
-        $badgesHtml = $this->_containerRendererBlock->generateContainersHtml($productId);
+        $badgesHtml = $this->_containerRendererBlock->generateContainersHtml();
         $this->_containerRendererBlock->clearState();
 
         return $badgesHtml;
@@ -78,7 +78,7 @@ class CustomGento_ProductBadges_Block_Renderer
         $this->_addCacheTags();
 
         if (!empty($this->_badges) && !empty($this->_productId)) {
-            return $this->generateBadgesHtml($this->_badges, $this->_productId);
+            return $this->generateBadgesHtml($this->_badges);
         }
 
         return '';
@@ -90,5 +90,4 @@ class CustomGento_ProductBadges_Block_Renderer
             $this->_badgeCacheModel->getProductBadgesTags(array_keys($this->_badges))
         );
     }
-
 }

@@ -12,12 +12,17 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_Store
 
         // Case when attribute has store scope
         if ($attribute->isScopeStore()) {
-
             $storeMatchesData = $this->_getMatchesForStoreView($attribute, $condition, $fromId, $toId, $storeId);
 
             $alreadyExistInStoreViewIds = $this->_getExistingInStoreScope($attribute, $fromId, $toId, $storeId);
 
-            $defaultStoreMatchesData = $this->_getExistingInDefaultScope($attribute, $condition, $fromId, $toId, $alreadyExistInStoreViewIds);
+            $defaultStoreMatchesData = $this->_getExistingInDefaultScope(
+                $attribute,
+                $condition,
+                $fromId,
+                $toId,
+                $alreadyExistInStoreViewIds
+            );
 
             $matches = array_merge($storeMatchesData, $defaultStoreMatchesData);
 
@@ -31,7 +36,7 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_Store
 
         // Case when attribute has global scope
         $scopeTable = $this->_getScopeTable($attribute);
-        $select = new Zend_Db_Select($this->getDbAdapter());
+        $select     = new Zend_Db_Select($this->getDbAdapter());
         $select->where("`e`.`entity_id` = `{$scopeTable}`.`entity_id`");
         $this->attachAttributeValueCondition($select, $condition, $attribute);
 
@@ -39,36 +44,34 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_Store
     }
 
     /**
-     * @param Zend_Db_Select $select
+     * @param Zend_Db_Select                             $select
      * @param Mage_Rule_Model_Condition_Product_Abstract $condition
-     * @param Mage_Catalog_Model_Resource_Eav_Attribute $attribute
+     * @param Mage_Catalog_Model_Resource_Eav_Attribute  $attribute
      */
     protected function attachAttributeValueCondition(
         Zend_Db_Select $select,
         Mage_Rule_Model_Condition_Product_Abstract $condition,
         Mage_Catalog_Model_Resource_Eav_Attribute $attribute
-    )
-    {
-        $value = $condition->getValueParsed();
+    ) {
+        $value         = $condition->getValueParsed();
         $frontendInput = $attribute->getFrontendInput();
 
         $scopeTable = $this->_getScopeTable($attribute);
 
         $select
-            ->from([$scopeTable => $attribute->getBackendTable()], ['entity_id'])
-            ->where("`{$scopeTable}`.`attribute_id` = ?", $attribute->getAttributeId())
-        ;
+            ->from(array($scopeTable => $attribute->getBackendTable()), array('entity_id'))
+            ->where("`{$scopeTable}`.`attribute_id` = ?", $attribute->getAttributeId());
 
         $operator = str_replace('==', '=', $condition->getOperatorForValidate());
 
         if ($this->isScalarOperator($operator)) {
             $select->where("`{$scopeTable}`.`value` {$operator} ?", $value);
         } else {
-            $prefix = $this->getOperatorPrefix($operator);
+            $prefix         = $this->getOperatorPrefix($operator);
             $orAndCondition = $this->orAndCondition($operator);
-            $value = (array) $value;
+            $value          = (array)$value;
 
-            $subConditions = [];
+            $subConditions = array();
 
             /** @var array $value */
             foreach ($value as $_value) {
@@ -90,22 +93,21 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_Store
     }
 
     /**
-     * @param $attribute
+     * @param                                            $attribute
      * @param Mage_Rule_Model_Condition_Product_Abstract $condition
-     * @param $fromId
-     * @param $toId
-     * @param $storeId
+     * @param                                            $fromId
+     * @param                                            $toId
+     * @param                                            $storeId
      *
      * @return array
      */
-    private function _getMatchesForStoreView(
+    protected function _getMatchesForStoreView(
         Mage_Catalog_Model_Resource_Eav_Attribute $attribute,
         Mage_Rule_Model_Condition_Product_Abstract $condition,
         $fromId,
         $toId,
         $storeId
-    )
-    {
+    ) {
         $storeViewSelect = new Zend_Db_Select($this->getDbAdapter());
         $this->attachAttributeValueCondition($storeViewSelect, $condition, $attribute);
 
@@ -121,26 +123,25 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_Store
 
     /**
      * @param Mage_Catalog_Model_Resource_Eav_Attribute $attribute
-     * @param int $fromId
-     * @param int $toId
-     * @param int $storeId
+     * @param int                                       $fromId
+     * @param int                                       $toId
+     * @param int                                       $storeId
      *
      * @return array
      */
-    private function _getExistingInStoreScope(
+    protected function _getExistingInStoreScope(
         Mage_Catalog_Model_Resource_Eav_Attribute $attribute,
         $fromId,
         $toId,
         $storeId
-    )
-    {
+    ) {
         // Search for NON candidates for search in default Store View Id
         $alreadyExistInStoreSelect = new Zend_Db_Select($this->getDbAdapter());
 
         $scopeTable = $this->_getScopeTable($attribute);
 
         $alreadyExistInStoreSelect
-            ->from([$scopeTable => $attribute->getBackendTable()], ['entity_id'])
+            ->from(array($scopeTable => $attribute->getBackendTable()), array('entity_id'))
             ->where("`{$scopeTable}`.`store_id` = ?", $storeId)
             ->where("`{$scopeTable}`.`entity_id` >= ?", $fromId)
             ->where("`{$scopeTable}`.`entity_id` <= ?", $toId)
@@ -151,22 +152,21 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_Store
     }
 
     /**
-     * @param Mage_Catalog_Model_Resource_Eav_Attribute $attribute
+     * @param Mage_Catalog_Model_Resource_Eav_Attribute  $attribute
      * @param Mage_Rule_Model_Condition_Product_Abstract $condition
-     * @param int $fromId
-     * @param int $toId
-     * @param array $alreadyExistInStoreViewIds
+     * @param int                                        $fromId
+     * @param int                                        $toId
+     * @param array                                      $alreadyExistInStoreViewIds
      *
      * @return array
      */
-    private function _getExistingInDefaultScope(
+    protected function _getExistingInDefaultScope(
         Mage_Catalog_Model_Resource_Eav_Attribute $attribute,
         Mage_Rule_Model_Condition_Product_Abstract $condition,
         $fromId,
         $toId,
         array $alreadyExistInStoreViewIds
-    )
-    {
+    ) {
         // Search for matches in default Store View Id
         $defaultStoreViewSelect = new Zend_Db_Select($this->getDbAdapter());
         $this->attachAttributeValueCondition($defaultStoreViewSelect, $condition, $attribute);
@@ -179,7 +179,10 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_Store
             ->where("`{$scopeTable}`.`attribute_id` = ?", $attribute->getAttributeId());
 
         if (!empty($alreadyExistInStoreViewIds)) {
-            $defaultStoreViewSelect->where("`{$scopeTable}`.`entity_id` NOT IN (?)", implode(',', $alreadyExistInStoreViewIds));
+            $defaultStoreViewSelect->where(
+                "`{$scopeTable}`.`entity_id` NOT IN (?)",
+                implode(',', $alreadyExistInStoreViewIds)
+            );
         }
 
         return $this->getDbAdapter()->fetchCol($defaultStoreViewSelect);
@@ -187,11 +190,11 @@ class CustomGento_ProductBadges_Model_Condition_Transformer_Store
 
     /**
      * @param $attribute
+     *
      * @return string
      */
-    private function _getScopeTable($attribute)
+    protected function _getScopeTable($attribute)
     {
         return $scopeTable = "at_scope_{$attribute->getAttributeCode()}";
     }
-
 }

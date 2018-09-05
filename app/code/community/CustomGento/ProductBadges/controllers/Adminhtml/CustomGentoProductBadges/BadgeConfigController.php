@@ -1,18 +1,19 @@
 <?php
+
 class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigController
     extends Mage_Adminhtml_Controller_Action
 {
-
     public function indexAction()
     {
         $this->_initAction()
-            ->renderLayout();;
+            ->renderLayout();
     }
 
     protected function _initAction()
     {
         $this->loadLayout()
             ->_setActiveMenu('catalog/customgento_productbadges_config');
+
         return $this;
     }
 
@@ -23,15 +24,17 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
 
     public function editAction()
     {
-        $id = $this->getRequest()->getParam('badge_config_id');
+        $id    = $this->getRequest()->getParam('badge_config_id');
         $model = $this->_getBadgeConfigModel();
 
         if ($id) {
             $model->load($id);
             if (!$model->getData('badge_config_id')) {
                 Mage::getSingleton('adminhtml/session')->addError(
-                    Mage::helper('customgento_productbadges')->__('This badge no longer exists.'));
+                    Mage::helper('customgento_productbadges')->__('This badge no longer exists.')
+                );
                 $this->_redirect('*/*');
+
                 return;
             }
         }
@@ -58,7 +61,8 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
                 $id ? Mage::helper('customgento_productbadges')->__('Edit Badge')
                     : Mage::helper('customgento_productbadges')->__('New Badge'),
                 $id ? Mage::helper('customgento_productbadges')->__('Edit Badge')
-                    : Mage::helper('customgento_productbadges')->__('New Badge'))
+                    : Mage::helper('customgento_productbadges')->__('New Badge')
+            )
             ->renderLayout();
     }
 
@@ -72,10 +76,11 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
                 $model = $this->_getBadgeConfigModel();
                 Mage::dispatchEvent(
                     'adminhtml_controller_customgento_productbadges_badgeconfig_prepare_save',
-                    array('request' => $this->getRequest()));
+                    array('request' => $this->getRequest())
+                );
                 $data = $this->getRequest()->getPost();
                 $data = $this->_filterDates($data, array('from_date', 'to_date'));
-                $id = $this->getRequest()->getParam('badge_config_id');
+                $id   = $this->getRequest()->getParam('badge_config_id');
                 if ($id) {
                     $model->load($id);
                     if ($id != $model->getData('badge_config_id')) {
@@ -87,11 +92,13 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
 
                 $validateResult = $model->validateData(new Varien_Object($data));
                 if ($validateResult !== true) {
-                    foreach($validateResult as $errorMessage) {
+                    foreach ($validateResult as $errorMessage) {
                         $session->addError($errorMessage);
                     }
+
                     $session->setPageData($data);
-                    $this->_redirect('*/*/edit', array('badge_config_id'=>$model->getId()));
+                    $this->_redirect('*/*/edit', array('badge_config_id' => $model->getId()));
+
                     return;
                 }
 
@@ -110,11 +117,15 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
 
                 $model->save();
 
-                $session->addSuccess(Mage::helper('customgento_productbadges')->__('The badge config for "%s" has been saved.', $model->getName()));
+                $session->addSuccess(
+                    Mage::helper('customgento_productbadges')
+                        ->__('The badge config for "%s" has been saved.', $model->getName())
+                );
                 $session->setPageData(false);
 
                 if ($this->getRequest()->getParam('back')) {
                     $this->_redirect('*/*/edit', array('badge_config_id' => $model->getData('badge_config_id')));
+
                     return;
                 }
 
@@ -132,24 +143,30 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
                 }
 
                 return;
-
             } catch (Exception $e) {
                 $this->_getSession()->addError(
-                    Mage::helper('catalogrule')->__('An error occurred while saving the rule data. Please review the log and try again.'));
+                    Mage::helper('catalogrule')
+                        ->__('An error occurred while saving the rule data. Please review the log and try again.')
+                );
                 Mage::logException($e);
                 Mage::getSingleton('adminhtml/session')->setPageData($data);
-                $this->_redirect('*/*/edit', array('badge_config_id' => $this->getRequest()->getParam('badge_config_id')));
+                $this->_redirect(
+                    '*/*/edit',
+                    array('badge_config_id' => $this->getRequest()->getParam('badge_config_id'))
+                );
+
                 return;
             }
         }
+
         $this->_redirect('*/*/');
     }
 
     public function newConditionHtmlAction()
     {
-        $id = $this->getRequest()->getParam('id');
+        $id      = $this->getRequest()->getParam('id');
         $typeArr = explode('|', str_replace('-', '/', $this->getRequest()->getParam('type')));
-        $type = $typeArr[0];
+        $type    = $typeArr[0];
 
         $model = Mage::getModel($type)
             ->setId($id)
@@ -167,6 +184,7 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
         } else {
             $html = '';
         }
+
         $this->getResponse()->setBody($html);
     }
 
@@ -176,7 +194,7 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
 
         $badgeData['internal_code'] = 'dummy-code-for-preview';
 
-        if(empty($badgeData['badge_text'])) {
+        if (empty($badgeData['badge_text'])) {
             $badgeData['badge_text'] = '---';
         }
 
@@ -189,20 +207,18 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
 
         $badgeHtml = $badgeRenderer->renderBadge($badgeConfig);
 
-        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode(array(
-            'preview' => $badgeHtml
-        )));
+        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode(array('preview' => $badgeHtml)));
     }
 
     /**
      * @param CustomGento_ProductBadges_Model_BadgeConfig $model
-     * @param array $postData
+     * @param array                                       $postData
      *
      * @return array
      */
     protected function _handleBadgeImageUpload(CustomGento_ProductBadges_Model_BadgeConfig $model, $postData)
     {
-        $badgeImageFieldName = 'badge_image';
+        $badgeImageFieldName   = 'badge_image';
         $badgesUploadSubFolder = 'customgento_product_badges';
 
         try {
@@ -210,31 +226,34 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
                 && (bool)$postData[$badgeImageFieldName]['delete'] == 1) {
                 // Delete old image
                 if ($model->getId() && $model->getData($badgeImageFieldName)) {
-                    $io = new Varien_Io_File();
-                    $io->rm(Mage::getBaseDir('media') . DS . implode(DS, explode('/', $model->getData($badgeImageFieldName))));
+                    $io          = new Varien_Io_File();
+                    $oldFilename = Mage::getBaseDir('media') . DS . implode(DS,
+                            explode('/', $model->getData($badgeImageFieldName)));
+                    $io->rm($oldFilename);
                 }
 
                 $postData[$badgeImageFieldName] = '';
             } else {
                 unset($postData[$badgeImageFieldName]);
                 if (isset($_FILES[$badgeImageFieldName]) && $_FILES[$badgeImageFieldName]['name']) {
-                    $path = Mage::getBaseDir('media') . DS . $badgesUploadSubFolder . DS;
+                    $path     = Mage::getBaseDir('media') . DS . $badgesUploadSubFolder . DS;
                     $uploader = new Varien_File_Uploader($badgeImageFieldName);
                     $uploader->setAllowedExtensions(array('jpg', 'png', 'gif'));
                     $uploader->setAllowRenameFiles(true);
                     $uploader->setFilesDispersion(false);
                     $destFile = $path . $_FILES[$badgeImageFieldName]['name'];
-                    $filename = $uploader->getNewFileName($destFile);
+                    $filename = Varien_File_Uploader::getNewFileName($destFile);
                     $uploader->save($path, $filename);
 
                     // Delete old image
                     if ($model->getId() && $model->getData($badgeImageFieldName)) {
                         $io = new Varien_Io_File();
-                        $io->rm(Mage::getBaseDir('media') . DS . implode(DS, explode('/', $model->getData($badgeImageFieldName))));
+                        $io->rm(Mage::getBaseDir('media') . DS . implode(DS,
+                                explode('/', $model->getData($badgeImageFieldName))));
                     }
 
                     // Assigning the uploaded image relative path in order to save it in DB
-                    $postData[$badgeImageFieldName] =  $badgesUploadSubFolder . '/' . $filename;
+                    $postData[$badgeImageFieldName] = $badgesUploadSubFolder . '/' . $filename;
                 }
             }
         } catch (Exception $e) {
@@ -254,7 +273,10 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
     {
         $stores = $postData['store_ids'];
         if (!is_array($stores) || count($stores) == 0) {
-            Mage::throwException(Mage::helper('customgento_productbadges')->__('Please, select "Visible in Stores" for this badge configuration first.'));
+            Mage::throwException(
+                Mage::helper('customgento_productbadges')
+                    ->__('Please, select "Visible in Stores" for this badge configuration first.')
+            );
         }
 
         if (is_array($stores)) {
@@ -266,6 +288,7 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
 
     /**
      * Returns result of current user permission check on resource and privilege
+     *
      * @return boolean
      */
     protected function _isAllowed()
@@ -280,5 +303,4 @@ class CustomGento_ProductBadges_Adminhtml_CustomGentoProductBadges_BadgeConfigCo
     {
         return Mage::getModel('customgento_productbadges/badgeConfig');
     }
-
 }

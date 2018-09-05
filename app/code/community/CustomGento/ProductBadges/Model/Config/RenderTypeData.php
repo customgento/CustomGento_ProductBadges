@@ -1,8 +1,8 @@
 <?php
+
 class CustomGento_ProductBadges_Model_Config_RenderTypeData
 {
-
-    private $_badgesMapping = false;
+    protected $_badgesMapping = false;
 
     /**
      * @param string $badgeInternalCode
@@ -32,9 +32,10 @@ class CustomGento_ProductBadges_Model_Config_RenderTypeData
             }
         }
 
-        return isset($this->_badgesMapping[$badgeInternalCode]) ?
-            $this->_badgesMapping[$badgeInternalCode] :
+        return isset($this->_badgesMapping[$badgeInternalCode])
+            ?
+            $this->_badgesMapping[$badgeInternalCode]
+            :
             false;
     }
-
 }

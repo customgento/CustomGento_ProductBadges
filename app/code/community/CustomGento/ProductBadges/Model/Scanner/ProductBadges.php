@@ -2,26 +2,25 @@
 
 class CustomGento_ProductBadges_Model_Scanner_ProductBadges
 {
-
     protected $_chunkSize = 500;
 
     /** @var array */
-    private $_chunks = array();
+    protected $_chunks = array();
 
     /** @var int */
-    private $_currentChunkNumber = 0;
+    protected $_currentChunkNumber = 0;
 
     /** @var int */
-    private $_chunksCount = 0;
+    protected $_chunksCount = 0;
 
     /** @var array */
-    private $_badgeCodes = array();
+    protected $_badgeCodes = array();
 
     /** @var CustomGento_ProductBadges_Model_Resource_BadgeConfig_Collection */
-    private $_badgeConfigsCollection;
+    protected $_badgeConfigsCollection;
 
     /** @var int */
-    private $_storeId;
+    protected $_storeId;
 
     /**
      * @param $storeId
@@ -49,12 +48,12 @@ class CustomGento_ProductBadges_Model_Scanner_ProductBadges
         $productMappingBadges = array();
         if (!empty($productIds)) {
             sort($productIds);
-            $productIdRanges['from']   = $productIds[0];
-            $productIdRanges['to']     = $productIds[count($productIds) - 1];
+            $productIdRanges['from'] = $productIds[0];
+            $productIdRanges['to']   = $productIds[count($productIds) - 1];
 
-            //As we just want to update the given product ids we do not want to split the product collection into chunks
-            //anymore. Normally this function is called for every chunk,so we set the current chunk number to the max value
-            //to avoid more function calls.
+            // As we just want to update the given product ids we do not want to split the product collection into
+            // chunks anymore. Normally this function is called for every chunk,so we set the current chunk number to
+            // the max value to avoid more function calls.
             $this->_currentChunkNumber = $this->_chunksCount;
         } else {
             $productIdRanges = $this->_getProductIdRanges($this->_currentChunkNumber);
@@ -96,7 +95,7 @@ class CustomGento_ProductBadges_Model_Scanner_ProductBadges
     }
 
 
-    private function _getProductIdChunks($chunkSize)
+    protected function _getProductIdChunks($chunkSize)
     {
         $productCollection = Mage::getResourceModel('catalog/product_collection');
         $allProductIds     = $productCollection->getAllIds();
@@ -104,12 +103,11 @@ class CustomGento_ProductBadges_Model_Scanner_ProductBadges
         return array_chunk($allProductIds, $chunkSize);
     }
 
-    private function _getProductIdRanges($chunkNumber)
+    protected function _getProductIdRanges($chunkNumber)
     {
         return array(
             'from' => reset($this->_chunks[$chunkNumber]),
             'to'   => end($this->_chunks[$chunkNumber])
         );
     }
-
 }

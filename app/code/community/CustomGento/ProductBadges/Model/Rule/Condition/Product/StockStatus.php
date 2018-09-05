@@ -1,10 +1,9 @@
 <?php
+
 class CustomGento_ProductBadges_Model_Rule_Condition_Product_StockStatus
     extends CustomGento_ProductBadges_Model_Rule_Condition_Product_BaseCondition
 {
-
     const ATTRIBUTE_NAME = 'stock_status';
-
 
     /**
      * Retrieve select option values
@@ -53,5 +52,4 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product_StockStatus
     {
         return self::ATTRIBUTE_NAME;
     }
-
 }

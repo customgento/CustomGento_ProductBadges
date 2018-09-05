@@ -1,8 +1,8 @@
 <?php
+
 class CustomGento_ProductBadges_Helper_Config
     extends Mage_Core_Helper_Abstract
 {
-
     const CUSTOMGENTO_PRODUCTBADGES_RULES_GLOBAL_CONFIG_XML_PATH = 'global/customgento_productbadges/rules';
 
     /** @var array|bool */
@@ -13,7 +13,7 @@ class CustomGento_ProductBadges_Helper_Config
         $config = Mage::getConfig()
             ->getNode(self::CUSTOMGENTO_PRODUCTBADGES_RULES_GLOBAL_CONFIG_XML_PATH);
 
-        if(!empty($config)) {
+        if (!empty($config)) {
             $configsArray = $config->asCanonicalArray();
 
             foreach ($configsArray as $data) {
@@ -49,5 +49,4 @@ class CustomGento_ProductBadges_Helper_Config
     {
         return $this->_rulesConfigurations;
     }
-
 }

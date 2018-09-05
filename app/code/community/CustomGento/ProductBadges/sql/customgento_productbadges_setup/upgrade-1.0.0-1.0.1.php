@@ -9,22 +9,26 @@ $installer->startSetup();
 $installer->getConnection()
     ->addColumn(
         $installer->getTable('customgento_productbadges/badge_config'),
-        'render_container' ,array(
-            'type'      => Varien_Db_Ddl_Table::TYPE_TEXT,
-            'nullable'  => false,
-            'length'    => 255,
-            'comment'   => 'Render Container'
-        ));
+        'render_container',
+        array(
+            'type'     => Varien_Db_Ddl_Table::TYPE_TEXT,
+            'nullable' => false,
+            'length'   => 255,
+            'comment'  => 'Render Container'
+        )
+    );
 
 $installer->getConnection()
     ->addColumn(
         $installer->getTable('customgento_productbadges/badge_config'),
-        'internal_code' ,array(
-            'type'      => Varien_Db_Ddl_Table::TYPE_TEXT,
-            'nullable'  => false,
-            'length'    => 255,
-            'after'     => 'badge_config_id',
-            'comment'   => 'Internal Code'
-        ));
+        'internal_code',
+        array(
+            'type'     => Varien_Db_Ddl_Table::TYPE_TEXT,
+            'nullable' => false,
+            'length'   => 255,
+            'after'    => 'badge_config_id',
+            'comment'  => 'Internal Code'
+        )
+    );
 
 $installer->endSetup();

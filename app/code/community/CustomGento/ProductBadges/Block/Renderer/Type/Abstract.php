@@ -1,10 +1,11 @@
 <?php
+
 class CustomGento_ProductBadges_Block_Renderer_Type_Abstract
     extends Mage_Core_Block_Abstract
 {
-
     /**
      * @param CustomGento_ProductBadges_Model_BadgeConfig $badgeConfig
+     *
      * @return string
      */
     protected function _customStyling(CustomGento_ProductBadges_Model_BadgeConfig $badgeConfig)
@@ -13,7 +14,7 @@ class CustomGento_ProductBadges_Block_Renderer_Type_Abstract
          *  this function is very specific for badges that are dynamic e.g. have dynamic text and shape
          */
 
-        $customisations = [];
+        $customisations = array();
 
         $textColor = $badgeConfig->getData('badge_text_color');
 
@@ -50,5 +51,4 @@ class CustomGento_ProductBadges_Block_Renderer_Type_Abstract
 
         return '';
     }
-
 }
