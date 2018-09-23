@@ -7,6 +7,15 @@ class CustomGento_ProductBadges_Model_Queue_Cron
      */
     public function processJobs()
     {
+        /** @var Mage_Index_Model_Process $productBadgesIndexer */
+        $productBadgesIndexer = Mage::getSingleton('index/indexer')
+            ->getProcessByCode('customgento_productbadges');
+
+        // Lock mechanism in case the indexer is running then Indexer and Queue jobs will not overlap
+        if (Mage_Index_Model_Process::EVENT_STATUS_WORKING === $productBadgesIndexer->getStatus()) {
+            return $this;
+        }
+
         $this->_getQueueResourceModel()->removeOldJobs();
 
         $pickedJobsCollection = $this->_getQueueCollection()
