@@ -55,7 +55,17 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
 
     public function reindexAll()
     {
+        Mage::dispatchEvent(
+            'customgento_productbadges_reindexall_before',
+            array('indexer' => $this)
+        );
+
         $this->rebuild();
+
+        Mage::dispatchEvent(
+            'customgento_productbadges_reindexall_after',
+            array('indexer' => $this)
+        );
     }
 
     /**

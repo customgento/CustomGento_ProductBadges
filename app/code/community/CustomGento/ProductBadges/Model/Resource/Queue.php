@@ -12,9 +12,7 @@ class CustomGento_ProductBadges_Model_Resource_Queue
     }
 
     /**
-     * Remove already sent messages
-     *
-     * @return Mage_Core_Model_Resource_Email_Queue
+     * @return CustomGento_ProductBadges_Model_Resource_Queue
      */
     public function removeOldJobs()
     {
@@ -23,6 +21,20 @@ class CustomGento_ProductBadges_Model_Resource_Queue
         $this->_getWriteAdapter()->delete(
             $this->getMainTable(),
             array('created_at < NOW() - INTERVAL ? DAY' => $days)
+        );
+
+        return $this;
+    }
+
+    /**
+     * @param $jobId int
+     * @return CustomGento_ProductBadges_Model_Resource_Queue
+     */
+    public function removeJobsOlderThanJobId($jobId)
+    {
+        $this->_getWriteAdapter()->delete(
+            $this->getMainTable(),
+            array('job_id <= ?' => $jobId)
         );
 
         return $this;
