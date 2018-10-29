@@ -108,6 +108,22 @@
                     </customgento_productbadges_register_store_group_delete>
                 </observers>
             </store_group_delete_before>
+            <customgento_productbadges_reindexall_before>
+                <observers>
+                    <customgento_productbadges_pre_reindex_tasks>
+                        <class>customgento_productbadges/indexer_observer</class>
+                        <method>beforeIndexerStart</method>
+                    </customgento_productbadges_pre_reindex_tasks>
+                </observers>
+            </customgento_productbadges_reindexall_before>
+            <customgento_productbadges_reindexall_after>
+                <observers>
+                    <customgento_productbadges_post_reindex_tasks>
+                        <class>customgento_productbadges/indexer_observer</class>
+                        <method>afterIndexerFinish</method>
+                    </customgento_productbadges_post_reindex_tasks>
+                </observers>
+            </customgento_productbadges_reindexall_after>
         </events>
     </global>
     <admin>
