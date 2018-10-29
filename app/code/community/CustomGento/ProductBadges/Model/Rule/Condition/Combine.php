@@ -10,12 +10,26 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Combine
      */
     public function getNewChildSelectOptions()
     {
+        /** @var CustomGento_ProductBadges_Model_Rule_Condition_Product_BaseCondition $productCondition */
         $productCondition  = Mage::getModel('customgento_productbadges/rule_condition_product_baseCondition');
         $productAttributes = $productCondition->loadAttributeOptions()->getAttributeOption();
 
         $attributes = array();
         foreach ($productAttributes as $code => $label) {
             $class = 'customgento_productbadges/rule_condition_product_baseCondition';
+
+            $attributes[] = array(
+                'value' => $class . '|' . $code,
+                'label' => $label
+            );
+        }
+
+        // Adding day interval attributes
+        /** @var CustomGento_ProductBadges_Model_Rule_Condition_Product_DayInterval $dayIntervalCondition */
+        $dayIntervalCondition = Mage::getModel('customgento_productbadges/rule_condition_product_dayInterval');
+        $dayIntervalAttribute = $dayIntervalCondition->loadAttributeOptions()->getAttributeOption();
+        foreach ($dayIntervalAttribute as $code => $label) {
+            $class = 'customgento_productbadges/rule_condition_product_dayInterval';
 
             $attributes[] = array(
                 'value' => $class . '|' . $code,
@@ -35,6 +49,11 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Combine
                 'label' => $configModel->getLabel()
             );
         }
+
+        // Sort again alphabetically
+        usort($attributes, function ($a, $b) {
+            return strcmp($a['label'], $b['label']);
+        });
 
         $conditions = array(
             array(
