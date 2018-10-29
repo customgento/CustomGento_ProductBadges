@@ -39,7 +39,7 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'data-controlled-default="' . $this->getHtmlId() . '_default" ' .
             ' ' . $checkedStoreChooserEnabler . ' ' .
             'data-controlled-chooser="' . $this->getHtmlId() . '" /> ' .
-            Mage::helper('customgento_productbadges')->__('All Store Views') . '</label>';
+            Mage::helper('adminhtml')->__('All Store Views') . '</label>';
 
         $html .= '<input type="hidden" value="' . Mage_Core_Model_App::ADMIN_STORE_ID . '" ' . $disableAllStoreViews .
             ' id="' . $this->getHtmlId() . '_default"' . ' name="' . $this->getName() . '" />';

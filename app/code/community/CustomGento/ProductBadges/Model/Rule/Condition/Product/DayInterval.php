@@ -71,8 +71,8 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product_DayInterval
         $productAttributes = Mage::getResourceModel('catalog/product_attribute_collection');
 
         $dateAttributes = array(
-            'created_at' => Mage::helper('customgento_productbadges')->__('Created At'),
-            'updated_at' => Mage::helper('customgento_productbadges')->__('Updated At')
+            'created_at' => Mage::helper('adminhtml')->__('Created At'),
+            'updated_at' => Mage::helper('adminhtml')->__('Updated At')
         );
 
         foreach ($productAttributes as $attribute) {

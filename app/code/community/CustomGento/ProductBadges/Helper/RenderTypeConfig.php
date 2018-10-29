@@ -47,7 +47,7 @@ class CustomGento_ProductBadges_Helper_RenderTypeConfig
         $formLabel = array('' => '---');
 
         foreach ($this->_renderTypesConfigurations as $key => $data) {
-            $formLabel[$key] = $data['admin_label'];
+            $formLabel[$key] = Mage::helper('customgento_productbadges')->__($data['admin_label']);
         }
 
         return $formLabel;

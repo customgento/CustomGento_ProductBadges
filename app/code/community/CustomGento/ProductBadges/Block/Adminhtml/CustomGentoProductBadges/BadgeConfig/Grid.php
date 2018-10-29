@@ -111,7 +111,7 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             $storeFilter = Mage::getSingleton('customgento_productbadges/admin_badgeConfig_grid_filter_store');
             $this->addColumn(
                 'store_ids', array(
-                    'header'                    => Mage::helper('customgento_productbadges')->__('Store'),
+                    'header'                    => Mage::helper('catalog')->__('Store'),
                     'align'                     => 'left',
                     'index'                     => 'store_ids',
                     'type'                      => 'options',

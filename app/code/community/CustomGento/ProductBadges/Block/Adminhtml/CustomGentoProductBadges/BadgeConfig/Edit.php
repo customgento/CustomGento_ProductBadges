@@ -20,7 +20,7 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'save_and_continue_edit',
             array(
                 'class'   => 'save',
-                'label'   => Mage::helper('customgento_productbadges')->__('Save and Continue Edit'),
+                'label'   => Mage::helper('catalog')->__('Save and Continue Edit'),
                 'onclick' => 'editForm.submit($(\'edit_form\').action + \'back/edit/\')',
             ),
             10

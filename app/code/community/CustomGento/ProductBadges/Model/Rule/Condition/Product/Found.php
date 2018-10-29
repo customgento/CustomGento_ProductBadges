@@ -40,7 +40,7 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product_Found
     {
         $html = $this->getTypeElement()->getHtml();
         $html .= Mage::helper('customgento_productbadges')->__(
-            'If an product is %s in the catalog with %s of these conditions true:',
+            'If a product is %s in the catalog with %s of these conditions true:',
             $this->getValueElement()->getHtml(),
             $this->getAggregatorElement()->getHtml()
         );

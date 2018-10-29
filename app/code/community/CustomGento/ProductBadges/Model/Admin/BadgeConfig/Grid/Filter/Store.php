@@ -91,8 +91,7 @@ class CustomGento_ProductBadges_Model_Admin_BadgeConfig_Grid_Filter_Store
     {
         $options = array();
 
-        $options[Mage_Core_Model_App::ADMIN_STORE_ID] = Mage::helper('customgento_productbadges')
-            ->__('All Store Views');
+        $options[Mage_Core_Model_App::ADMIN_STORE_ID] = Mage::helper('adminhtml')->__('All Store Views');
 
         foreach ($this->_websiteCollection as $website) {
             foreach ($this->_groupCollection as $group) {

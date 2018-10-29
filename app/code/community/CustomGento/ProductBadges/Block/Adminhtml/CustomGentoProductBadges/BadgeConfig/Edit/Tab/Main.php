@@ -79,8 +79,8 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'textarea',
             array(
                 'name'  => 'description',
-                'label' => Mage::helper('customgento_productbadges')->__('Description'),
-                'title' => Mage::helper('customgento_productbadges')->__('Description'),
+                'label' => Mage::helper('catalog')->__('Description'),
+                'title' => Mage::helper('catalog')->__('Description'),
                 'style' => 'height: 100px;',
             )
         );
@@ -89,13 +89,13 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
             'is_active',
             'select',
             array(
-                'label'    => Mage::helper('customgento_productbadges')->__('Status'),
-                'title'    => Mage::helper('customgento_productbadges')->__('Status'),
+                'label'    => Mage::helper('catalog')->__('Status'),
+                'title'    => Mage::helper('catalog')->__('Status'),
                 'name'     => 'is_active',
                 'required' => true,
                 'options'  => array(
-                    '1' => Mage::helper('customgento_productbadges')->__('Active'),
-                    '0' => Mage::helper('customgento_productbadges')->__('Inactive'),
+                    '1' => Mage::helper('adminhtml')->__('Active'),
+                    '0' => Mage::helper('adminhtml')->__('Inactive'),
                 ),
             )
         );
@@ -160,7 +160,7 @@ class CustomGento_ProductBadges_Block_Adminhtml_CustomGentoProductBadges_BadgeCo
 
         $visualisationFieldset = $form->addFieldset(
             'visualisation_fieldset',
-            array('legend' => Mage::helper('customgento_productbadges')->__('Visualisation Settings'))
+            array('legend' => Mage::helper('customgento_productbadges')->__('Visualization Settings'))
         );
 
         // We are having dependency between render_type and (badge_image and badge_text)
