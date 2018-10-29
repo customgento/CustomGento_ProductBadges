@@ -33,10 +33,10 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product_DayInterval
      */
     public function getOperatorSelectOptions()
     {
-        $opt = [];
+        $opt = array();
 
         foreach ($this->getOperatorOptions() as $v => $l) {
-            $opt[] = ['value' => $v, 'label' => $l];
+            $opt[] = array('value' => $v, 'label' => $l);
         }
 
         return $opt;
@@ -46,11 +46,11 @@ class CustomGento_ProductBadges_Model_Rule_Condition_Product_DayInterval
      * @return array
      */
     public function getOperatorOptions() {
-        return [
+        return array(
             '>=' => $this->_getHelper()->__('is newer than X days'),
             '==' => $this->_getHelper()->__('is exactly X days ago'),
             '<=' => $this->_getHelper()->__('is older than X days')
-        ];
+        );
     }
 
     /**
