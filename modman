@@ -3,6 +3,7 @@ app/design/adminhtml/default/default/layout/customgento_productbadges.xml app/de
 app/design/adminhtml/default/default/template/customgento/productbadges/ app/design/adminhtml/default/default/template/customgento/productbadges/
 app/design/frontend/base/default/layout/customgento_productbadges.xml app/design/frontend/base/default/layout/customgento_productbadges.xml
 app/etc/modules/CustomGento_ProductBadges.xml app/etc/modules/CustomGento_ProductBadges.xml
+app/locale/de_DE/CustomGento_ProductBadges.csv app/locale/de_DE/CustomGento_ProductBadges.csv
 js/customgento/productbadges/ js/customgento/productbadges/
 skin/adminhtml/default/default/css/customgento/productbadges/ skin/adminhtml/default/default/css/customgento/productbadges/
 skin/adminhtml/default/default/scss/customgento/productbadges/ skin/adminhtml/default/default/scss/customgento/productbadges/
