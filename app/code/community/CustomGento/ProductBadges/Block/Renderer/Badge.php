@@ -11,6 +11,10 @@ class CustomGento_ProductBadges_Block_Renderer_Badge
     {
         try {
             $renderType = $badgeConfig->getRenderType();
+            if (empty($renderType)) {
+                return '';
+            }
+
             /** @var CustomGento_ProductBadges_Block_Renderer_Type_Interface $badgeRenderer */
             $badgeRenderer = Mage::getBlockSingleton('customgento_productbadges/renderer_type_' . $renderType);
 
