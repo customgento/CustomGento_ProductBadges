@@ -8,6 +8,10 @@ class CustomGento_ProductBadges_Model_Queue_RegisterJob
      */
     public function attemptToRegisterJob(CustomGento_ProductBadges_Model_Queue_Job_Abstract $job, Varien_Object $model)
     {
+        if (!$this->_getHelper()->isEnabled()) {
+            return;
+        }
+
         /** @var CustomGento_ProductBadges_Model_Queue $queue */
         $queue = Mage::getModel('customgento_productbadges/queue');
 
@@ -17,5 +21,14 @@ class CustomGento_ProductBadges_Model_Queue_RegisterJob
         $queue->setData('status', CustomGento_ProductBadges_Model_Queue_Job::STATUS_PENDING);
 
         $queue->save();
+    }
+
+    /**
+     *
+     * @return CustomGento_ProductBadges_Helper_Data
+     */
+    protected function _getHelper()
+    {
+        return Mage::helper('customgento_productbadges');
     }
 }
