@@ -78,6 +78,10 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
      */
     public function rebuild($store = null, $productIds = array())
     {
+        if (!$this->_getHelper()->isEnabled()) {
+            return $this;
+        }
+
         if ($store === null) {
             $notActiveStores = array();
 
@@ -368,5 +372,14 @@ class CustomGento_ProductBadges_Model_Resource_Indexer_ProductBadges
          * to be worried if the table does not exist
          */
         $this->_getWriteAdapter()->dropTable($tableName);
+    }
+
+    /**
+     *
+     * @return CustomGento_ProductBadges_Helper_Data
+     */
+    protected function _getHelper()
+    {
+        return Mage::helper('customgento_productbadges');
     }
 }
