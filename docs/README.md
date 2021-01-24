@@ -63,11 +63,14 @@ Here are some ideas which badges you could create with this extension:
 
 ### General Settings
 You will find the settings under: `System > Configuration > Catalog > Product Badges`.
+
 ![Magento 1 - System configuration of Product Grid badges](./images/system-configuration.png)
+
 You can `enable` or `disable` the extension there. This is useful to toggle the extension functionality without touching any code.
 
 ### Adding Badges
 To create new badges or edit existing ones, go to `Catalog > Product Badges` and click on `Add New Badge` or click an existing badge respectively.
+
 ![Magento 1 - Adding or creating badges](./images/adding-badges-general-visualisation.png)
 
 ### _General Settings_
