@@ -10,7 +10,7 @@ The extension offers you the possibility to add highly customizable badges to yo
 
 Here is an example, where we defined four different badges. One badge for all virtual products, one for all configurables, one for all products and one for green products:
 
-![Magento 1 - Product Grid badges](./docs-productbadges/media/frontend-example.png)
+![Magento 1 - Product Grid badges](./images/frontend-example.png)
 
 Here are some ideas which badges you could create with this extension:
 * new (to highlight recently added products)
@@ -30,7 +30,7 @@ Here are some ideas which badges you could create with this extension:
 * Magento >= 1.9 and < 2.0
 
 ## Installation Instructions
-1. Install via Modman or copy all the files into your document root.
+1. Install via Modman or copy all the files from the `src` folder into your Magento document root.
 2. Update your main product list template (usually `app/design/frontend/package/theme/template/catalog/product/list.phtml`):
     1. In the beginning of the file, after the product collection assignment (after the line $_productCollection=$this->getLoadedProductCollection();), add: 
         ```php
@@ -63,12 +63,12 @@ Here are some ideas which badges you could create with this extension:
 
 ### General Settings
 You will find the settings under: `System > Configuration > Catalog > Product Badges`.
-![Magento 1 - System configuration of Product Grid badges](./docs-productbadges/media/system-configuration.png)
+![Magento 1 - System configuration of Product Grid badges](./images/system-configuration.png)
 You can `enable` or `disable` the extension there. This is useful to toggle the extension functionality without touching any code.
 
 ### Adding Badges
 To create new badges or edit existing ones, go to `Catalog > Product Badges` and click on `Add New Badge` or click an existing badge respectively.
-![Magento 1 - Adding or creating badges](./docs-productbadges/media/adding-badges-general-visualisation.png)
+![Magento 1 - Adding or creating badges](./images/adding-badges-general-visualisation.png)
 
 ### _General Settings_
 * **Badge Name**: Internal name, so that you can easily identify your badge.
@@ -93,7 +93,7 @@ A preview of the badge is shown as soon as you configured the visualization sett
 ### _Conditions_
 In the left column, you can switch to the conditions tab, where you can define to which products this badge should be applied:
 
-![Magento 1 - System configuration of Product Grid badges](./docs-productbadges/media/adding-badges-conditions.png)
+![Magento 1 - System configuration of Product Grid badges](./images/adding-badges-conditions.png)
 
 > **Important:** If you do not define any conditions, the badge is applied to all products. You probably know the interface from the catalog or shopping cart price rules.
 
@@ -124,7 +124,7 @@ In the left column, you can switch to the conditions tab, where you can define t
 
 ## Licence
 
-To be defined!
+[OSL-3.0](https://opensource.org/licenses/OSL-3.0)
 
 ## Copyright
 © 2018-2021 CustomGento GmbH
