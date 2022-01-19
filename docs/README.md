@@ -1,10 +1,6 @@
-# Product Badges (Magento 1)
+# Product Badges for Magento 1
 
-> Summary: The Product Badges extension offers you the possibility to add highly customizable badges to your product images without having any performance impact. You can freely define where a badge should be shown via price-rule-like conditions.
-
-## Description
-
-The extension offers you the possibility to add highly customizable badges to your product images without having any performance impact. The extension comes with a custom indexer, which computes the mapping of badges to products in the background, so that the actual rendering of the badges is blazingly fast. It also comes with a smart queueing system, so that even in the backend, there is no slowdown. Another big plus is that you can define the matching products for a specific badge via a price-rule-like interface. You can use and combine all product attributes to define badge conditions.
+Product Badges for Magento 1 offers you the possibility to add highly customizable badges to your product images without having any performance impact. You can freely define where a badge should be shown via price-rule-like conditions. Using a custom indexer, the rendering of the badges is insanely fast.
 
 ### Example
 
